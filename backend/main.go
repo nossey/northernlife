@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nossey/northernlife/controller"
+	"github.com/nossey/northernlife/docs"
 	"github.com/nossey/northernlife/infrastructure"
 
 	swaggerFiles "github.com/swaggo/files"
@@ -75,12 +76,12 @@ func main() {
 	}
 
 	// programatically set swagger info
-	//docs.SwaggerInfo.Title = "Swagger Example API"
-	//docs.SwaggerInfo.Description = "This is a sample server Petstore server."
-	//docs.SwaggerInfo.Version = "1.0"
-	//docs.SwaggerInfo.Host = "petstore.swagger.io"
-	//docs.SwaggerInfo.BasePath = "/v2"
-	//docs.SwaggerInfo.Schemes = []string{"http", "https"}
+	docs.SwaggerInfo.Title = "Swagger Example API"
+	docs.SwaggerInfo.Description = "This is a sample server Petstore server."
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "petstore.swagger.io"
+	docs.SwaggerInfo.BasePath = "/v1"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	r := gin.Default()
 	c := controller.NewController()
