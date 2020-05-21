@@ -16,8 +16,9 @@ jobs:
       - image: circleci/golang:1.14
     steps:
       - checkout
+      - working_directory: $CIRCLE_WORKING_DIRECTORY/backend
       - run: mkdir -p build
-      - run: GOOS=linux GOARCH=amd64 go build -o ./build/backend ./backend/main.go 
+      - run: GOOS=linux GOARCH=amd64 go build -o ./build ./backend/main.go 
       - persist_to_workspace:
           root: .
           paths:
