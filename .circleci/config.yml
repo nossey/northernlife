@@ -18,8 +18,10 @@ jobs:
       - checkout
       - run: mkdir -p build
       - run:
-          working_directory: $CIRCLE_WORKING_DIRECTORY/backend
-          command: GOOS=linux GOARCH=amd64 go build -o ../build ./main.go 
+          #working_directory: $CIRCLE_WORKING_DIRECTORY/backend
+          command: |
+            cd backend
+            GOOS=linux GOARCH=amd64 go build -o ../build ./main.go 
       - persist_to_workspace:
           root: .
           paths:
