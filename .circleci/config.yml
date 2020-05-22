@@ -1,0 +1,88 @@
+version: 2.1
+orbs:
+  aws-code-deploy: circleci/aws-code-deploy@1.0.1
+  aws-cli: circleci/aws-cli@0.1
+executors:
+  default:
+    docker:
+      - image: circleci/golang:1.14
+    working_directory: /tmp/deployment
+      
+
+jobs:
+  build:
+    executor: default
+    docker:
+      - image: circleci/golang:1.14
+    steps:
+      - checkout
+      - run: mkdir -p build/backend
+      - run:
+          #working_directory: $CIRCLE_WORKING_DIRECTORY/backend
+          command: |
+            cd backend
+            GOOS=linux GOARCH=amd64 go build -o ../build/backend ./main.go 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  code-deploy:
+    executor: default
+    docker:
+      - image: circleci/golang:1.14
+    steps:
+      - attach_workspace:
+          at: /tmp/deployment
+      - checkout
+      - aws-cli/setup
+      - run:
+          command: |
+            set +e
+            aws deploy get-application --application-name northernlife-api-server
+            if [ $? -ne 0 ]; then
+              set -e
+              echo "No application named northernlife-api-server found. Trying to create a new one"
+              aws deploy create-application --application-name northernlife-api-server
+            else
+              set -e
+              echo "Application named northernlife-api-server already exists. Skipping creation."
+            fi
+          name: ensure-application-created
+      - run:
+          command: |
+            set +e
+            aws deploy get-deployment-group \
+              --application-name northernlife-api-server \
+              --deployment-group-name northernlife-api-server 
+            if [ $? -ne 0 ]; then
+              set -e
+              echo "No deployment group named northernlife-api-server found. Trying to create a new one"
+              aws deploy create-deployment-group \
+                --application-name northernlife-api-server \
+                --deployment-group-name northernlife-api-server \
+                --service-role-arn arn:aws:iam::854919677002:role/northernlife-codedeploy
+            else
+              set -e
+              echo "Deployment group named northernlife-api-server already exists. Skipping creation."
+            fi
+          name: ensure-deployment-created
+
+      - aws-code-deploy/push-bundle: 
+          application-name: northernlife-api-server
+          bundle-bucket: northernlife-circleci-api-deploy
+          bundle-key: deployment
+      - aws-code-deploy/deploy-bundle: 
+          application-name: northernlife-api-server
+          bundle-bucket: northernlife-circleci-api-deploy
+          bundle-key: deployment
+          deployment-group: northernlife-api-server 
+    
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build 
+      - code-deploy:
+          requires:
+            - build
