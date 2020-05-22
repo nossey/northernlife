@@ -16,4 +16,6 @@ export DB_NAME=$db_name
 export DB_USER=$db_user
 export DB_PASSWORD=$db_password
 
+ls
+
 ./main > /dev/null 2>&1 &
