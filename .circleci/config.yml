@@ -16,7 +16,7 @@ jobs:
       - image: circleci/golang:1.14
     steps:
       - checkout
-      - run: mkdir -p build
+      - run: mkdir -p build/backend
       - run:
           #working_directory: $CIRCLE_WORKING_DIRECTORY/backend
           command: |
