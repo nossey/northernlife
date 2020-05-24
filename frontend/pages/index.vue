@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div>
+      <Footer></Footer>
       <logo />
       <h1 class="title">
         frontend
@@ -30,11 +31,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Logo from '~/components/Logo.vue'
+import Logo from "~/components/Logo"
+import Footer from "~/components/Footer"
+import {Context} from '@nuxt/types'
 
 export default Vue.extend({
   components: {
-    Logo
+    Logo,
+    Footer
+  },
+  async asyncData(ctx: Context): Promise<void> {
+    const result = await ctx.app.$axios.$get("/secrets/");
+    console.log(result);
   }
 })
 </script>

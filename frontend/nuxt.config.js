@@ -1,3 +1,4 @@
+const path = require('path')
 
 export default {
   mode: 'universal',
@@ -47,6 +48,8 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    proxy: true,
+    baseURL: process.env.BASE_URL || "http://localhost:9000/api/v1/",
   },
   /*
   ** Build configuration
@@ -55,12 +58,20 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend(config, ctx) {
       // Added Line
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
 
       if (ctx.isDev && ctx.isClient) {
       }
     }
+  },
+  resolve: {
+    extensions: ['.js', '.json', '.vue', '.ts'],
+    root: path.resolve(__dirname),
+    alias: {
+      '@': path.resolve(__dirname),
+      '~': path.resolve(__dirname),
+    },
   }
 }
