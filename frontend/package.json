@@ -15,7 +15,8 @@
     "@nuxt/typescript-runtime": "^0.4.0",
     "@nuxtjs/axios": "^5.3.6",
     "cross-env": "^7.0.2",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "serverless": "^1.71.3"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.0",
