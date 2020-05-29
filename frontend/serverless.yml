@@ -1,9 +1,4 @@
 service: frontend
-
-plugins:
-  - serverless-offline
-  - serverless-domain-manager
-
 app: northernlife
 org: nossey
 
@@ -15,7 +10,7 @@ provider:
   name: aws
   runtime: nodejs12.x
 
-  stage: dev
+  stage: production
   region: ap-northeast-1
 
 # you can add statements to the Lambda function's IAM Role here
@@ -105,3 +100,16 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+plugins:
+  - serverless-offline
+  - serverless-domain-manager
+
+custom:
+  name: northernlife
+  customDomain:
+    domainName: 'northernlife.net'
+    certificateName: 'northernlife.net'
+    basePath: ''
+    stage: production
+    createRoute53Record: true
