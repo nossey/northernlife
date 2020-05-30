@@ -1,12 +1,11 @@
 service: frontend
-app: northernlife
 org: nossey
 
 provider:
   name: aws
   runtime: nodejs10.x
 
-  stage: production
+  stage: prod
   region: ap-northeast-1
   environment:
     NODE_ENV: production
@@ -14,6 +13,9 @@ provider:
 package:
   exclude:
     - src/**
+  include:
+    - serverless.yml
+    - handler.js
 
 functions:
   northernlife-renderer:
@@ -29,9 +31,6 @@ functions:
           path: /{proxy+}
           method: ANY
           cors: true
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
 
 # you can add CloudFormation resource templates here
 #resources:
@@ -52,8 +51,8 @@ plugins:
 custom:
   name: northernlife
   customDomain:
-    domainName: 'northernlife.net'
-    certificateName: '*.northernlife.net'
+    domainName: "northernlife.net"
+    certificateName: "northernlife.net"
     basePath: ''
-    stage: production
+    stage: prod
     createRoute53Record: true
