@@ -1,16 +1,13 @@
-'use strict';
+const https = require('https');
+let url = "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html";
 
-const { Nuxt } = require('nuxt');
-const serverless = require('serverless-http');
-const express = require('express');
-const nuxtConfig = require('./nuxt.config');
-
-const config = {
-    dev: false,
-    ...nuxtConfig,
-};
-
-const nuxt = new Nuxt(config);
-const app = express();
-
-exports.render = serverless(app);
+exports.handler = async function(event) {
+  const promise = new Promise(function(resolve, reject) {
+    https.get(url, (res) => {
+      resolve(res.statusCode)
+    }).on('error', (e) => {
+      reject(Error(e))
+    })
+  });
+  return promise;
+}
