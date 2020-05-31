@@ -1,0 +1,46 @@
+service: northernlife-frontend
+org: nossey
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+
+  stage: prod
+  region: ap-northeast-1
+  environment:
+    NODE_ENV: production
+
+package:
+  exclude:
+    - src/**
+  include:
+    - serverless.yml
+    - handler.js
+
+functions:
+  northernlife-renderer:
+    handler: handler.render
+    memorySize: 512
+    timeout: 30
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+
+plugins:
+  - serverless-offline
+  - serverless-domain-manager
+
+custom:
+  name: northernlife
+  customDomain:
+    domainName: "northernlife.net"
+    certificateName: "northernlife.net"
+    basePath: ''
+    stage: prod
+    createRoute53Record: true

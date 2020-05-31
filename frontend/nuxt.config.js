@@ -2,6 +2,7 @@ const path = require('path')
 
 export default {
   mode: 'universal',
+  srcDir: 'src',
   /*
   ** Headers of the page
   */
