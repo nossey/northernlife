@@ -31,8 +31,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Logo from "~/components/Logo"
-import Footer from "~/components/Footer"
+import Logo from "~/components/Logo.vue"
+import Footer from "~/components/Footer.vue"
 import {Context} from '@nuxt/types'
 
 export default Vue.extend({

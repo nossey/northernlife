@@ -1,6 +1,6 @@
-const path = require('path')
+const path = require('path');
 
-export default {
+module.exports = {
   mode: 'universal',
   srcDir: 'src',
   /*
@@ -56,16 +56,14 @@ export default {
   ** Build configuration
   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
     extend(config, ctx) {
       // Added Line
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
 
       if (ctx.isDev && ctx.isClient) {
       }
-    }
+    },
+    transpile: ['@stylelib']
   },
   resolve: {
     extensions: ['.js', '.json', '.vue', '.ts'],
