@@ -1,4 +1,4 @@
-service: frontend
+service: northernlife-frontend
 org: nossey
 
 provider:
