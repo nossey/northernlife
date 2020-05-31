@@ -9809,6 +9809,10 @@ server-destroy@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/server-destroy/-/server-destroy-1.0.1.tgz#f13bf928e42b9c3e79383e61cc3998b5d14e6cdd"
 
+serverless-apigw-binary@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/serverless-apigw-binary/-/serverless-apigw-binary-0.4.4.tgz#f3cffd8365322a2a1d8bde5fd94b306b7a64d4fb"
+
 serverless-domain-manager@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/serverless-domain-manager/-/serverless-domain-manager-4.1.1.tgz#3ce3119cfa6fd46a70578f5f1a6bbf0189f04b7b"

@@ -35,6 +35,7 @@ functions:
 plugins:
   - serverless-offline
   - serverless-domain-manager
+  - serverless-apigw-binary
 
 custom:
   name: northernlife
@@ -44,3 +45,7 @@ custom:
     basePath: ''
     stage: prod
     createRoute53Record: true
+  apigwBinary:
+    types:
+      - 'text/html'
+      - 'application/octet-stream'
