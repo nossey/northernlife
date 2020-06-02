@@ -1,3 +1,4 @@
+const path = require('path');
 const awsServerlessExpress = require('aws-serverless-express');
 const express = require('express');
 const app = express();
@@ -14,6 +15,13 @@ async function initApp () {
     await nuxt.ready();
   }
   app.use(nuxt.render);
+  //app.use('/_nuxt', express.static(path.join(__dirname, '.nuxt', 'dist', 'client')));
+  //app.use('/static', express.static(path.join(__dirname, 'static')));
+  app.use((req, res) => 
+    {
+      req.url = `${config.router.base}${req.url}`.replace('//', '/');
+      nuxt.render(req, res)
+    });
   return app;
 };
 

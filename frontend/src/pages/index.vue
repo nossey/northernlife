@@ -2,6 +2,7 @@
   <div class="container">
     <div>
       <Footer></Footer>
+      <img src="/golang.png">
       <logo />
       <h1 class="title">
         frontend

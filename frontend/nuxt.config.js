@@ -3,6 +3,9 @@ const path = require('path');
 module.exports = {
   mode: 'universal',
   srcDir: 'src',
+  router: {
+    base: '/prod/'
+  },
   /*
   ** Headers of the page
   */
