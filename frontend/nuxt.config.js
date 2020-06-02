@@ -3,9 +3,9 @@ const path = require('path');
 module.exports = {
   mode: 'universal',
   srcDir: 'src',
-  router: {
-    base: '/prod/'
-  },
+  //router: {
+  //  base: '/prod/'
+  //},
   /*
   ** Headers of the page
   */
@@ -17,7 +17,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/static/favicon.ico' }
     ]
   },
   /*
