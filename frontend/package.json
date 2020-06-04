@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon --inspect node_modules/.bin/nuxt",
+    "local": "nodemon --inspect ./server.js",
     "build": "nuxt-ts build",
     "generate": "nuxt-ts generate",
     "start": "nuxt-ts start",
@@ -16,6 +17,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "aws-serverless-express": "^3.3.8",
     "cross-env": "^7.0.2",
+    "express-asyncify": "^1.0.1",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
