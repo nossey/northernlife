@@ -4,10 +4,12 @@
   "description": "My first-rate Nuxt.js project",
   "author": "Sho Kitami",
   "private": true,
+  "main": "index.js",
   "scripts": {
     "dev": "nodemon --inspect node_modules/.bin/nuxt",
     "local": "nodemon --inspect ./server.js",
-    "build": "nuxt-ts build",
+    "build": "NODE_ENV=production nuxt build",
+    "postbuild": "webpack",
     "generate": "nuxt-ts generate",
     "start": "nuxt-ts start",
     "test": "jest"
@@ -29,7 +31,11 @@
     "serverless-apigw-binary": "^0.4.4",
     "serverless-domain-manager": "^4.1.1",
     "serverless-offline": "^6.2.0",
+    "serverless-s3-sync": "^1.14.3",
     "ts-jest": "^25.0.0",
-    "vue-jest": "^4.0.0-0"
+    "vue-jest": "^4.0.0-0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpackbar": "^4.0.0"
   }
 }
