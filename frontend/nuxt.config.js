@@ -48,10 +48,10 @@ module.exports = {
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
-  axios: {
-    proxy: true,
-    baseURL: process.env.BASE_URL || "http://localhost:9000/api/v1/",
-  },
+  //axios: {
+  //  proxy: true,
+  //  baseURL: process.env.BASE_URL || "http://localhost:9000/api/v1/",
+  //},
   /*
   ** Build configuration
   */
