@@ -2,6 +2,7 @@
   <div class="container">
     <div>
       <Footer></Footer>
+      <img src="/static/golang.png">
       <logo />
       <h1 class="title">
         frontend
@@ -31,8 +32,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Logo from "~/components/Logo"
-import Footer from "~/components/Footer"
+import Logo from "~/components/Logo.vue"
+import Footer from "~/components/Footer.vue"
 import {Context} from '@nuxt/types'
 
 export default Vue.extend({
@@ -41,8 +42,8 @@ export default Vue.extend({
     Footer
   },
   async asyncData(ctx: Context): Promise<void> {
-    const result = await ctx.app.$axios.$get("/secrets/");
-    console.log(result);
+    //const result = await ctx.app.$axios.$get("/secrets/");
+    //console.log(result);
   }
 })
 </script>
