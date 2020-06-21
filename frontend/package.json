@@ -7,7 +7,6 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --inspect node_modules/.bin/nuxt",
-    "local": "nodemon --inspect ./server.js",
     "build": "NODE_ENV=production nuxt build",
     "start": "nuxt-ts start",
     "test": "jest"
