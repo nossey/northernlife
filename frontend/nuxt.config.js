@@ -3,6 +3,10 @@ const path = require('path');
 module.exports = {
   mode: 'universal',
   srcDir: 'src',
+  server: {
+    port: 80,
+    host: '0.0.0.0'
+  },
   /*
   ** Headers of the page
   */
