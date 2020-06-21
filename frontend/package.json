@@ -9,15 +9,12 @@
     "dev": "nodemon --inspect node_modules/.bin/nuxt",
     "local": "nodemon --inspect ./server.js",
     "build": "NODE_ENV=production nuxt build",
-    "postbuild": "webpack",
-    "generate": "nuxt-ts generate",
     "start": "nuxt-ts start",
     "test": "jest"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.4.0",
     "@nuxtjs/axios": "^5.3.6",
-    "aws-serverless-express": "^3.3.8",
     "cross-env": "^7.0.2",
     "express-asyncify": "^1.0.1",
     "nuxt": "^2.0.0"
@@ -27,11 +24,6 @@
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-jest": "^24.1.0",
     "jest": "^24.1.0",
-    "serverless": "^1.71.3",
-    "serverless-apigw-binary": "^0.4.4",
-    "serverless-domain-manager": "^4.1.1",
-    "serverless-offline": "^6.2.0",
-    "serverless-s3-sync": "^1.14.3",
     "ts-jest": "^25.0.0",
     "vue-jest": "^4.0.0-0",
     "webpack": "^4.43.0",
