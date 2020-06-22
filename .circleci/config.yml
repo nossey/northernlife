@@ -2,12 +2,16 @@ version: 2.1
 orbs:
   aws-code-deploy: circleci/aws-code-deploy@1.0.1
   aws-cli: circleci/aws-cli@0.1
+  docker: circleci/docker@1.2.1
 executors:
   default:
     docker:
       - image: circleci/golang:1.14
     working_directory: /tmp/deployment
-      
+  frontend:
+      docker:
+      - image: node:14.4.0
+    working_directory: /tmp/deployment
 
 jobs:
   build:
@@ -18,7 +22,6 @@ jobs:
       - checkout
       - run: mkdir -p build/backend
       - run:
-          #working_directory: $CIRCLE_WORKING_DIRECTORY/backend
           command: |
             cd backend
             GOOS=linux GOARCH=amd64 go build -o ../build/backend ./main.go 
@@ -26,6 +29,17 @@ jobs:
           root: .
           paths:
             - .
+  build-frontend:
+    executor: frontend
+    steps:
+      - checkout
+      - docker/build:
+          image: nossey/northernlife-frontend
+          working_directory: /tmp/deployment/frontend
+      - docker/push:
+          image: nossey/northernlife-frontend
+          working_directory: /tmp/deployment/frontend
+  code-deploy-frontend:
 
   code-deploy:
     executor: default
@@ -86,3 +100,6 @@ workflows:
       - code-deploy:
           requires:
             - build
+  frontend-build-and-deploy:
+    jobs:
+      - build-frontend
