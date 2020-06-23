@@ -38,7 +38,7 @@ jobs:
           version: v17.06.0-ce
       - docker/build:
           image: nossey/northernlife-frontend
-          #working_directory: /tmp/deployment/frontend
+          path: /tmp/deployment/frontend/Dockerfile
       - docker/push:
           image: nossey/northernlife-frontend
 
