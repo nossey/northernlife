@@ -34,6 +34,8 @@ jobs:
     executor: frontend
     steps:
       - checkout
+      - docker/install-docker:
+          version: v17.06.0-ce
       - docker/build:
           image: nossey/northernlife-frontend
           #working_directory: /tmp/deployment/frontend
