@@ -105,5 +105,5 @@ workflows:
     jobs:
       - docker/publish:
           image: nossey/northernlife-frontend
-          path: /tmp/deployment/frontend
+          path: ./frontend
 
