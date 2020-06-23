@@ -106,4 +106,5 @@ workflows:
       - docker/publish:
           after_checkout:
             - run: cd ./frontend
+            - run: ls
           image: nossey/northernlife-frontend
