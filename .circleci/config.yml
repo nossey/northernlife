@@ -8,6 +8,7 @@ executors:
     docker:
       - image: circleci/golang:1.14
     working_directory: /tmp/deployment
+
   frontend:
       docker:
       - image: node:14.4.0
