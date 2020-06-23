@@ -104,6 +104,6 @@ workflows:
   frontend-build-and-deploy:
     jobs:
       - docker/publish:
+          after_checkout:
+            - run: cd ./frontend
           image: nossey/northernlife-frontend
-          path: ./frontend
-
