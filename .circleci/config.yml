@@ -36,11 +36,11 @@ jobs:
       - checkout
       - docker/install-docker:
           version: v17.06.0-ce
-      - docker/build:
+      - docker/publish:
           image: nossey/northernlife-frontend
           path: /tmp/deployment/frontend/
-      - docker/push:
-          image: nossey/northernlife-frontend
+      #- docker/push:
+      #    image: nossey/northernlife-frontend
 
   code-deploy:
     executor: default
