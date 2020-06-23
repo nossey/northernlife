@@ -36,11 +36,9 @@ jobs:
       - checkout
       - docker/build:
           image: nossey/northernlife-frontend
-          working_directory: /tmp/deployment/frontend
+          #working_directory: /tmp/deployment/frontend
       - docker/push:
           image: nossey/northernlife-frontend
-          working_directory: /tmp/deployment/frontend
-  code-deploy-frontend:
 
   code-deploy:
     executor: default
