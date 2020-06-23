@@ -30,15 +30,15 @@ jobs:
           root: .
           paths:
             - .
-  build-frontend:
-    executor: frontend
-    steps:
-      - checkout
-      - docker/install-docker:
-          version: v17.06.0-ce
-      - docker/publish:
-          image: nossey/northernlife-frontend
-          path: /tmp/deployment/frontend/
+  #build-frontend:
+  #  executor: frontend
+  #  steps:
+  #    - checkout
+  #    - docker/install-docker:
+  #        version: v17.06.0-ce
+  #    - docker/publish:
+  #        image: nossey/northernlife-frontend
+  #        path: /tmp/deployment/frontend/
       #- docker/push:
       #    image: nossey/northernlife-frontend
 
@@ -103,4 +103,7 @@ workflows:
             - build
   frontend-build-and-deploy:
     jobs:
-      - build-frontend
+      - docker/publish:
+          image: nossey/northernlife-frontend
+          path: /tmp/deployment/frontend/
+
