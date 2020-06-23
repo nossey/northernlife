@@ -10,7 +10,7 @@ executors:
     working_directory: /tmp/deployment
 
   frontend:
-      docker:
+    docker:
       - image: node:14.4.0
     working_directory: /tmp/deployment
 
