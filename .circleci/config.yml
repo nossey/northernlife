@@ -104,11 +104,5 @@ workflows:
   frontend-build-and-deploy:
     jobs:
       - docker/publish:
-          after_checkout:
-            - run:
-                command: cd ./frontend
-                name: test
-            - run:
-                command: ls
-                name: test2
           image: nossey/northernlife-frontend
+          docker-context: ./frontend
