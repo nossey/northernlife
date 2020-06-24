@@ -106,3 +106,4 @@ workflows:
       - docker/publish:
           image: nossey/northernlife-frontend
           docker-context: ./frontend
+          path: ./frontend
