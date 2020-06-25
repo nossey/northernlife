@@ -42,7 +42,7 @@ jobs:
       - aws-cli/setup
       - run:
           command: |
-            copy ./backend/appspec.yml ./appspec.yml
+            cp ./backend/appspec.yml ./appspec.yml
       - run:
           command: |
             set +e
