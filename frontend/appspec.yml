@@ -1,14 +1,14 @@
 version: 0.0
 os: linux
 files:
-  - source: /build/backend/main
+  - source: /build/frontend/
     destination: ./
 hooks:
   ApplicationStop:
-    - location: ./backend/scripts/shutdown_server.sh
+    - location: scripts/shutdown_server.sh
       timeout: 300
       runas: ec2-user
   ApplicationStart:
-    - location: ./backend/scripts/reboot_server.sh
+    - location: scripts/reboot_server.sh
       timeout: 300
       runas: ec2-user
