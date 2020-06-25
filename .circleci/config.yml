@@ -30,17 +30,6 @@ jobs:
           root: .
           paths:
             - .
-  #build-frontend:
-  #  executor: frontend
-  #  steps:
-  #    - checkout
-  #    - docker/install-docker:
-  #        version: v17.06.0-ce
-  #    - docker/publish:
-  #        image: nossey/northernlife-frontend
-  #        path: /tmp/deployment/frontend/
-      #- docker/push:
-      #    image: nossey/northernlife-frontend
 
   code-deploy:
     executor: default
@@ -51,6 +40,9 @@ jobs:
           at: /tmp/deployment
       - checkout
       - aws-cli/setup
+      - run:
+          command: |
+            copy ./backend/appspec.yml ./appspec.yml
       - run:
           command: |
             set +e
