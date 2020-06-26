@@ -39,7 +39,7 @@ jobs:
           command: |
             cp ./frontend/appspec.yml ./appspec.yml
       - run:
-          command: ls $CIRCLE_SHA1
+          command: echo $CIRCLE_SHA1
       - run:
           command: |
             set +e
