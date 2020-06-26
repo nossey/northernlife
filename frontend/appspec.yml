@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: /build/frontend/
+  - source: ./frontend
     destination: ./
 hooks:
   ApplicationStop:
