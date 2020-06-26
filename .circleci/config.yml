@@ -81,7 +81,7 @@ jobs:
           bundle-bucket: northernlife-circleci-frontend-deploy
           bundle-key: deployment
           deployment-group: northernlife-frontend
- 
+          arguments: DOCKER_TAG=$CIRCLE_SHA1
 
   code-deploy:
     executor: default
