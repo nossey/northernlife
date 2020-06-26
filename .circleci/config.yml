@@ -32,6 +32,8 @@ jobs:
             - .
   deploy-frontend:
     executor: default
+    environment: 
+      DOCKER_TAG: $CIRCLE_SHA1
     steps:
       - checkout
       - aws-cli/setup
@@ -75,8 +77,6 @@ jobs:
           bundle-bucket: northernlife-circleci-frontend-deploy
           bundle-key: deployment
       - aws-code-deploy/deploy-bundle: 
-          environment: 
-            DOCKER_TAG: $CIRCLE_SHA1
           application-name: northernlife-frontend
           bundle-bucket: northernlife-circleci-frontend-deploy
           bundle-key: deployment
