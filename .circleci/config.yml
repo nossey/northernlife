@@ -41,8 +41,7 @@ jobs:
           command: |
             cp ./frontend/appspec.yml ./appspec.yml
       - run:
-          command:
-            DOCKER_TAG=$CIRCLE_SHA1 > ./frontend/.env
+          command: DOCKER_TAG=$CIRCLE_SHA1 > ./frontend/.env
       - run:
           command: |
             set +e
