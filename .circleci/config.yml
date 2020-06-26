@@ -75,10 +75,10 @@ jobs:
           bundle-bucket: northernlife-circleci-frontend-deploy
           bundle-key: deployment
       - aws-code-deploy/deploy-bundle: 
-          application-name: northernlife-api-server
+          application-name: northernlife-frontend
           bundle-bucket: northernlife-circleci-frontend-deploy
           bundle-key: deployment
-          deployment-group: northernlife-api-server 
+          deployment-group: northernlife-frontend
  
 
   code-deploy:
