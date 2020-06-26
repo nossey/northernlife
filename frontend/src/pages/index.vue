@@ -5,7 +5,7 @@
       <img src="/golang.png">
       <logo />
       <h1 class="title">
-        frontend
+       This will be the day!
       </h1>
       <h2 class="subtitle">
         My first-rate Nuxt.js project
