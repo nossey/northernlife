@@ -39,8 +39,6 @@ jobs:
           command: |
             cp ./frontend/appspec.yml ./appspec.yml
       - run:
-          command: echo $CIRCLE_SHA1
-      - run:
           command: |
             set +e
             aws deploy get-application --application-name northernlife-frontend
@@ -77,6 +75,8 @@ jobs:
           bundle-bucket: northernlife-circleci-frontend-deploy
           bundle-key: deployment
       - aws-code-deploy/deploy-bundle: 
+          environment: 
+            DOCKER_TAG: $CIRCLE_SHA1
           application-name: northernlife-frontend
           bundle-bucket: northernlife-circleci-frontend-deploy
           bundle-key: deployment
