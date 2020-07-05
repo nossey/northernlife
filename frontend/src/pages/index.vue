@@ -2,20 +2,16 @@
   <div class="container">
     <div>
       <Footer></Footer>
-      <img src="/golang.png">
+      <img src="/golang.png" />
       <logo />
       <h1 class="title">
-       This will be the day!
+        Hello World
       </h1>
       <h2 class="subtitle">
         My first-rate Nuxt.js project
       </h2>
       <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
+        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
           Documentation
         </a>
         <a
@@ -31,10 +27,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Logo from "~/components/Logo.vue"
-import Footer from "~/components/Footer.vue"
-import {Context} from '@nuxt/types'
+import Vue from "vue";
+import Logo from "~/components/Logo.vue";
+import Footer from "~/components/Footer.vue";
+import { Context } from "@nuxt/types";
 
 export default Vue.extend({
   components: {
@@ -45,7 +41,7 @@ export default Vue.extend({
     //const result = await ctx.app.$axios.$get("/secrets/");
     //console.log(result);
   }
-})
+});
 </script>
 
 <style>
@@ -59,8 +55,8 @@ export default Vue.extend({
 }
 
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;
