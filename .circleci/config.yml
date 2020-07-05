@@ -152,6 +152,7 @@ workflows:
           image: nossey/northernlife-frontend
           docker-context: ./frontend
           path: ./frontend
+          tag: latest
       - deploy-frontend:
           requires:
             - docker/publish
