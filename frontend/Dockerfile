@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y curl apt-transport-https wget && \
 
 WORKDIR /usr/src/app
 COPY . .
+RUN ls
 
 # Install nuxt
 RUN yarn install
