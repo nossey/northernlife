@@ -64,7 +64,7 @@ import (
 func main() {
 	defer infrastructure.Db.Close()
 
-	rows, err := infrastructure.Db.Raw("select user_id, email, hashed_password from users").Rows()
+	rows, err := infrastructure.Db.Raw("select id, email, hashed_password from users").Rows()
 	if err != nil {
 		panic(err)
 	}

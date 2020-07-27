@@ -4,7 +4,7 @@ services:
     build: ./frontend
     image: nossey/northernlife-frontend
     ports:
-      - '3000'
+      - '80:3000'
   backend:
     build: ./backend
     image: nossey/northernlife-backend
@@ -15,4 +15,4 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
     ports:
-      - '9000'
+      - '9000:9000'
