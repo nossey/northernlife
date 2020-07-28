@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y curl apt-transport-https wget && \
 
 WORKDIR /usr/src/app
 COPY . .
-RUN ls
 
 # Install nuxt
 RUN yarn install
@@ -16,7 +15,7 @@ RUN yarn install
 RUN apt-get update
 RUN apt-get install -y vim
 
-EXPOSE 80
+EXPOSE 3000
 
 RUN yarn build
 CMD [ "yarn", "start" ]
