@@ -50,11 +50,11 @@ jobs:
       - aws-code-deploy/push-bundle: 
           application-name: northernlife
           bundle-bucket: northernlife-circleci-deploy
-          bundle-key: deployment
+          bundle-key: deployment${CIRCLE_SHA1}
       - aws-code-deploy/deploy-bundle: 
           application-name: northernlife
           bundle-bucket: northernlife-circleci-deploy
-          bundle-key: deployment
+          bundle-key: deployment${CIRCLE_SHA1}
           deployment-group: northernlife
     
 workflows:
