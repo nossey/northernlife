@@ -1,4 +1,4 @@
 #!/bin/bash
 cd /var/application
-echo ls
+echo `ls`
 docker-compose down
