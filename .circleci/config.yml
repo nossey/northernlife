@@ -66,11 +66,14 @@ workflows:
           docker-context: ./frontend
           path: ./frontend
           tag: latest
+          name: build-frontend
       - docker/publish:
           image: nossey/northernlife-backend
           docker-context: ./backend
           path: ./backend
           tag: latest
+          name: build-backend
       - deploy:
           requires:
-            - docker/publish
+            - build-frontend
+            - build-backend
