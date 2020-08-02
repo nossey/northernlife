@@ -1,4 +1,3 @@
 #!/bin/bash
-ls
-pwd
-#docker-compose down
+cd /var/application
+docker-compose down
