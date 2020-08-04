@@ -73,7 +73,3 @@ workflows:
           path: ./backend
           tag: latest
           name: build-backend
-      - deploy:
-          requires:
-            - build-frontend
-            - build-backend
