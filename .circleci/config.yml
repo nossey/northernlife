@@ -13,6 +13,8 @@ jobs:
   deploy:
     executor: default
     steps:
+      - attach_workspace:
+          at: /tmp/deployment
       - checkout
       - aws-cli/setup
       - run:
@@ -73,3 +75,7 @@ workflows:
           path: ./backend
           tag: latest
           name: build-backend
+      - deploy:
+          requires:
+            - build-frontend
+            - build-backend
