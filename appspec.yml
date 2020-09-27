@@ -5,7 +5,7 @@ files:
     destination: /opt/app
 hooks:
   BeforeInstall:
-    - location: ./scripts/terminate_server.sh
+    - location: ./scripts/shutdown_server.sh
       timeout: 300
       runas: ec2-user
   ApplicationStart:
