@@ -13,8 +13,6 @@ jobs:
   deploy:
     executor: default
     steps:
-      - attach_workspace:
-          at: /tmp/deployment
       - checkout
       - aws-cli/setup
       - run:
