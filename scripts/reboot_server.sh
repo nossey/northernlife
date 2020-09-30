@@ -1,5 +1,5 @@
 #!/bin/bash
-docker pull nossey/northernlife-frontend:latest
-docker pull nossey/northernlife-backend:latest
-cd /var/application
+docker image pull nossey/northernlife-frontend:latest
+docker image pull nossey/northernlife-backend:latest
+cd /opt/app/
 docker-compose up
