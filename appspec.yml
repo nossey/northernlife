@@ -1,14 +1,14 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /opt/app
+  - source: /docker-compose.yml
+    destination: /opt/app/
 hooks:
   BeforeInstall:
-    - location: ./scripts/shutdown_server.sh
+    - location: scripts/shutdown_server.sh
       timeout: 300
       runas: ec2-user
   ApplicationStart:
-    - location: ./scripts/reboot_server.sh
+    - location: scripts/reboot_server.sh
       timeout: 300
       runas: ec2-user
