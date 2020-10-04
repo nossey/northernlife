@@ -61,19 +61,23 @@ import (
 // @authorizationUrl https://example.com/oauth/authorize
 // @scope.admin Grants read and write access to administrative information
 
+// User is a single result
+type User struct {
+	ID             string `gorm:"id"`
+	Email          string `gorm:"email"`
+	HashedPassword string `gorm:"hashed_password"`
+}
+
 func main() {
 	defer infrastructure.Db.Close()
 
-	rows, err := infrastructure.Db.Raw("select id, email, hashed_password from users").Rows()
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-	var userID, email, hashedPassword string
-	for rows.Next() {
-		rows.Scan(&userID, &email, &hashedPassword)
-		fmt.Printf("userID:%s, email:%s hashedPassword:%s", userID, email, hashedPassword)
-	}
+	var user User
+	infrastructure.Db.Take(&user)
+	fmt.Println(user)
+
+	userID := user.ID
+	email := user.Email
+	hashedPassword := user.HashedPassword
 
 	// programatically set swagger info
 	docs.SwaggerInfo.Title = "Swagger Example API"
