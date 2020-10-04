@@ -15,6 +15,6 @@ import (
 // @Router /posts/ [get]
 func (c *Controller) GetPosts(ctx *gin.Context) {
 	post := model.Post{}
-	post.ID = 2
+	post.ID = 1
 	ctx.JSON(http.StatusOK, post)
 }
