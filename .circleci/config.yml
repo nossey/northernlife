@@ -79,5 +79,5 @@ workflows:
            requires:
             - pre-deploy
           filters:
-            branched:
+            branches:
               only: master
