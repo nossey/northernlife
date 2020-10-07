@@ -5,6 +5,8 @@ services:
     image: nossey/northernlife-frontend:latest
     ports:
       - '8000:3000'
+    environment:
+      - API_BASE_URL=${API_BASE_URL}
   backend:
     build: ./backend
     image: nossey/northernlife-backend:latest
