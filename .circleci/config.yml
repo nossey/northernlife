@@ -68,7 +68,7 @@ workflows:
             - build-frontend
             - build-backend
           filters:
-            branched:
+            branches:
               only: master
       - aws-code-deploy/deploy:
            application-name: northernlife
