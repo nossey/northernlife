@@ -78,6 +78,6 @@ workflows:
            service-role-arn: northernlife-codedeploy
            requires:
             - pre-deploy
-          filters:
+           filters:
             branches:
               only: master
