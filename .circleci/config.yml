@@ -46,16 +46,6 @@ jobs:
               echo "Deployment group named northernlife already exists. Skipping creation."
             fi
           name: ensure-deployment-created
-
-      #- aws-code-deploy/push-bundle: 
-      #    application-name: northernlife
-      #    bundle-bucket: northernlife-circleci-deploy
-      #    bundle-key: deployment
-      #- aws-code-deploy/deploy-bundle: 
-      #    application-name: northernlife
-      #    bundle-bucket: northernlife-circleci-deploy
-      #    bundle-key: deployment
-      #    deployment-group: northernlife
     
 workflows:
   version: 2
@@ -77,6 +67,9 @@ workflows:
           requires:
             - build-frontend
             - build-backend
+          filters:
+            branches:
+              only: master
       - aws-code-deploy/deploy:
            application-name: northernlife
            bundle-bucket: northernlife-circleci-deploy
@@ -85,3 +78,6 @@ workflows:
            service-role-arn: northernlife-codedeploy
            requires:
             - pre-deploy
+           filters:
+            branches:
+              only: master
