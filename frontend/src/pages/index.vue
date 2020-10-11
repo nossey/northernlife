@@ -22,6 +22,7 @@
           GitHub
         </a>
       </div>
+      <button @click="getPost">GetPost</button>
     </div>
   </div>
 </template>
@@ -37,8 +38,12 @@ export default Vue.extend({
     Logo,
     Footer
   },
+  methods: {
+    async getPost(){
+   }
+  },
   async asyncData(ctx: Context): Promise<void> {
-    const result = await ctx.app.$axios.$get("/secrets/");
+    const result = await ctx.app.$axios.$get("api/secrets/");
     console.log(result);
   }
 });
