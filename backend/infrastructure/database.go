@@ -19,7 +19,6 @@ func init() {
 	password := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 	dataSource := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbName)
-	fmt.Println(dataSource)
 
 	var err error
 	Db, err = gorm.Open("postgres", dataSource)

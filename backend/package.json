@@ -1,0 +1,12 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "openapi": "./node_modules/.bin/openapi-generator-cli generate -i ./docs/swagger.yaml -g typescript-axios -o ../frontend/src/client"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.0.3"
+  }
+}
