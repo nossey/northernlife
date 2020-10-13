@@ -31,6 +31,8 @@ paths:
           schema:
             $ref: '#/definitions/model.Post'
       summary: Retrive posts
+      tags:
+      - Posts
 securityDefinitions:
   ApiKeyAuth:
     in: header

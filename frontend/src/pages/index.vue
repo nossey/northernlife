@@ -32,6 +32,7 @@ import Vue from "vue";
 import Logo from "~/components/Logo.vue";
 import Footer from "~/components/Footer.vue";
 import { Context } from "@nuxt/types";
+import { PostsApi } from "~/client";
 
 export default Vue.extend({
   components: {
@@ -40,11 +41,15 @@ export default Vue.extend({
   },
   methods: {
     async getPost(){
+      const api = new PostsApi({basePath: "http://localhost:9000/api/v1"});
+      const post = await api.postsGet();
+      console.log(post.data.id);
    }
   },
   async asyncData(ctx: Context): Promise<void> {
-    const result = await ctx.app.$axios.$get("api/secrets/");
-    console.log(result);
+    const api = new PostsApi({basePath: "http://localhost:9000/api/v1"});
+    const post = await api.postsGet();
+    console.log(post.data.id);
   }
 });
 </script>

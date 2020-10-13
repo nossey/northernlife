@@ -34,10 +34,10 @@ export interface ModelPost {
 }
 
 /**
- * DefaultApi - axios parameter creator
+ * PostsApi - axios parameter creator
  * @export
  */
-export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
+export const PostsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -73,10 +73,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 };
 
 /**
- * DefaultApi - functional programming interface
+ * PostsApi - functional programming interface
  * @export
  */
-export const DefaultApiFp = function(configuration?: Configuration) {
+export const PostsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
@@ -85,7 +85,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async postsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPost>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).postsGet(options);
+            const localVarAxiosArgs = await PostsApiAxiosParamCreator(configuration).postsGet(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -95,10 +95,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
 };
 
 /**
- * DefaultApi - factory interface
+ * PostsApi - factory interface
  * @export
  */
-export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const PostsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * 
@@ -107,27 +107,27 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         postsGet(options?: any): AxiosPromise<ModelPost> {
-            return DefaultApiFp(configuration).postsGet(options).then((request) => request(axios, basePath));
+            return PostsApiFp(configuration).postsGet(options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * DefaultApi - object-oriented interface
+ * PostsApi - object-oriented interface
  * @export
- * @class DefaultApi
+ * @class PostsApi
  * @extends {BaseAPI}
  */
-export class DefaultApi extends BaseAPI {
+export class PostsApi extends BaseAPI {
     /**
      * 
      * @summary Retrive posts
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof PostsApi
      */
     public postsGet(options?: any) {
-        return DefaultApiFp(this.configuration).postsGet(options).then((request) => request(this.axios, this.basePath));
+        return PostsApiFp(this.configuration).postsGet(options).then((request) => request(this.axios, this.basePath));
     }
 
 }

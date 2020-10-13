@@ -41,6 +41,9 @@ var doc = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Posts"
+                ],
                 "summary": "Retrive posts",
                 "responses": {
                     "200": {

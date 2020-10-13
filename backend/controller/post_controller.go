@@ -13,6 +13,7 @@ import (
 // @Produce  json
 // @Success 200 {object} model.Post
 // @Router /posts/ [get]
+// @Tags Posts
 func (c *Controller) GetPosts(ctx *gin.Context) {
 	post := model.Post{}
 	post.ID = 1

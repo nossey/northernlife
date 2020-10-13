@@ -93,7 +93,7 @@ func main() {
 	{
 		echo := v1.Group("/")
 		{
-			echo.GET("", c.GetPosts)
+			echo.GET("/posts/", c.GetPosts)
 			echo.GET("/secrets/", func(c *gin.Context) {
 				c.JSON(200, gin.H{
 					"userID":         userID,
