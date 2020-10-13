@@ -11,11 +11,13 @@ import (
 // @Summary Retrive posts
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.Post
+// @Success 200 {array} model.Post
 // @Router /posts/ [get]
 // @Tags Posts
 func (c *Controller) GetPosts(ctx *gin.Context) {
-	post := model.Post{}
-	post.ID = 1
-	ctx.JSON(http.StatusOK, post)
+	var posts []model.Post
+	posts = append(posts, model.Post{ID: 1})
+	posts = append(posts, model.Post{ID: 2})
+	posts = append(posts, model.Post{ID: 3})
+	ctx.JSON(http.StatusOK, posts)
 }

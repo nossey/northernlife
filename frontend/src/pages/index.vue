@@ -33,6 +33,7 @@ import Logo from "~/components/Logo.vue";
 import Footer from "~/components/Footer.vue";
 import { Context } from "@nuxt/types";
 import { PostsApi } from "~/client";
+import { buildConfiguration } from "~/client/configurationFactory"
 
 export default Vue.extend({
   components: {
@@ -41,15 +42,15 @@ export default Vue.extend({
   },
   methods: {
     async getPost(){
-      const api = new PostsApi({basePath: "http://localhost:9000/api/v1"});
+      const api = new PostsApi(buildConfiguration());
       const post = await api.postsGet();
-      console.log(post.data.id);
+      console.log(post.data);
    }
   },
   async asyncData(ctx: Context): Promise<void> {
-    const api = new PostsApi({basePath: "http://localhost:9000/api/v1"});
+    const api = new PostsApi(buildConfiguration());
     const post = await api.postsGet();
-    console.log(post.data.id);
+    console.log(post.data);
   }
 });
 </script>

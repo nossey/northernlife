@@ -84,7 +84,7 @@ export const PostsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPost>> {
+        async postsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ModelPost>>> {
             const localVarAxiosArgs = await PostsApiAxiosParamCreator(configuration).postsGet(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -106,7 +106,7 @@ export const PostsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postsGet(options?: any): AxiosPromise<ModelPost> {
+        postsGet(options?: any): AxiosPromise<Array<ModelPost>> {
             return PostsApiFp(configuration).postsGet(options).then((request) => request(axios, basePath));
         },
     };
