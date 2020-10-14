@@ -19,5 +19,5 @@ func (c *Controller) GetPosts(ctx *gin.Context) {
 	posts = append(posts, model.Post{ID: 1})
 	posts = append(posts, model.Post{ID: 2})
 	posts = append(posts, model.Post{ID: 3})
-	ctx.JSON(http.StatusOK, posts)
+	ctx.JSON(http.StatusOK, gin.H{"posts": posts})
 }
