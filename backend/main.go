@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -71,14 +70,6 @@ type User struct {
 func main() {
 	defer infrastructure.Db.Close()
 
-	var user User
-	infrastructure.Db.Take(&user)
-	fmt.Println(user)
-
-	userID := user.ID
-	email := user.Email
-	hashedPassword := user.HashedPassword
-
 	// programatically set swagger info
 	docs.SwaggerInfo.Title = "Swagger Example API"
 	docs.SwaggerInfo.Description = "This is a sample server Petstore server."
@@ -93,14 +84,7 @@ func main() {
 	{
 		echo := v1.Group("/")
 		{
-			echo.GET("", c.GetPosts)
-			echo.GET("/secrets/", func(c *gin.Context) {
-				c.JSON(200, gin.H{
-					"userID":         userID,
-					"email":          email,
-					"hashedPassword": hashedPassword,
-				})
-			})
+			echo.GET("/posts/", c.GetPosts)
 		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

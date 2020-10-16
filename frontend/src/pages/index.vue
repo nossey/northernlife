@@ -32,6 +32,8 @@ import Vue from "vue";
 import Logo from "~/components/Logo.vue";
 import Footer from "~/components/Footer.vue";
 import { Context } from "@nuxt/types";
+import { PostsApi } from "~/client";
+import { buildConfiguration } from "~/client/configurationFactory"
 
 export default Vue.extend({
   components: {
@@ -40,11 +42,15 @@ export default Vue.extend({
   },
   methods: {
     async getPost(){
+      const api = new PostsApi(buildConfiguration());
+      const post = await api.postsGet();
+      console.log(post.data);
    }
   },
   async asyncData(ctx: Context): Promise<void> {
-    const result = await ctx.app.$axios.$get("api/secrets/");
-    console.log(result);
+    const api = new PostsApi(buildConfiguration());
+    const post = await api.postsGet();
+    console.log(post.data);
   }
 });
 </script>
