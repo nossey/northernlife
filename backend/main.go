@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -79,18 +78,13 @@ func main() {
 	docs.SwaggerInfo.BasePath = "/v1"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
-	pass, _ := infrastructure.ToHashedPassword("password")
-	pass2, _ := infrastructure.ToHashedPassword("password")
-	fmt.Println(pass)
-	fmt.Println(pass2)
-
 	r := gin.Default()
 	c := controller.NewController()
 	v1 := r.Group("/api/v1")
 	{
-		echo := v1.Group("/")
+		echo := v1.Group("/posts")
 		{
-			echo.GET("/posts/", c.GetPosts)
+			echo.GET("/", c.GetPosts)
 		}
 
 		auth := v1.Group("/auth")

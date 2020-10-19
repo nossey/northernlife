@@ -16,6 +16,7 @@ func IsValidUser(userID string, password string) bool {
 	sql := "select hashed_password from users where id = ?"
 	infrastructure.Db.Raw(sql, userID).Scan(&hashedPassword)
 
+	// Spec:GORM's scan requires struct, not string
 	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword.HashedPassword), []byte(password))
 	return err == nil
 }
