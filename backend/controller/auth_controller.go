@@ -58,7 +58,7 @@ func init() {
 // @Produce  json
 // @Success 200 {object} model.LoginSuccessMessage
 // @Failure 401 {object} model.LoginFailMessage
-// @Router /users/login [post]
+// @Router /auth/login [post]
 // @Tags Auth
 func (c *Controller) Login(ctx *gin.Context) {
 	authHandler.LoginHandler(ctx)
