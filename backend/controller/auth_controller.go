@@ -56,6 +56,7 @@ func init() {
 // @Summary Login
 // @Accept  json
 // @Produce  json
+// @Param login body model.Login true "Login"
 // @Success 200 {object} model.LoginSuccessMessage
 // @Failure 401 {object} model.LoginFailMessage
 // @Router /auth/login [post]

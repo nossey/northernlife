@@ -1,5 +1,15 @@
 basePath: /api/v1
 definitions:
+  model.Login:
+    properties:
+      password:
+        type: string
+      userID:
+        type: string
+    required:
+    - password
+    - userID
+    type: object
   model.LoginFailMessage:
     properties:
       code:
@@ -37,6 +47,13 @@ paths:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: Login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/model.Login'
       produces:
       - application/json
       responses:

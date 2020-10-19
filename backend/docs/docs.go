@@ -45,6 +45,17 @@ var doc = `{
                     "Auth"
                 ],
                 "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Login",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Login"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -88,6 +99,21 @@ var doc = `{
         }
     },
     "definitions": {
+        "model.Login": {
+            "type": "object",
+            "required": [
+                "password",
+                "userID"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
+                }
+            }
+        },
         "model.LoginFailMessage": {
             "type": "object",
             "properties": {
