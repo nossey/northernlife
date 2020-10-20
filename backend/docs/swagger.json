@@ -57,7 +57,7 @@
                 }
             }
         },
-        "/posts/": {
+        "/posts": {
             "get": {
                 "consumes": [
                     "application/json"

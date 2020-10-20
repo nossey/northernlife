@@ -32,7 +32,7 @@ import Vue from "vue";
 import Logo from "~/components/Logo.vue";
 import Footer from "~/components/Footer.vue";
 import { Context } from "@nuxt/types";
-import { PostsApi } from "~/client";
+import { PostsApi, AuthApi, ModelLogin } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 
 export default Vue.extend({
@@ -42,15 +42,19 @@ export default Vue.extend({
   },
   methods: {
     async getPost(){
-      const api = new PostsApi(buildConfiguration());
-      const post = await api.postsGet();
-      console.log(post.data);
+      const post = new PostsApi(buildConfiguration());
+      const posts = await post.postsGet();
+      console.log(posts.data);
+
+      const auth = new AuthApi(buildConfiguration());
+      const login = await auth.authLoginPost({password: "password", userID: "shokitami"});
+      console.log(login.data)
    }
   },
   async asyncData(ctx: Context): Promise<void> {
-    const api = new PostsApi(buildConfiguration());
-    const post = await api.postsGet();
-    console.log(post.data);
+    const auth = new AuthApi(buildConfiguration());
+    const result = await auth.authLoginPost({password: "password", userID: "shokitami"});
+    console.log(result.data);
   }
 });
 </script>

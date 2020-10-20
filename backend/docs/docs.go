@@ -72,7 +72,7 @@ var doc = `{
                 }
             }
         },
-        "/posts/": {
+        "/posts": {
             "get": {
                 "consumes": [
                     "application/json"

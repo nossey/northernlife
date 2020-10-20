@@ -68,7 +68,7 @@ paths:
       summary: Login
       tags:
       - Auth
-  /posts/:
+  /posts:
     get:
       consumes:
       - application/json

@@ -56,7 +56,7 @@ module.exports = {
     proxy: true,
   },
   proxy: {
-   '/api/' : {target: (process.env.API_BASE_URL) ? `${process.env.API_BASE_URL}/api/v1/` : "http://192.168.3.5:9000/api/v1/", pathRewrite: {'^/api/': ''}}
+   '/api' : {target: (process.env.API_BASE_URL) ? `${process.env.API_BASE_URL}/api/v1` : 'http://localhost:9000/api/v1', pathRewrite: {'^/api': '/'}}
   },
   /*
   ** Build configuration

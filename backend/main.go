@@ -84,12 +84,12 @@ func main() {
 	{
 		echo := v1.Group("/posts")
 		{
-			echo.GET("/", c.GetPosts)
+			echo.GET("", c.GetPosts)
 		}
 
 		auth := v1.Group("/auth")
 		{
-			auth.POST("/login/", c.Login)
+			auth.POST("/login", c.Login)
 		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
