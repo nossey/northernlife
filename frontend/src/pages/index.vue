@@ -45,16 +45,9 @@ export default Vue.extend({
       const post = new PostsApi(buildConfiguration());
       const posts = await post.postsGet();
       console.log(posts.data);
-
-      const auth = new AuthApi(buildConfiguration());
-      const login = await auth.authLoginPost({password: "password", userID: "shokitami"});
-      console.log(login.data)
    }
   },
   async asyncData(ctx: Context): Promise<void> {
-    const auth = new AuthApi(buildConfiguration());
-    const result = await auth.authLoginPost({password: "password", userID: "shokitami"});
-    console.log(result.data);
   }
 });
 </script>
