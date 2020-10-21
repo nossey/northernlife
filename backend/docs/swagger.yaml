@@ -1,5 +1,29 @@
 basePath: /api/v1
 definitions:
+  model.Login:
+    properties:
+      password:
+        type: string
+      userID:
+        type: string
+    required:
+    - password
+    - userID
+    type: object
+  model.LoginFailMessage:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  model.LoginSuccessMessage:
+    properties:
+      expired_at:
+        type: string
+      token:
+        type: string
+    type: object
   model.Post:
     properties:
       id:
@@ -19,7 +43,32 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
-  /posts/:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/model.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.LoginSuccessMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.LoginFailMessage'
+      summary: Login
+      tags:
+      - Auth
+  /posts:
     get:
       consumes:
       - application/json

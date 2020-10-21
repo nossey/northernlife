@@ -82,9 +82,14 @@ func main() {
 	c := controller.NewController()
 	v1 := r.Group("/api/v1")
 	{
-		echo := v1.Group("/")
+		echo := v1.Group("/posts")
 		{
-			echo.GET("/posts/", c.GetPosts)
+			echo.GET("", c.GetPosts)
+		}
+
+		auth := v1.Group("/auth")
+		{
+			auth.POST("/login", c.Login)
 		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

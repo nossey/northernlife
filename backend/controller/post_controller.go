@@ -12,7 +12,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Success 200 {array} model.Post
-// @Router /posts/ [get]
+// @Router /posts [get]
 // @Tags Posts
 func (c *Controller) GetPosts(ctx *gin.Context) {
 	var posts []model.Post
