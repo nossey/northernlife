@@ -26,7 +26,30 @@ definitions:
     type: object
   model.Post:
     properties:
+      body:
+        type: string
+      created_at:
+        type: string
       id:
+        type: string
+      plain_body:
+        type: string
+      published:
+        type: boolean
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.PostListModel:
+    properties:
+      posts:
+        items:
+          $ref: '#/definitions/model.Post'
+        type: array
+      total_count:
         type: integer
     type: object
 host: localhost:8080
@@ -72,16 +95,19 @@ paths:
     get:
       consumes:
       - application/json
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/model.Post'
-            type: array
-      summary: Retrive posts
+            $ref: '#/definitions/model.PostListModel'
+      summary: Get posts with pagination
       tags:
       - Posts
 securityDefinitions:

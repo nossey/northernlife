@@ -83,15 +83,20 @@ var doc = `{
                 "tags": [
                     "Posts"
                 ],
-                "summary": "Retrive posts",
+                "summary": "Get posts with pagination",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Post"
-                            }
+                            "$ref": "#/definitions/model.PostListModel"
                         }
                     }
                 }
@@ -139,7 +144,42 @@ var doc = `{
         "model.Post": {
             "type": "object",
             "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
                 "id": {
+                    "type": "string"
+                },
+                "plain_body": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostListModel": {
+            "type": "object",
+            "properties": {
+                "posts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Post"
+                    }
+                },
+                "total_count": {
                     "type": "integer"
                 }
             }

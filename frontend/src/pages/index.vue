@@ -43,7 +43,7 @@ export default Vue.extend({
   methods: {
     async getPost(){
       const post = new PostsApi(buildConfiguration());
-      const posts = await post.postsGet();
+      const posts = await post.postsGet(1);
       console.log(posts.data);
    }
   },

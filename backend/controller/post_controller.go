@@ -2,22 +2,26 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nossey/northernlife/model"
+	"github.com/nossey/northernlife/application"
 )
 
 // GetPosts godoc
-// @Summary Retrive posts
+// @Summary Get posts with pagination
 // @Accept  json
 // @Produce  json
-// @Success 200 {array} model.Post
+// @Success 200 {object} model.PostListModel
 // @Router /posts [get]
+// @Param page query int false "Page"
 // @Tags Posts
 func (c *Controller) GetPosts(ctx *gin.Context) {
-	var posts []model.Post
-	posts = append(posts, model.Post{ID: 1})
-	posts = append(posts, model.Post{ID: 2})
-	posts = append(posts, model.Post{ID: 3})
-	ctx.JSON(http.StatusOK, gin.H{"posts": posts})
+	pageQuery := ctx.Query("page")
+	page, err := strconv.Atoi(pageQuery)
+	if err != nil {
+		page = 1
+	}
+	postResult := application.GetPosts(page)
+	ctx.JSON(http.StatusOK, postResult)
 }
