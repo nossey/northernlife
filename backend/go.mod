@@ -6,6 +6,7 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/appleboy/gin-jwt/v2 v2.6.4
 	github.com/gin-gonic/gin v1.6.3
+	github.com/google/uuid v1.1.2
 	github.com/jinzhu/gorm v1.9.12
 	github.com/lib/pq v1.5.2
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
