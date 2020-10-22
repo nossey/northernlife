@@ -83,15 +83,20 @@ var doc = `{
                 "tags": [
                     "Posts"
                 ],
-                "summary": "Retrive posts",
+                "summary": "Get posts with pagination",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.PostListModel"
-                            }
+                            "$ref": "#/definitions/model.PostListModel"
                         }
                     }
                 }

@@ -95,16 +95,19 @@ paths:
     get:
       consumes:
       - application/json
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/model.PostListModel'
-            type: array
-      summary: Retrive posts
+            $ref: '#/definitions/model.PostListModel'
+      summary: Get posts with pagination
       tags:
       - Posts
 securityDefinitions:
