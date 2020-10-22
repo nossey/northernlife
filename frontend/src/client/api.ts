@@ -84,10 +84,71 @@ export interface ModelLoginSuccessMessage {
 export interface ModelPost {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof ModelPost
      */
-    id?: number;
+    body?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPost
+     */
+    created_at?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPost
+     */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPost
+     */
+    plain_body?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ModelPost
+     */
+    published?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPost
+     */
+    title?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPost
+     */
+    updated_at?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPost
+     */
+    user_id?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModelPostListModel
+ */
+export interface ModelPostListModel {
+    /**
+     * 
+     * @type {Array<ModelPost>}
+     * @memberof ModelPostListModel
+     */
+    posts?: Array<ModelPost>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ModelPostListModel
+     */
+    total_count?: number;
 }
 
 /**
@@ -253,7 +314,7 @@ export const PostsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ModelPost>>> {
+        async postsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ModelPostListModel>>> {
             const localVarAxiosArgs = await PostsApiAxiosParamCreator(configuration).postsGet(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -275,7 +336,7 @@ export const PostsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postsGet(options?: any): AxiosPromise<Array<ModelPost>> {
+        postsGet(options?: any): AxiosPromise<Array<ModelPostListModel>> {
             return PostsApiFp(configuration).postsGet(options).then((request) => request(axios, basePath));
         },
     };
