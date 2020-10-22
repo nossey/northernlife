@@ -9,8 +9,10 @@ import (
 
 // GetPosts get posts with pagination
 func GetPosts(page int) (result model.PostListModel) {
-	db := infrastructure.Db
+	perPageCount := 10
+	offset := perPageCount * (page - 1)
 	result.Posts = []model.Post{}
+	db := infrastructure.Db
 	getPostsCountSQL := `
 select
 	count(1)
@@ -32,8 +34,12 @@ select
 	published
 from
 	posts
+offset
+	?
+limit
+	?
 `
-	rows, err := db.Raw(getPostsSQL).Rows()
+	rows, err := db.Raw(getPostsSQL, offset, perPageCount).Rows()
 	if err != nil {
 		return
 	}
