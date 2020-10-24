@@ -33,6 +33,7 @@ func (c *Controller) GetPosts(ctx *gin.Context) {
 // @Summary Get single post with specific id
 // @Accept json
 // @Produce json
+// @Param id path string true "Post ID"
 // @Success 200 {object} model.Post
 // @Failure 400 {object} model.ErrorMessage
 // @Failure 404 {object} model.ErrorMessage
@@ -42,7 +43,7 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 	id := ctx.Param("id")
 	postID, err := uuid.Parse(id)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, model.ErrorMessage{Message: "Invalid post id"})
+		ctx.JSON(http.StatusBadRequest, model.ErrorMessage{Message: "Invalid post id (should be uuid)"})
 		return
 	}
 	post, err := application.GetPost(postID)
