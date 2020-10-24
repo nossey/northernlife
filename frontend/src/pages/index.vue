@@ -44,7 +44,7 @@ export default Vue.extend({
   methods: {
     async getPost(ctx: Context){
       const post = new PostsApi(buildConfiguration());
-      const result = await post.postsGet(1)//.catch(err => {
+      const result = await post.postsGet(1)
       console.log(result.data);
    }
   },

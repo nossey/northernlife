@@ -1,5 +1,10 @@
 basePath: /api/v1
 definitions:
+  model.ErrorMessage:
+    properties:
+      message:
+        type: string
+    type: object
   model.Login:
     properties:
       password:
@@ -108,6 +113,34 @@ paths:
           schema:
             $ref: '#/definitions/model.PostListModel'
       summary: Get posts with pagination
+      tags:
+      - Posts
+  /posts/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Post'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+      summary: Get single post with specific id
       tags:
       - Posts
 securityDefinitions:

@@ -4,8 +4,11 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/google/uuid"
+
 	"github.com/gin-gonic/gin"
 	"github.com/nossey/northernlife/application"
+	"github.com/nossey/northernlife/model"
 )
 
 // GetPosts godoc
@@ -24,4 +27,29 @@ func (c *Controller) GetPosts(ctx *gin.Context) {
 	}
 	postResult := application.GetPosts(page)
 	ctx.JSON(http.StatusOK, postResult)
+}
+
+// GetPost godoc
+// @Summary Get single post with specific id
+// @Accept json
+// @Produce json
+// @Param id path string true "Post ID"
+// @Success 200 {object} model.Post
+// @Failure 400 {object} model.ErrorMessage
+// @Failure 404 {object} model.ErrorMessage
+// @Router /posts/{id} [get]
+// @Tags Posts
+func (c *Controller) GetPost(ctx *gin.Context) {
+	id := ctx.Param("id")
+	postID, err := uuid.Parse(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, model.ErrorMessage{Message: "Invalid post id (should be uuid)"})
+		return
+	}
+	post, err := application.GetPost(postID)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "Post not found"})
+		return
+	}
+	ctx.JSON(http.StatusOK, post)
 }

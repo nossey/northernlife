@@ -3,6 +3,7 @@ package application
 import (
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/nossey/northernlife/infrastructure"
 	"github.com/nossey/northernlife/model"
 )
@@ -52,5 +53,27 @@ limit
 		}
 		result.Posts = append(result.Posts, post)
 	}
+	return
+}
+
+// GetPost get post with specified id
+func GetPost(id uuid.UUID) (post model.Post, err error) {
+	db := infrastructure.Db
+	sql := `
+select
+	created_at,
+	updated_at,
+	id,
+	user_id,
+	title,
+	body,
+	plain_body,
+	published
+from
+	posts
+where
+	id = ?
+`
+	err = db.Raw(sql, id.String()).First(&post).Error
 	return
 }
