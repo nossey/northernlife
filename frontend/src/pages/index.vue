@@ -34,6 +34,7 @@ import Footer from "~/components/Footer.vue";
 import { Context } from "@nuxt/types";
 import { PostsApi, AuthApi, ModelLogin } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
+import globalAxios, {AxiosRequestConfig} from 'axios';
 
 export default Vue.extend({
   components: {
@@ -41,13 +42,16 @@ export default Vue.extend({
     Footer
   },
   methods: {
-    async getPost(){
+    async getPost(ctx: Context){
       const post = new PostsApi(buildConfiguration());
-      const posts = await post.postsGet(1);
-      console.log(posts.data);
+      const result = await post.postsGet(1)//.catch(err => {
+      console.log(result.data);
    }
   },
   async asyncData(ctx: Context): Promise<void> {
+    const post = new PostsApi(buildConfiguration());
+    const result = await post.postsGet(1);
+    console.log(result.data);
   }
 });
 </script>
