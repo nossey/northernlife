@@ -30,11 +30,19 @@ func (c *Controller) GetPosts(ctx *gin.Context) {
 }
 
 // GetPost godoc
+// @Summary Get single post with specific id
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.Post
+// @Failure 400 {object} model.ErrorMessage
+// @Failure 404 {object} model.ErrorMessage
+// @Router /posts/{id} [get]
+// @Tags Posts
 func (c *Controller) GetPost(ctx *gin.Context) {
 	id := ctx.Param("id")
 	postID, err := uuid.Parse(id)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "Post not found"})
+		ctx.JSON(http.StatusBadRequest, model.ErrorMessage{Message: "Invalid post id"})
 		return
 	}
 	post, err := application.GetPost(postID)
