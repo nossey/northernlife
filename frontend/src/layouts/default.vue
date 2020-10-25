@@ -1,8 +1,18 @@
 <template>
   <div>
+    <Header></Header>
     <nuxt />
   </div>
 </template>
+
+<script lang="ts">
+import Header from "~/components/molecules/Header.vue";
+
+export default {
+  components: {Header}
+}
+
+</script>
 
 <style>
 html {

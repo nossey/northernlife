@@ -1,7 +1,6 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'universal',
   srcDir: 'src',
   server: {
     port: 3000,
@@ -47,6 +46,7 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    'bootstrap-vue/nuxt',
   ],
   /*
   ** Axios module configuration
@@ -69,7 +69,8 @@ module.exports = {
       if (ctx.isDev && ctx.isClient) {
       }
     },
-    transpile: ['@stylelib']
+    transpile: ['@stylelib'],
+    babel: {compact: true}
   },
   resolve: {
     extensions: ['.js', '.json', '.vue', '.ts'],
