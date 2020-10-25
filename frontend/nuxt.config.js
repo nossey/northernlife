@@ -1,7 +1,6 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'universal',
   srcDir: 'src',
   server: {
     port: 3000,
