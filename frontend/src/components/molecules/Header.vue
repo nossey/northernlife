@@ -1,8 +1,8 @@
 <template>
-  <b-container fluid class="header flex-column">
+  <b-container fluid class="header">
     <b-row class="text-center h-100">
       <b-col class="center">
-        <nuxt-link to="/">Northernlife</nuxt-link>
+        <nuxt-link to="/">NorthernLife</nuxt-link>
       </b-col>
     </b-row>
   </b-container>
