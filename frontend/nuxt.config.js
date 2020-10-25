@@ -70,7 +70,8 @@ module.exports = {
       if (ctx.isDev && ctx.isClient) {
       }
     },
-    transpile: ['@stylelib']
+    transpile: ['@stylelib'],
+    babel: {compact: true}
   },
   resolve: {
     extensions: ['.js', '.json', '.vue', '.ts'],
