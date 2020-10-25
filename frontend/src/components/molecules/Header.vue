@@ -1,5 +1,11 @@
 <template>
-  <div class="header"><nuxt-link to="/">Northernlife</nuxt-link></div>
+  <b-container fluid class="header flex-column">
+    <b-row class="text-center h-100">
+      <b-col class="center">
+        <nuxt-link to="/">Northernlife</nuxt-link>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -13,11 +19,14 @@ name: "Header"
 
 .header {
   background-color: $main-theme;
-  height: 40px;
-
+  height: 60px;
+  .center {
+    margin: auto;
+  }
   a {
     color: $font-color-white;
     text-decoration: none;
+    font-size: 24px;
   }
 }
 
