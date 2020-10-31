@@ -50,6 +50,8 @@ definitions:
     type: object
   model.PostListModel:
     properties:
+      per_page_count:
+        type: integer
       posts:
         items:
           $ref: '#/definitions/model.Post'

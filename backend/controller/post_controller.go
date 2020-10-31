@@ -44,7 +44,8 @@ func (c *Controller) GetPosts(ctx *gin.Context) {
 	}
 	postResult := application.GetPosts(page)
 	postListViewModel := model.PostListModel{
-		TotalCount: postResult.TotalCount,
+		TotalCount:   postResult.TotalCount,
+		PerPageCount: postResult.PerPageCount,
 	}
 	linq.From(postResult.Posts).SelectT(func(p application.Post) model.Post {
 		return ToPostViewModel(p)

@@ -22,13 +22,15 @@ type Post struct {
 
 // PostListResult is application layer's post list result
 type PostListResult struct {
-	Posts      []Post
-	TotalCount int
+	Posts        []Post
+	TotalCount   int
+	PerPageCount int
 }
 
 // GetPosts get posts with pagination
 func GetPosts(page int) (result PostListResult) {
 	perPageCount := 10
+	result.PerPageCount = perPageCount
 	offset := perPageCount * (page - 1)
 	result.Posts = []Post{}
 	db := infrastructure.Db

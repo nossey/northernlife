@@ -203,6 +203,9 @@
         "model.PostListModel": {
             "type": "object",
             "properties": {
+                "per_page_count": {
+                    "type": "integer"
+                },
                 "posts": {
                     "type": "array",
                     "items": {

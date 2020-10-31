@@ -18,6 +18,7 @@ type Post struct {
 
 // PostListModel bundles Posts and TotalCount
 type PostListModel struct {
-	Posts      []Post `json:"posts"`
-	TotalCount int    `json:"total_count"`
+	Posts        []Post `json:"posts"`
+	TotalCount   int    `json:"total_count"`
+	PerPageCount int    `json:"per_page_count"`
 }
