@@ -30,7 +30,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host localhost:8080
+// @host localhost:9000
 // @BasePath /api/v1
 
 // @securityDefinitions.basic BasicAuth
@@ -72,10 +72,10 @@ func main() {
 
 	// programatically set swagger info
 	docs.SwaggerInfo.Title = "Swagger Example API"
-	docs.SwaggerInfo.Description = "This is a sample server Petstore server."
+	docs.SwaggerInfo.Description = "NorthernLife Backend API"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "petstore.swagger.io"
-	docs.SwaggerInfo.BasePath = "/v1"
+	docs.SwaggerInfo.Host = "localhost:9000"
+	docs.SwaggerInfo.BasePath = "/api/v1"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	r := gin.Default()
