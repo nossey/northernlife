@@ -152,6 +152,12 @@ export interface ModelPost {
 export interface ModelPostListModel {
     /**
      * 
+     * @type {number}
+     * @memberof ModelPostListModel
+     */
+    per_page_count?: number;
+    /**
+     * 
      * @type {Array<ModelPost>}
      * @memberof ModelPostListModel
      */

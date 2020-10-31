@@ -130,12 +130,6 @@ var doc = `{
                             "$ref": "#/definitions/model.Post"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.ErrorMessage"
-                        }
-                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
@@ -224,6 +218,9 @@ var doc = `{
         "model.PostListModel": {
             "type": "object",
             "properties": {
+                "per_page_count": {
+                    "type": "integer"
+                },
                 "posts": {
                     "type": "array",
                     "items": {
