@@ -130,12 +130,6 @@ var doc = `{
                             "$ref": "#/definitions/model.Post"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.ErrorMessage"
-                        }
-                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
