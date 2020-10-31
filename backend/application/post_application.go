@@ -2,17 +2,35 @@ package application
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/nossey/northernlife/infrastructure"
-	"github.com/nossey/northernlife/model"
 )
 
+// Post is application layer's post
+type Post struct {
+	CreatedAt time.Time `gorm:"created_at"`
+	UpdatedAt time.Time `gorm:"updated_at"`
+	ID        uuid.UUID `gorm:"id"`
+	UserID    string    `gorm:"user_id"`
+	Title     string    `gorm:"title"`
+	Body      string    `gorm:"body"`
+	PlainBody string    `gorm:"plain_body"`
+	Published bool      `gorm:"published"`
+}
+
+// PostListResult is application layer's post list result
+type PostListResult struct {
+	Posts      []Post
+	TotalCount int
+}
+
 // GetPosts get posts with pagination
-func GetPosts(page int) (result model.PostListModel) {
+func GetPosts(page int) (result PostListResult) {
 	perPageCount := 10
 	offset := perPageCount * (page - 1)
-	result.Posts = []model.Post{}
+	result.Posts = []Post{}
 	db := infrastructure.Db
 	getPostsCountSQL := `
 select
@@ -46,7 +64,7 @@ limit
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var post model.Post
+		var post Post
 		db.ScanRows(rows, &post)
 		if err != nil {
 			fmt.Println(err)
@@ -57,7 +75,7 @@ limit
 }
 
 // GetPost get post with specified id
-func GetPost(id uuid.UUID) (post model.Post, err error) {
+func GetPost(id uuid.UUID) (post Post, err error) {
 	db := infrastructure.Db
 	sql := `
 select
