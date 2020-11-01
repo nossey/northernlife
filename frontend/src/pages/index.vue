@@ -2,30 +2,26 @@
   <b-container>
     <b-row>
       <b-col>
-        <button @click="getPost">GetPost</button>
+        <ul v-if="result.posts.length > 0">
+          <li v-for="post in result.posts"><nuxt-link :to="`/posts/${post.id}`">{{post.id}}</nuxt-link></li>
+        </ul>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { Context } from "@nuxt/types";
-import { PostsApi} from "~/client";
+import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
+import { defineComponent } from "@nuxtjs/composition-api"
 
-export default Vue.extend({
-  methods: {
-    async getPost(ctx: Context){
-      const post = new PostsApi(buildConfiguration());
-      const result = await post.postsGet(1)
-      console.log(result.data);
-   } },
-  async asyncData(ctx: Context): Promise<void> {
+export default defineComponent({
+  async asyncData(ctx: Context): Promise<Object> {
     const post = new PostsApi(buildConfiguration());
-    const result = await post.postsGet(1);
-    console.log(result.data);
-  }
+    const response = await post.postsGet(1);
+    return {result: response.data}
+  },
 });
 </script>
 
