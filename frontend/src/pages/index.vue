@@ -11,7 +11,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Context } from "@nuxt/types";
-import { PostsApi} from "~/client";
+import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 
 export default Vue.extend({
@@ -20,12 +20,12 @@ export default Vue.extend({
       const post = new PostsApi(buildConfiguration());
       const result = await post.postsGet(1)
       console.log(result.data);
-   } },
+   }},
   async asyncData(ctx: Context): Promise<void> {
     const post = new PostsApi(buildConfiguration());
     const result = await post.postsGet(1);
     console.log(result.data);
-  }
+  },
 });
 </script>
 

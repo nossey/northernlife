@@ -39,6 +39,7 @@ module.exports = {
   */
   buildModules: [
     '@nuxt/typescript-build',
+    '@nuxtjs/composition-api'
   ],
   /*
   ** Nuxt.js modules
