@@ -15,21 +15,21 @@ export default defineComponent({
 @import "assets/colors";
 
 button {
-  background-color: transparent;
   cursor: pointer;
   outline: none;
   padding: 5px 10px;
   appearance: none;
   border-radius: 5%;
-  color: $main-theme;
+  color: $font-color-white;
   border: solid $main-theme 1px;
-  transition: background-color .4s;
+  background: $main-theme;
+  transition: all .4s;
   font-weight: 480;
 
   &:hover {
-    transition: background-color .4s;
-    background-color: $main-theme;
-    color: $font-color-white;
+    transition: all .4s;
+    background-color: ToDarkenColor($main-theme);
+    border-color: ToDarkenColor($main-theme);
   }
 }
 
