@@ -1,2 +1,6 @@
 $main-theme: #01C58E;
 $font-color-white: #efefef;
+
+@function ToDarkenColor($color){
+  @return darken($color, 10%)
+}
