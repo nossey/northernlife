@@ -31,6 +31,13 @@ button {
     background-color: ToDarkenColor($main-theme);
     border-color: ToDarkenColor($main-theme);
   }
+
+  &:active{
+    transition: all .2s;
+    border-color: $main-theme;
+    background: $main-theme;
+    box-shadow: 0 1px 1px 1px ToDarkenColor($main-theme);
+  }
 }
 
 </style>
