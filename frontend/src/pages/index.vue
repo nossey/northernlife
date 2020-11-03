@@ -1,13 +1,13 @@
 <template>
-  <b-container>
-    <b-row>
-      <b-col>
-        <ul v-if="result.posts.length > 0">
-          <li v-for="post in result.posts"><nuxt-link :to="`/posts/${post.id}`">{{post.id}}</nuxt-link> <Button>READ</Button></li>
-        </ul>
-      </b-col>
-    </b-row>
-  </b-container>
+  <div>
+    <PostCard
+      class="margin"
+      v-for="post in result.posts"
+      :id="post.id"
+      :title="post.title"
+      :body="post.body"
+      :key="post.id"></PostCard>
+  </div>
 </template>
 
 <script lang="ts">
@@ -16,6 +16,7 @@ import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent } from "@nuxtjs/composition-api"
 import Button from "~/components/atoms/Button.vue"
+import PostCard from "~/components/molecules/PostCard.vue"
 
 export default defineComponent({
   async asyncData(ctx: Context): Promise<Object> {
@@ -24,15 +25,16 @@ export default defineComponent({
     return {result: response.data}
   },
   components: {
-    Button
+    Button,
+    PostCard
   }
 });
 </script>
 
 <style lang="scss" scoped>
 
-li {
-  margin-top: 10px;
+.margin {
+  margin: 10px 5px;
 }
 
 </style>
