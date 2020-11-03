@@ -8,9 +8,9 @@
     <b-row>
       <b-col>{{body}}</b-col>
     </b-row>
-    <b-row align-h="end" class="foot">
-      <b-col cols="2">
-        <Button @click="jumpToPost">READ</Button>
+    <b-row align-h="end">
+      <b-col class="foot">
+        <Button :to="`/posts/${id}`">READ</Button>
       </b-col>
     </b-row>
   </b-container>
@@ -38,14 +38,6 @@ export default defineComponent( {
   },
   components: {
     Button
-  },
-  setup(){
-    const jumpToPost = (): void => {
-      console.log("Hello");
-    }
-    return {
-      jumpToPost
-    }
   }
 })
 </script>
@@ -59,6 +51,7 @@ export default defineComponent( {
 
   .foot {
     margin-top: 10px;
+    text-align: right;
   }
 }
 </style>

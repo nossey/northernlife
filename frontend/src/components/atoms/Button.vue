@@ -1,12 +1,31 @@
 <template>
-  <button type="button"><slot></slot></button>
+  <button type="button" @click.once="tryJumpToLink"><slot></slot></button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api';
 
+type Props = {
+  to: string
+};
+
 export default defineComponent({
   name: "Button",
+  props: {
+    to: {
+      type: String,
+      required: false
+    }
+  },
+  setup(props: Props, context){
+    const tryJumpToLink = function(){
+      if (props.to)
+        context.root.$router.push(props.to)
+    }
+    return {
+      tryJumpToLink
+    }
+  }
 });
 
 </script>
