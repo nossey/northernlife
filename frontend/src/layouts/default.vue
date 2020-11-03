@@ -3,10 +3,9 @@
     <Header></Header>
     <b-container fluid>
       <b-row>
-        <b-col cols="9">
+        <b-col>
           <nuxt />
         </b-col>
-        <b-col cols="3">SideBar here</b-col>
       </b-row>
     </b-container>
   </div>
