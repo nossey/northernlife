@@ -1,11 +1,12 @@
 <template>
   <div>
     <Header></Header>
-    <b-container>
+    <b-container fluid>
       <b-row>
-        <b-col>
+        <b-col cols="9">
           <nuxt />
         </b-col>
+        <b-col cols="3">SideBar here</b-col>
       </b-row>
     </b-container>
   </div>

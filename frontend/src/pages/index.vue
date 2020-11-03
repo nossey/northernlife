@@ -1,6 +1,7 @@
 <template>
   <div>
     <PostCard
+      class="margin"
       v-for="post in result.posts"
       :id="post.id"
       :title="post.title"

@@ -18,7 +18,7 @@ export default defineComponent({
     }
   },
   setup(props: Props, context){
-    const tryJumpToLink = function(){
+    const tryJumpToLink = () => {
       if (props.to)
         context.root.$router.push(props.to)
     }
