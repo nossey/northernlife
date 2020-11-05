@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 	"github.com/nossey/northernlife/infrastructure"
 )
 
@@ -18,6 +19,7 @@ type Post struct {
 	Body      string    `gorm:"body"`
 	PlainBody string    `gorm:"plain_body"`
 	Published bool      `gorm:"published"`
+	Tags      []string  `gorm:"tags"`
 }
 
 // PostListResult is application layer's post list result
@@ -45,16 +47,27 @@ from
 
 	getPostsSQL := `
 select
-	created_at,
-	updated_at,
-	id,
-	user_id,
-	title,
-	body,
-	plain_body,
-	published
+	p.created_at,
+	p.updated_at,
+	p.id,
+	p.user_id,
+	p.title,
+	p.body,
+	p.plain_body,
+	p.published,
+	array_agg(t.tag_name) as tags
 from
-	posts
+	posts p
+left join
+	tags_posts_attachment tpa
+	on p.id = tpa.post_id
+left join
+	tags t
+	on t.id = tpa.tag_id
+group by
+	p.id
+order by
+	p.created_at desc
 offset
 	?
 limit
@@ -67,7 +80,8 @@ limit
 	defer rows.Close()
 	for rows.Next() {
 		var post Post
-		db.ScanRows(rows, &post)
+		post.Tags = []string{}
+		rows.Scan(&post.CreatedAt, &post.UpdatedAt, &post.ID, &post.UserID, &post.Title, &post.Body, &post.PlainBody, &post.Published, pq.Array(&post.Tags))
 		if err != nil {
 			fmt.Println(err)
 		}
