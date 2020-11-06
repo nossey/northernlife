@@ -127,6 +127,12 @@ export interface ModelPost {
     published?: boolean;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof ModelPost
+     */
+    tags?: Array<string>;
+    /**
+     * 
      * @type {string}
      * @memberof ModelPost
      */
