@@ -14,6 +14,7 @@ type Post struct {
 	Body      string    `json:"body"`
 	PlainBody string    `json:"plain_body"`
 	Published bool      `json:"published"`
+	Tags      []string  `json:"tags"`
 }
 
 // PostListModel bundles Posts and TotalCount

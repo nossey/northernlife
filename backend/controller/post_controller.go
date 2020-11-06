@@ -24,6 +24,7 @@ func ToPostViewModel(post application.Post) (viewmodel model.Post) {
 		Body:      post.Body,
 		PlainBody: post.PlainBody,
 		Published: post.Published,
+		Tags:      post.Tags,
 	}
 	return
 }

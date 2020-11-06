@@ -5,19 +5,21 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 	"github.com/nossey/northernlife/infrastructure"
 )
 
 // Post is application layer's post
 type Post struct {
-	CreatedAt time.Time `gorm:"created_at"`
-	UpdatedAt time.Time `gorm:"updated_at"`
-	ID        uuid.UUID `gorm:"id"`
-	UserID    string    `gorm:"user_id"`
-	Title     string    `gorm:"title"`
-	Body      string    `gorm:"body"`
-	PlainBody string    `gorm:"plain_body"`
-	Published bool      `gorm:"published"`
+	CreatedAt time.Time      `gorm:"created_at"`
+	UpdatedAt time.Time      `gorm:"updated_at"`
+	ID        uuid.UUID      `gorm:"id"`
+	UserID    string         `gorm:"user_id"`
+	Title     string         `gorm:"title"`
+	Body      string         `gorm:"body"`
+	PlainBody string         `gorm:"plain_body"`
+	Published bool           `gorm:"published"`
+	Tags      pq.StringArray `gorm:"tags type:text[]"`
 }
 
 // PostListResult is application layer's post list result
@@ -45,16 +47,26 @@ from
 
 	getPostsSQL := `
 select
-	created_at,
-	updated_at,
-	id,
-	user_id,
-	title,
-	body,
-	plain_body,
-	published
+	p.created_at,
+	p.updated_at,
+	p.id,
+	p.user_id,
+	p.title,
+	p.body,
+	p.plain_body, p.published,
+	array_remove(array_agg(t.tag_name), null) as tags
 from
-	posts
+	posts p
+left join
+	tags_posts_attachment tpa
+	on p.id = tpa.post_id
+left join
+	tags t
+	on t.id = tpa.tag_id
+group by
+	p.id
+order by
+	p.created_at desc
 offset
 	?
 limit
@@ -67,6 +79,7 @@ limit
 	defer rows.Close()
 	for rows.Next() {
 		var post Post
+		post.Tags = []string{}
 		db.ScanRows(rows, &post)
 		if err != nil {
 			fmt.Println(err)
@@ -81,19 +94,31 @@ func GetPost(id uuid.UUID) (post Post, err error) {
 	db := infrastructure.Db
 	sql := `
 select
-	created_at,
-	updated_at,
-	id,
-	user_id,
-	title,
-	body,
-	plain_body,
-	published
+	p.created_at,
+	p.updated_at,
+	p.id,
+	p.user_id,
+	p.title,
+	p.body,
+	p.plain_body,
+	p.published,
+	array_remove(array_agg(t.tag_name), null) as tags
 from
-	posts
+	posts p
+left join
+	tags_posts_attachment tpa
+	on p.id = tpa.post_id
+left join
+	tags t
+	on t.id = tpa.tag_id
 where
-	id = ?
+	p.id = ?
+group by
+	p.id
 `
-	err = db.Raw(sql, id.String()).First(&post).Error
+
+	row := db.Raw(sql, id.String()).Row()
+	err = row.Scan(&post.CreatedAt, &post.UpdatedAt, &post.ID, &post.UserID, &post.Title, &post.Body, &post.PlainBody, &post.Published, &post.Tags)
+
 	return
 }

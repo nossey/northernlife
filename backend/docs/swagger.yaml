@@ -41,6 +41,10 @@ definitions:
         type: string
       published:
         type: boolean
+      tags:
+        items:
+          type: string
+        type: array
       title:
         type: string
       updated_at:
