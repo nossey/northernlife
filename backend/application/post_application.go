@@ -11,15 +11,15 @@ import (
 
 // Post is application layer's post
 type Post struct {
-	CreatedAt time.Time `gorm:"created_at"`
-	UpdatedAt time.Time `gorm:"updated_at"`
-	ID        uuid.UUID `gorm:"id"`
-	UserID    string    `gorm:"user_id"`
-	Title     string    `gorm:"title"`
-	Body      string    `gorm:"body"`
-	PlainBody string    `gorm:"plain_body"`
-	Published bool      `gorm:"published"`
-	Tags      []string  `gorm:"tags"`
+	CreatedAt time.Time      `gorm:"created_at"`
+	UpdatedAt time.Time      `gorm:"updated_at"`
+	ID        uuid.UUID      `gorm:"id"`
+	UserID    string         `gorm:"user_id"`
+	Title     string         `gorm:"title"`
+	Body      string         `gorm:"body"`
+	PlainBody string         `gorm:"plain_body"`
+	Published bool           `gorm:"published"`
+	Tags      pq.StringArray `gorm:"tags type:text[]"`
 }
 
 // PostListResult is application layer's post list result
@@ -55,7 +55,7 @@ select
 	p.body,
 	p.plain_body,
 	p.published,
-	array_agg(t.tag_name) as tags
+	coalesce(array_agg(t.tag_name) filter (where t.tag_name is not null), '{}') as tags
 from
 	posts p
 left join
@@ -81,7 +81,8 @@ limit
 	for rows.Next() {
 		var post Post
 		post.Tags = []string{}
-		rows.Scan(&post.CreatedAt, &post.UpdatedAt, &post.ID, &post.UserID, &post.Title, &post.Body, &post.PlainBody, &post.Published, pq.Array(&post.Tags))
+		db.ScanRows(rows, &post)
+		//rows.Scan(&post.CreatedAt, &post.UpdatedAt, &post.ID, &post.UserID, &post.Title, &post.Body, &post.PlainBody, &post.Published, pq.Array(&post.Tags))
 		if err != nil {
 			fmt.Println(err)
 		}
