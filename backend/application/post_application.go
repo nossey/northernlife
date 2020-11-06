@@ -46,7 +46,6 @@ from
 	row.Scan(&result.TotalCount)
 
 	getPostsSQL := `
-	coalesce(array_agg(t.tag_name) filter (where t.tag_name is not null), '{}') as tags
 select
 	p.created_at,
 	p.updated_at,
@@ -54,8 +53,7 @@ select
 	p.user_id,
 	p.title,
 	p.body,
-	p.plain_body,
-	p.published,
+	p.plain_body, p.published,
 	array_remove(array_agg(t.tag_name), null) as tags
 from
 	posts p
@@ -96,19 +94,31 @@ func GetPost(id uuid.UUID) (post Post, err error) {
 	db := infrastructure.Db
 	sql := `
 select
-	created_at,
-	updated_at,
-	id,
-	user_id,
-	title,
-	body,
-	plain_body,
-	published
+	p.created_at,
+	p.updated_at,
+	p.id,
+	p.user_id,
+	p.title,
+	p.body,
+	p.plain_body,
+	p.published,
+	array_remove(array_agg(t.tag_name), null) as tags
 from
-	posts
+	posts p
+left join
+	tags_posts_attachment tpa
+	on p.id = tpa.post_id
+left join
+	tags t
+	on t.id = tpa.tag_id
 where
-	id = ?
+	p.id = ?
+group by
+	p.id
 `
-	err = db.Raw(sql, id.String()).First(&post).Error
+
+	row := db.Raw(sql, id.String()).Row()
+	err = row.Scan(&post.CreatedAt, &post.UpdatedAt, &post.ID, &post.UserID, &post.Title, &post.Body, &post.PlainBody, &post.Published, &post.Tags)
+
 	return
 }
