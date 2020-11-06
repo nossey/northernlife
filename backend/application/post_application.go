@@ -46,6 +46,7 @@ from
 	row.Scan(&result.TotalCount)
 
 	getPostsSQL := `
+	coalesce(array_agg(t.tag_name) filter (where t.tag_name is not null), '{}') as tags
 select
 	p.created_at,
 	p.updated_at,
@@ -55,7 +56,7 @@ select
 	p.body,
 	p.plain_body,
 	p.published,
-	coalesce(array_agg(t.tag_name) filter (where t.tag_name is not null), '{}') as tags
+	array_remove(array_agg(t.tag_name), null) as tags
 from
 	posts p
 left join
@@ -82,7 +83,6 @@ limit
 		var post Post
 		post.Tags = []string{}
 		db.ScanRows(rows, &post)
-		//rows.Scan(&post.CreatedAt, &post.UpdatedAt, &post.ID, &post.UserID, &post.Title, &post.Body, &post.PlainBody, &post.Published, pq.Array(&post.Tags))
 		if err != nil {
 			fmt.Println(err)
 		}
