@@ -86,6 +86,7 @@ func main() {
 		{
 			echo.GET("", c.GetPosts)
 			echo.GET("/:id", c.GetPost)
+			echo.POST("", c.CreatePost)
 		}
 
 		auth := v1.Group("/auth")

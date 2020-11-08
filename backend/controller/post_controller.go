@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -79,4 +80,32 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, postViewModel)
+}
+
+// CreatePost godoc
+// @Summary Get single post with specific id
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.Post
+// @Failure 401 {object} model.ErrorMessage
+// @Router /posts [post]
+// @Tags Posts
+func (c *Controller) CreatePost(ctx *gin.Context) {
+	// TODO:まずはダミー
+	create := application.PostCreate{
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		ID:        uuid.New(),
+		UserID:    "shokitami",
+		Title:     "Title",
+		Body:      "Body",
+		PlainBody: "Body",
+		Published: true,
+	}
+
+	if err := application.CreatePost(create); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{})
 }
