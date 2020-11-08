@@ -26,14 +26,12 @@ type Post struct {
 
 // PostCreate is used to create a post
 type PostCreate struct {
-	CreatedAt time.Time `gorm:"created_at"`
-	UpdatedAt time.Time `gorm:"updated_at"`
-	ID        uuid.UUID `gorm:"id"`
-	UserID    string    `gorm:"user_id"`
-	Title     string    `gorm:"title"`
-	Body      string    `gorm:"body"`
-	PlainBody string    `gorm:"plain_body"`
-	Published bool      `gorm:"published"`
+	ID        uuid.UUID
+	UserID    string
+	Title     string
+	Body      string
+	PlainBody string
+	Published bool
 }
 
 // PostListResult is application layer's post list result
@@ -142,8 +140,8 @@ func CreatePost(create PostCreate) error {
 	db := infrastructure.Db
 
 	post := dataaccessor.Post{
-		CreatedAt: create.CreatedAt,
-		UpdatedAt: create.UpdatedAt,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 		ID:        create.ID,
 		UserID:    create.UserID,
 		Title:     create.Title,

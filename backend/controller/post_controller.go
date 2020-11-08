@@ -1,11 +1,12 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
+	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/google/uuid"
 
 	"github.com/ahmetb/go-linq"
@@ -91,10 +92,13 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 // @Router /posts [post]
 // @Tags Posts
 func (c *Controller) CreatePost(ctx *gin.Context) {
+	claims := jwt.ExtractClaims(ctx)
+	user, _ := ctx.Get(identityKey)
+	fmt.Println(claims["id"])
+	fmt.Println(user)
+
 	// TODO:まずはダミー
 	create := application.PostCreate{
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
 		ID:        uuid.New(),
 		UserID:    "shokitami",
 		Title:     "Title",
