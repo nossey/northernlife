@@ -54,25 +54,6 @@ export interface ModelLogin {
 /**
  * 
  * @export
- * @interface ModelLoginFailMessage
- */
-export interface ModelLoginFailMessage {
-    /**
-     * 
-     * @type {number}
-     * @memberof ModelLoginFailMessage
-     */
-    code?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelLoginFailMessage
-     */
-    message?: string;
-}
-/**
- * 
- * @export
  * @interface ModelLoginSuccessMessage
  */
 export interface ModelLoginSuccessMessage {
@@ -153,6 +134,44 @@ export interface ModelPost {
 /**
  * 
  * @export
+ * @interface ModelPostCreateBody
+ */
+export interface ModelPostCreateBody {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostCreateBody
+     */
+    body: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostCreateBody
+     */
+    plain_body: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostCreateBody
+     */
+    title: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModelPostCreateResult
+ */
+export interface ModelPostCreateResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostCreateResult
+     */
+    post_id?: string;
+}
+/**
+ * 
+ * @export
  * @interface ModelPostListModel
  */
 export interface ModelPostListModel {
@@ -174,6 +193,25 @@ export interface ModelPostListModel {
      * @memberof ModelPostListModel
      */
     total_count?: number;
+}
+/**
+ * 
+ * @export
+ * @interface ModelUnauthorizedMessage
+ */
+export interface ModelUnauthorizedMessage {
+    /**
+     * 
+     * @type {number}
+     * @memberof ModelUnauthorizedMessage
+     */
+    code?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelUnauthorizedMessage
+     */
+    message?: string;
 }
 
 /**
@@ -365,6 +403,45 @@ export const PostsApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Create single post
+         * @param {ModelPostCreateBody} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postsPost: async (message: ModelPostCreateBody, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'message' is not null or undefined
+            if (message === null || message === undefined) {
+                throw new RequiredError('message','Required parameter message was null or undefined when calling postsPost.');
+            }
+            const localVarPath = `/posts`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof message !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(message !== undefined ? message : {}) : (message || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -402,6 +479,20 @@ export const PostsApiFp = function(configuration?: Configuration) {
                 return axios.request(axiosRequestArgs);
             };
         },
+        /**
+         * 
+         * @summary Create single post
+         * @param {ModelPostCreateBody} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postsPost(message: ModelPostCreateBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostCreateResult>> {
+            const localVarAxiosArgs = await PostsApiAxiosParamCreator(configuration).postsPost(message, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
     }
 };
 
@@ -430,6 +521,16 @@ export const PostsApiFactory = function (configuration?: Configuration, basePath
          */
         postsIdGet(id: string, options?: any): AxiosPromise<ModelPost> {
             return PostsApiFp(configuration).postsIdGet(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Create single post
+         * @param {ModelPostCreateBody} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postsPost(message: ModelPostCreateBody, options?: any): AxiosPromise<ModelPostCreateResult> {
+            return PostsApiFp(configuration).postsPost(message, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -463,6 +564,18 @@ export class PostsApi extends BaseAPI {
      */
     public postsIdGet(id: string, options?: any) {
         return PostsApiFp(this.configuration).postsIdGet(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Create single post
+     * @param {ModelPostCreateBody} message Post Data
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PostsApi
+     */
+    public postsPost(message: ModelPostCreateBody, options?: any) {
+        return PostsApiFp(this.configuration).postsPost(message, options).then((request) => request(this.axios, this.basePath));
     }
 
 }
