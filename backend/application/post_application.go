@@ -5,7 +5,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jinzhu/gorm"
 	"github.com/lib/pq"
+	"github.com/nossey/northernlife/dataaccessor"
 	"github.com/nossey/northernlife/infrastructure"
 )
 
@@ -20,6 +22,15 @@ type Post struct {
 	PlainBody string         `gorm:"plain_body"`
 	Published bool           `gorm:"published"`
 	Tags      pq.StringArray `gorm:"tags type:text[]"`
+}
+
+// PostCreate is used to create a post
+type PostCreate struct {
+	UserID    string
+	Title     string
+	Body      string
+	PlainBody string
+	Published bool
 }
 
 // PostListResult is application layer's post list result
@@ -120,5 +131,33 @@ group by
 	row := db.Raw(sql, id.String()).Row()
 	err = row.Scan(&post.CreatedAt, &post.UpdatedAt, &post.ID, &post.UserID, &post.Title, &post.Body, &post.PlainBody, &post.Published, &post.Tags)
 
+	return
+}
+
+// CreatePost create post
+func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
+	db := infrastructure.Db
+
+	postID = uuid.New()
+	post := dataaccessor.Post{
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		ID:        postID,
+		UserID:    create.UserID,
+		Title:     create.Title,
+		Body:      create.Body,
+		PlainBody: create.PlainBody,
+		Published: create.Published,
+	}
+
+	err = db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&post).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		postID = uuid.Nil
+	}
 	return
 }

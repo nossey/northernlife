@@ -14,8 +14,13 @@ type LoginSuccessMessage struct {
 	ExpiredAt time.Time `json:"expired_at"`
 }
 
-// LoginFailMessage is returned when login failed
-type LoginFailMessage struct {
+// UnauthorizedMessage is returned when login failed
+type UnauthorizedMessage struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
+}
+
+// User to login
+type User struct {
+	UserID string
 }

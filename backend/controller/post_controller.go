@@ -7,6 +7,8 @@ import (
 
 	"github.com/google/uuid"
 
+	jwt "github.com/appleboy/gin-jwt/v2"
+
 	"github.com/ahmetb/go-linq"
 	"github.com/gin-gonic/gin"
 	"github.com/nossey/northernlife/application"
@@ -79,4 +81,47 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, postViewModel)
+}
+
+// CreatePost godoc
+// @Summary Create single post
+// @Accept json
+// @Produce json
+// @Param message body model.PostCreateBody true "Post Data"
+// @Success 200 {object} model.PostCreateResult
+// @Failure 400 {object} model.ErrorMessage
+// @Failure 401 {object} model.UnauthorizedMessage
+// @Router /posts [post]
+// @Tags Posts
+func (c *Controller) CreatePost(ctx *gin.Context) {
+	claims := jwt.ExtractClaims(ctx)
+
+	var json model.PostCreateBody
+	if err := ctx.ShouldBindJSON(&json); err != nil {
+		errorMessage := model.ErrorMessage{
+			Message: "Invalid Request",
+		}
+		ctx.JSON(http.StatusBadRequest, errorMessage)
+		return
+	}
+	create := application.PostCreate{
+		UserID:    claims[identityKey].(string),
+		Title:     json.Title,
+		Body:      json.Body,
+		PlainBody: json.PlainBody,
+		Published: true,
+	}
+	postID, err := application.CreatePost(create)
+	if err != nil {
+		errorMessage := model.ErrorMessage{
+			Message: "Invalid Request",
+		}
+		ctx.JSON(http.StatusBadRequest, errorMessage)
+		return
+	}
+	id := strings.Replace(postID.String(), "-", "", -1)
+	successResult := model.PostCreateResult{
+		PostID: id,
+	}
+	ctx.JSON(http.StatusOK, successResult)
 }

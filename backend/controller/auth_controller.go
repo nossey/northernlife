@@ -20,9 +20,17 @@ func init() {
 		Timeout:     time.Hour,
 		MaxRefresh:  time.Hour,
 		IdentityKey: identityKey,
+		PayloadFunc: func(data interface{}) jwt.MapClaims {
+			if v, ok := data.(*model.User); ok {
+				return jwt.MapClaims{
+					identityKey: v.UserID,
+				}
+			}
+			return jwt.MapClaims{}
+		},
 		IdentityHandler: func(c *gin.Context) interface{} {
 			claims := jwt.ExtractClaims(c)
-			return &model.Login{
+			return &model.User{
 				UserID: claims[identityKey].(string),
 			}
 		},
@@ -34,9 +42,8 @@ func init() {
 			userID := login.UserID
 			password := login.Password
 			if application.IsValidUser(userID, password) {
-				return &model.Login{
-					UserID:   userID,
-					Password: password,
+				return &model.User{
+					UserID: userID,
 				}, nil
 			}
 			return nil, jwt.ErrFailedAuthentication
@@ -46,9 +53,11 @@ func init() {
 			ctx.JSON(http.StatusOK, message)
 		},
 		Unauthorized: func(ctx *gin.Context, code int, message string) {
-			msg := model.LoginFailMessage{Code: code, Message: message}
+			msg := model.UnauthorizedMessage{Code: code, Message: message}
 			ctx.JSON(code, msg)
 		},
+		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
+		TokenHeadName: "Bearer",
 	})
 }
 
@@ -58,9 +67,14 @@ func init() {
 // @Produce  json
 // @Param login body model.Login true "Login"
 // @Success 200 {object} model.LoginSuccessMessage
-// @Failure 401 {object} model.LoginFailMessage
+// @Failure 401 {object} model.UnauthorizedMessage
 // @Router /auth/login [post]
 // @Tags Auth
 func (c *Controller) Login(ctx *gin.Context) {
 	authHandler.LoginHandler(ctx)
+}
+
+// GetAuthHandler return global handler
+func GetAuthHandler() *jwt.GinJWTMiddleware {
+	return authHandler
 }

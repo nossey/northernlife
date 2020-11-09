@@ -66,7 +66,7 @@ var doc = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/model.LoginFailMessage"
+                            "$ref": "#/definitions/model.UnauthorizedMessage"
                         }
                     }
                 }
@@ -97,6 +97,49 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/model.PostListModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Create single post",
+                "parameters": [
+                    {
+                        "description": "Post Data",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.PostCreateBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PostCreateResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.ErrorMessage"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/model.UnauthorizedMessage"
                         }
                     }
                 }
@@ -164,17 +207,6 @@ var doc = `{
                 }
             }
         },
-        "model.LoginFailMessage": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
         "model.LoginSuccessMessage": {
             "type": "object",
             "properties": {
@@ -221,6 +253,33 @@ var doc = `{
                 }
             }
         },
+        "model.PostCreateBody": {
+            "type": "object",
+            "required": [
+                "body",
+                "plain_body",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "plain_body": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostCreateResult": {
+            "type": "object",
+            "properties": {
+                "post_id": {
+                    "type": "string"
+                }
+            }
+        },
         "model.PostListModel": {
             "type": "object",
             "properties": {
@@ -235,6 +294,17 @@ var doc = `{
                 },
                 "total_count": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.UnauthorizedMessage": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
                 }
             }
         }

@@ -80,12 +80,18 @@ func main() {
 
 	r := gin.Default()
 	c := controller.NewController()
+
+	handler := controller.GetAuthHandler()
 	v1 := r.Group("/api/v1")
 	{
 		echo := v1.Group("/posts")
 		{
 			echo.GET("", c.GetPosts)
 			echo.GET("/:id", c.GetPost)
+			echo.Use(handler.MiddlewareFunc())
+			{
+				echo.POST("", c.CreatePost)
+			}
 		}
 
 		auth := v1.Group("/auth")
