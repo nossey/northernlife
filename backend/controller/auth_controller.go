@@ -48,13 +48,6 @@ func init() {
 			}
 			return nil, jwt.ErrFailedAuthentication
 		},
-		Authorizator: func(data interface{}, ctx *gin.Context) bool {
-			v, ok := data.(*model.User)
-			if ok && v.UserID == "shokitami" {
-				return true
-			}
-			return false
-		},
 		LoginResponse: func(ctx *gin.Context, status int, token string, expiredAt time.Time) {
 			message := model.LoginSuccessMessage{Token: token, ExpiredAt: expiredAt}
 			ctx.JSON(http.StatusOK, message)
