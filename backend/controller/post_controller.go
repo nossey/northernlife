@@ -1,13 +1,13 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
 
-	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/google/uuid"
+
+	jwt "github.com/appleboy/gin-jwt/v2"
 
 	"github.com/ahmetb/go-linq"
 	"github.com/gin-gonic/gin"
@@ -93,14 +93,9 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 // @Tags Posts
 func (c *Controller) CreatePost(ctx *gin.Context) {
 	claims := jwt.ExtractClaims(ctx)
-	user, _ := ctx.Get(identityKey)
-	fmt.Println(claims["id"])
-	fmt.Println(user)
-
-	// TODO:まずはダミー
 	create := application.PostCreate{
 		ID:        uuid.New(),
-		UserID:    "shokitami",
+		UserID:    claims[identityKey].(string),
 		Title:     "Title",
 		Body:      "Body",
 		PlainBody: "Body",

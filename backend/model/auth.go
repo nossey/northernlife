@@ -19,3 +19,8 @@ type LoginFailMessage struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
+
+// User to login
+type User struct {
+	UserID string
+}
