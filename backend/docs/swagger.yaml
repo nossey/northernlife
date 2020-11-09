@@ -15,13 +15,6 @@ definitions:
     - password
     - userID
     type: object
-  model.LoginFailMessage:
-    properties:
-      code:
-        type: integer
-      message:
-        type: string
-    type: object
   model.LoginSuccessMessage:
     properties:
       expired_at:
@@ -52,6 +45,24 @@ definitions:
       user_id:
         type: string
     type: object
+  model.PostCreateBody:
+    properties:
+      body:
+        type: string
+      plain_body:
+        type: string
+      title:
+        type: string
+    required:
+    - body
+    - plain_body
+    - title
+    type: object
+  model.PostCreateResult:
+    properties:
+      post_id:
+        type: string
+    type: object
   model.PostListModel:
     properties:
       per_page_count:
@@ -62,6 +73,13 @@ definitions:
         type: array
       total_count:
         type: integer
+    type: object
+  model.UnauthorizedMessage:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
     type: object
 host: localhost:9000
 info:
@@ -98,7 +116,7 @@ paths:
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.LoginFailMessage'
+            $ref: '#/definitions/model.UnauthorizedMessage'
       summary: Login
       tags:
       - Auth
@@ -119,6 +137,34 @@ paths:
           schema:
             $ref: '#/definitions/model.PostListModel'
       summary: Get posts with pagination
+      tags:
+      - Posts
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Post Data
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.PostCreateBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostCreateResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedMessage'
+      summary: Create single post
       tags:
       - Posts
   /posts/{id}:
