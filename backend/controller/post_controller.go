@@ -84,7 +84,7 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 }
 
 // CreatePost godoc
-// @Summary Get single post with specific id
+// @Summary Create single post
 // @Accept json
 // @Produce json
 // @Param message body model.PostCreateBody true "Post Data"
