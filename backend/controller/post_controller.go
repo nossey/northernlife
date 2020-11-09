@@ -87,6 +87,7 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 // @Summary Get single post with specific id
 // @Accept json
 // @Produce json
+// @Param message body model.PostCreateBody true "Post Data"
 // @Success 200 {object} model.PostCreateResult
 // @Failure 400 {object} model.ErrorMessage
 // @Failure 401 {object} model.UnauthorizedMessage
@@ -94,11 +95,20 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 // @Tags Posts
 func (c *Controller) CreatePost(ctx *gin.Context) {
 	claims := jwt.ExtractClaims(ctx)
+
+	var json model.PostCreateBody
+	if err := ctx.ShouldBindJSON(&json); err != nil {
+		errorMessage := model.ErrorMessage{
+			Message: "Invalid Request",
+		}
+		ctx.JSON(http.StatusBadRequest, errorMessage)
+		return
+	}
 	create := application.PostCreate{
 		UserID:    claims[identityKey].(string),
-		Title:     "Title",
-		Body:      "Body",
-		PlainBody: "Body",
+		Title:     json.Title,
+		Body:      json.Body,
+		PlainBody: json.PlainBody,
 		Published: true,
 	}
 	postID, err := application.CreatePost(create)
