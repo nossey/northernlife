@@ -26,7 +26,6 @@ type Post struct {
 
 // PostCreate is used to create a post
 type PostCreate struct {
-	ID        uuid.UUID
 	UserID    string
 	Title     string
 	Body      string
@@ -136,13 +135,14 @@ group by
 }
 
 // CreatePost create post
-func CreatePost(create PostCreate) error {
+func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 	db := infrastructure.Db
 
+	postID = uuid.New()
 	post := dataaccessor.Post{
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
-		ID:        create.ID,
+		ID:        postID,
 		UserID:    create.UserID,
 		Title:     create.Title,
 		Body:      create.Body,
@@ -150,10 +150,14 @@ func CreatePost(create PostCreate) error {
 		Published: create.Published,
 	}
 
-	return db.Transaction(func(tx *gorm.DB) error {
+	err = db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&post).Error; err != nil {
 			return err
 		}
 		return nil
 	})
+	if err != nil {
+		postID = uuid.Nil
+	}
+	return
 }

@@ -87,24 +87,31 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 // @Summary Get single post with specific id
 // @Accept json
 // @Produce json
-// @Success 200 {object} model.Post
-// @Failure 401 {object} model.ErrorMessage
+// @Success 200 {object} model.PostCreateResult
+// @Failure 400 {object} model.ErrorMessage
+// @Failure 401 {object} model.UnauthorizedMessage
 // @Router /posts [post]
 // @Tags Posts
 func (c *Controller) CreatePost(ctx *gin.Context) {
 	claims := jwt.ExtractClaims(ctx)
 	create := application.PostCreate{
-		ID:        uuid.New(),
 		UserID:    claims[identityKey].(string),
 		Title:     "Title",
 		Body:      "Body",
 		PlainBody: "Body",
 		Published: true,
 	}
-
-	if err := application.CreatePost(create); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{})
+	postID, err := application.CreatePost(create)
+	if err != nil {
+		errorMessage := model.ErrorMessage{
+			Message: "Invalid Request",
+		}
+		ctx.JSON(http.StatusBadRequest, errorMessage)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{})
+	id := strings.Replace(postID.String(), "-", "", -1)
+	successResult := model.PostCreateResult{
+		PostID: id,
+	}
+	ctx.JSON(http.StatusOK, successResult)
 }

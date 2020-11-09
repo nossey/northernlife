@@ -53,7 +53,7 @@ func init() {
 			ctx.JSON(http.StatusOK, message)
 		},
 		Unauthorized: func(ctx *gin.Context, code int, message string) {
-			msg := model.LoginFailMessage{Code: code, Message: message}
+			msg := model.UnauthorizedMessage{Code: code, Message: message}
 			ctx.JSON(code, msg)
 		},
 		TokenLookup:   "header: Authorization, query: token, cookie: jwt",

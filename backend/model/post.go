@@ -23,3 +23,8 @@ type PostListModel struct {
 	TotalCount   int    `json:"total_count"`
 	PerPageCount int    `json:"per_page_count"`
 }
+
+// PostCreateResult contains results of post creation
+type PostCreateResult struct {
+	PostID string `json:"post_id"`
+}
