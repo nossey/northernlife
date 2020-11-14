@@ -9,8 +9,6 @@
 
 import {defineComponent, reactive} from "@nuxtjs/composition-api"
 import Button from "~/components/atoms/Button.vue"
-import {buildConfiguration} from "~/client/configurationFactory";
-import {AuthApi} from "~/client";
 
 export default defineComponent( {
   name: "login",
@@ -21,10 +19,13 @@ export default defineComponent( {
     });
 
     const login = async () => {
-      const api = new AuthApi(buildConfiguration());
-      const res = await api.authLoginPost({userID:state.userId, password: state.password}).catch(err => err.response);
-      if (res.status === 200)
-        context.root.$router.push("/")
+      // SPEC:型推論が利かないためWorkAround
+      await (context.root as any).$auth.loginWith('local', {
+       data: {
+         userID: state.userId,
+         password: state.password,
+       }
+      })
     }
     return  {
       login,

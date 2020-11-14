@@ -48,6 +48,7 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     'bootstrap-vue/nuxt',
+    '@nuxtjs/auth'
   ],
   /*
   ** Axios module configuration
@@ -58,6 +59,25 @@ module.exports = {
   },
   proxy: {
    '/api' : {target: (process.env.API_BASE_URL) ? `${process.env.API_BASE_URL}/api/v1` : 'http://localhost:9000/api/v1', pathRewrite: {'^/api': '/'}}
+  },
+
+  // Auth module to handle login
+  auth: {
+    redirect: {
+      login: '/admin/login',
+      logout: '/admin/login',
+      callback: false,
+      home: '/'
+    },
+    strategies: {
+      local : {
+        endpoints: {
+          login: {url: '/api/auth/login', method: 'post', propertyName: false},
+          logout: false,
+          user: false
+        }
+      }
+    }
   },
   /*
   ** Build configuration
