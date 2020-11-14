@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.4.0",
+    "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/composition-api": "^0.13.5",
     "bootstrap-vue": "^2.18.1",
