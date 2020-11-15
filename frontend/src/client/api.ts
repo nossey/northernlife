@@ -213,6 +213,19 @@ export interface ModelUnauthorizedMessage {
      */
     message?: string;
 }
+/**
+ * 
+ * @export
+ * @interface ModelUser
+ */
+export interface ModelUser {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelUser
+     */
+    userID?: string;
+}
 
 /**
  * AuthApi - axios parameter creator
@@ -259,6 +272,44 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Login
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authUserGet: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/auth/user`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication ApiKeyAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -277,6 +328,19 @@ export const AuthApiFp = function(configuration?: Configuration) {
          */
         async authLoginPost(login: ModelLogin, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelLoginSuccessMessage>> {
             const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).authLoginPost(login, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Login
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async authUserGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelUser>> {
+            const localVarAxiosArgs = await AuthApiAxiosParamCreator(configuration).authUserGet(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -301,6 +365,15 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
         authLoginPost(login: ModelLogin, options?: any): AxiosPromise<ModelLoginSuccessMessage> {
             return AuthApiFp(configuration).authLoginPost(login, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary Login
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authUserGet(options?: any): AxiosPromise<ModelUser> {
+            return AuthApiFp(configuration).authUserGet(options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -321,6 +394,17 @@ export class AuthApi extends BaseAPI {
      */
     public authLoginPost(login: ModelLogin, options?: any) {
         return AuthApiFp(this.configuration).authLoginPost(login, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Login
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApi
+     */
+    public authUserGet(options?: any) {
+        return AuthApiFp(this.configuration).authUserGet(options).then((request) => request(this.axios, this.basePath));
     }
 
 }

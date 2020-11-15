@@ -33,32 +33,9 @@ import (
 // @host localhost:9000
 // @BasePath /api/v1
 
-// @securityDefinitions.basic BasicAuth
-
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization
-
-// @securitydefinitions.oauth2.application OAuth2Application
-// @tokenUrl https://example.com/oauth/token
-// @scope.write Grants write access
-// @scope.admin Grants read and write access to administrative information
-
-// @securitydefinitions.oauth2.implicit OAuth2Implicit
-// @authorizationUrl https://example.com/oauth/authorize
-// @scope.write Grants write access
-// @scope.admin Grants read and write access to administrative information
-
-// @securitydefinitions.oauth2.password OAuth2Password
-// @tokenUrl https://example.com/oauth/token
-// @scope.read Grants read access
-// @scope.write Grants write access
-// @scope.admin Grants read and write access to administrative information
-
-// @securitydefinitions.oauth2.accessCode OAuth2AccessCode
-// @tokenUrl https://example.com/oauth/token
-// @authorizationUrl https://example.com/oauth/authorize
-// @scope.admin Grants read and write access to administrative information
 
 // User is a single result
 type User struct {
@@ -97,6 +74,10 @@ func main() {
 		auth := v1.Group("/auth")
 		{
 			auth.POST("/login", c.Login)
+			auth.Use(handler.MiddlewareFunc())
+			{
+				auth.GET("/user", c.GetUser)
+			}
 		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
