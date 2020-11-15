@@ -78,3 +78,23 @@ func (c *Controller) Login(ctx *gin.Context) {
 func GetAuthHandler() *jwt.GinJWTMiddleware {
 	return authHandler
 }
+
+// GetUser godoc
+// @Summary Login
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} model.User
+// @Router /auth/user [get]
+// @Tags Auth
+// @Security ApiKeyAuth
+func (c *Controller) GetUser(ctx *gin.Context) {
+	//claims := jwt.ExtractClaims(ctx)
+	user, _ := ctx.Get(identityKey)
+	//ctx.JSON(http.StatusOK, gin.H{
+	//	"key":    claims[identityKey],
+	//	"userID": user.(*model.User).UserID,
+	//})
+	ctx.JSON(http.StatusOK, model.User{
+		UserID: user.(*model.User).UserID,
+	})
+}
