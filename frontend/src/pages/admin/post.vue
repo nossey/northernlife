@@ -37,14 +37,15 @@ export default defineComponent({
     props.createPost = {title: "Title", body: "Body", plain_body: "This will be the day"}
     props.isPosting = false
     const postman = async () => {
-      //if (props.isPosting)
-      //  return;
-      //props.isPosting = true;
+      if (props.isPosting)
+        return;
+      props.isPosting = true;
       const config = buildConfiguration();
       const token = (context.root.$store as any).$auth.getToken('local');
       config.apiKey = token;
       const api = new PostsApi(config);
       await api.postsPost(props.createPost).then(res => {
+        // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.post_id}`)
       }).catch(err => {
         // TODO:トーストとか色々出してあげる
