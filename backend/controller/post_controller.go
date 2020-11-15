@@ -92,6 +92,7 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 // @Failure 400 {object} model.ErrorMessage
 // @Failure 401 {object} model.UnauthorizedMessage
 // @Router /posts [post]
+// @Security ApiKeyAuth
 // @Tags Posts
 func (c *Controller) CreatePost(ctx *gin.Context) {
 	claims := jwt.ExtractClaims(ctx)

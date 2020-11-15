@@ -85,8 +85,8 @@ func GetAuthHandler() *jwt.GinJWTMiddleware {
 // @Produce  json
 // @Success 200 {object} model.User
 // @Router /auth/user [get]
-// @Tags Auth
 // @Security ApiKeyAuth
+// @Tags Auth
 func (c *Controller) GetUser(ctx *gin.Context) {
 	//claims := jwt.ExtractClaims(ctx)
 	user, _ := ctx.Get(identityKey)
