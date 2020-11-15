@@ -185,6 +185,8 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/model.UnauthorizedMessage'
+      security:
+      - ApiKeyAuth: []
       summary: Create single post
       tags:
       - Posts

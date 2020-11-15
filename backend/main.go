@@ -61,13 +61,13 @@ func main() {
 	handler := controller.GetAuthHandler()
 	v1 := r.Group("/api/v1")
 	{
-		echo := v1.Group("/posts")
+		post := v1.Group("/posts")
 		{
-			echo.GET("", c.GetPosts)
-			echo.GET("/:id", c.GetPost)
-			echo.Use(handler.MiddlewareFunc())
+			post.GET("", c.GetPosts)
+			post.GET("/:id", c.GetPost)
+			post.Use(handler.MiddlewareFunc())
 			{
-				echo.POST("", c.CreatePost)
+				post.POST("", c.CreatePost)
 			}
 		}
 
