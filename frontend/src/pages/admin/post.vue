@@ -40,16 +40,13 @@ export default defineComponent({
       if (props.isPosting)
         return;
       props.isPosting = true;
-      const config = buildConfiguration();
-      const token = (context.root.$store as any).$auth.getToken('local');
-      config.apiKey = token;
-      const api = new PostsApi(config);
+      const api = new PostsApi(buildConfiguration());
       await api.postsPost(props.createPost).then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.post_id}`)
       }).catch(err => {
         // TODO:トーストとか色々出してあげる
-        console.log(err.statusCode)
+        console.log(err)
         props.isPosting = false;
       });
     }
