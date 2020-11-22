@@ -1,21 +1,25 @@
 <template>
   <div>
     Title
-    <input type="text" v-model="props.createPost.title">
+    <input type="text" v-model="state.title">
     Body
-    <input type="text" v-model="props.createPost.body">
+    <!--<input type="textarea" v-model="props.body">-->
+    <textarea v-model="state.body"></textarea>
     PlainBody
-    <input type="text" v-model="props.createPost.plain_body">
+    <input type="text" v-model="state.plain_body">
     <Button @click.native="postman">POST</Button>
+
+    <div v-html="state.renderedBody"></div>
   </div>
 </template>
 
 <script lang="ts">
 
-import {defineComponent} from "@nuxtjs/composition-api";
+import {defineComponent, reactive, computed} from "@nuxtjs/composition-api";
 import {PostsApi, ModelPostCreateBody} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
+import marked_1 from "marked/lib/marked.esm";
 
 type Props = {
   createPost: ModelPostCreateBody,
@@ -26,22 +30,23 @@ export default defineComponent({
   components: {
     Button
   },
-  props: {
-    CreateBody:  {
-      type: Object as () => ModelPostCreateBody,
-    }
-  },
   name: "post",
   middleware: 'auth',
   setup(props:Props, context) {
-    props.createPost = {title: "Title", body: "Body", plain_body: "This will be the day"}
     props.isPosting = false
+    const state = reactive({
+      title: "Hello world",
+      body: "# Hello World ## This is power",
+      plain_body: "# Hello World ## This is power",
+      renderedBody: computed(() => marked_1(state.body)),
+    });
+
     const postman = async () => {
       if (props.isPosting)
         return;
       props.isPosting = true;
       const api = new PostsApi(buildConfiguration());
-      await api.postsPost(props.createPost).then(res => {
+      await api.postsPost({title: state.title, body: state.body, plain_body: state.plain_body}).then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.post_id}`)
       }).catch(err => {
@@ -53,6 +58,7 @@ export default defineComponent({
 
     return {
       props,
+      state,
       postman
     }
   }
