@@ -3,7 +3,6 @@
     Title
     <input type="text" v-model="state.title">
     Body
-    <!--<input type="textarea" v-model="props.body">-->
     <textarea v-model="state.body"></textarea>
     PlainBody
     <input type="text" v-model="state.plain_body">
@@ -16,13 +15,13 @@
 <script lang="ts">
 
 import {defineComponent, reactive, computed} from "@nuxtjs/composition-api";
-import {PostsApi, ModelPostCreateBody} from "~/client";
+import {PostsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
-import marked_1 from "marked/lib/marked.esm";
+import { createMarkdown } from "safe-marked";
+const markdown = createMarkdown();
 
 type Props = {
-  createPost: ModelPostCreateBody,
   isPosting: boolean
 }
 
@@ -38,7 +37,7 @@ export default defineComponent({
       title: "Hello world",
       body: "# Hello World ## This is power",
       plain_body: "# Hello World ## This is power",
-      renderedBody: computed(() => marked_1(state.body)),
+      renderedBody: computed(() => markdown(state.body)),
     });
 
     const postman = async () => {
