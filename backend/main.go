@@ -86,6 +86,10 @@ func main() {
 		tag := v1.Group("/tags")
 		{
 			tag.GET("", tc.GetTags)
+			tag.Use(handler.MiddlewareFunc())
+			{
+				tag.POST("", tc.CreateTag)
+			}
 		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

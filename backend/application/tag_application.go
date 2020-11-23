@@ -1,6 +1,10 @@
 package application
 
 import (
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/nossey/northernlife/dataaccessor"
 	"github.com/nossey/northernlife/infrastructure"
 )
 
@@ -25,5 +29,19 @@ from
 		rows.Scan(&tag)
 		tags = append(tags, tag)
 	}
+	return
+}
+
+// CreateTag creates a tag
+func CreateTag(tagName string, userID string) (err error) {
+	db := infrastructure.Db
+	tag := dataaccessor.Tag{
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		ID:        uuid.New(),
+		TagName:   tagName,
+		UserID:    userID,
+	}
+	err = db.Create(&tag).Error
 	return
 }
