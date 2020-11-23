@@ -74,7 +74,8 @@ module.exports = {
       local : {
         endpoints: {
           login: {url: '/api/auth/login', method: 'post', propertyName: 'token'},
-          logout: false,
+          logout: {url: '/api/auth/logout', method: 'post'},
+          refresh: {url: '/api/auth/refresh', method: 'get', propertyName: 'token'},
           user: false
         }
       }

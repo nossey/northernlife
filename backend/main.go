@@ -74,10 +74,12 @@ func main() {
 		auth := v1.Group("/auth")
 		{
 			auth.POST("/login", c.Login)
+			auth.POST("/logout", handler.LogoutHandler)
 			auth.Use(handler.MiddlewareFunc())
 			{
 				auth.GET("/user", c.GetUser)
 			}
+			auth.GET("/refresh", handler.RefreshHandler)
 		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
