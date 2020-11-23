@@ -197,6 +197,32 @@ export interface ModelPostListModel {
 /**
  * 
  * @export
+ * @interface ModelTagCreateFailResult
+ */
+export interface ModelTagCreateFailResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelTagCreateFailResult
+     */
+    message?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModelTagCreatedResult
+ */
+export interface ModelTagCreatedResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelTagCreatedResult
+     */
+    tagName?: string;
+}
+/**
+ * 
+ * @export
  * @interface ModelUnauthorizedMessage
  */
 export interface ModelUnauthorizedMessage {
@@ -709,6 +735,36 @@ export const TagsApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Create a new tag
+         * @summary Create tag
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tagsPost: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/tags`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -726,6 +782,19 @@ export const TagsApiFp = function(configuration?: Configuration) {
          */
         async tagsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
             const localVarAxiosArgs = await TagsApiAxiosParamCreator(configuration).tagsGet(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Create a new tag
+         * @summary Create tag
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tagsPost(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelTagCreatedResult>> {
+            const localVarAxiosArgs = await TagsApiAxiosParamCreator(configuration).tagsPost(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -749,6 +818,15 @@ export const TagsApiFactory = function (configuration?: Configuration, basePath?
         tagsGet(options?: any): AxiosPromise<Array<string>> {
             return TagsApiFp(configuration).tagsGet(options).then((request) => request(axios, basePath));
         },
+        /**
+         * Create a new tag
+         * @summary Create tag
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tagsPost(options?: any): AxiosPromise<ModelTagCreatedResult> {
+            return TagsApiFp(configuration).tagsPost(options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -768,6 +846,17 @@ export class TagsApi extends BaseAPI {
      */
     public tagsGet(options?: any) {
         return TagsApiFp(this.configuration).tagsGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create a new tag
+     * @summary Create tag
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TagsApi
+     */
+    public tagsPost(options?: any) {
+        return TagsApiFp(this.configuration).tagsPost(options).then((request) => request(this.axios, this.basePath));
     }
 
 }
