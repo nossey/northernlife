@@ -74,6 +74,16 @@ definitions:
       total_count:
         type: integer
     type: object
+  model.TagCreateFailResult:
+    properties:
+      message:
+        type: string
+    type: object
+  model.TagCreatedResult:
+    properties:
+      tagName:
+        type: string
+    type: object
   model.UnauthorizedMessage:
     properties:
       code:
@@ -214,6 +224,49 @@ paths:
       summary: Get single post with specific id
       tags:
       - Posts
+  /tags:
+    get:
+      consumes:
+      - application/json
+      description: Get all tags
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: Get tags
+      tags:
+      - Tags
+    post:
+      consumes:
+      - application/json
+      description: Create a new tag
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.TagCreatedResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.TagCreateFailResult'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedMessage'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/model.TagCreateFailResult'
+      summary: Create tag
+      tags:
+      - Tags
 securityDefinitions:
   ApiKeyAuth:
     in: header

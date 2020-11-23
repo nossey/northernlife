@@ -57,6 +57,7 @@ func main() {
 
 	r := gin.Default()
 	c := controller.NewController()
+	tc := controller.CreateTagController()
 
 	handler := controller.GetAuthHandler()
 	v1 := r.Group("/api/v1")
@@ -80,6 +81,15 @@ func main() {
 				auth.GET("/user", c.GetUser)
 			}
 			auth.GET("/refresh", handler.RefreshHandler)
+		}
+
+		tag := v1.Group("/tags")
+		{
+			tag.GET("", tc.GetTags)
+			tag.Use(handler.MiddlewareFunc())
+			{
+				tag.POST("", tc.CreateTag)
+			}
 		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
