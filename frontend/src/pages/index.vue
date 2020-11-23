@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { Context } from "@nuxt/types";
-import { PostsApi } from "~/client";
+import { PostsApi, TagsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent } from "@nuxtjs/composition-api"
 import Button from "~/components/atoms/Button.vue"
@@ -21,8 +21,14 @@ import PostCard from "~/components/molecules/PostCard.vue"
 export default defineComponent({
   async asyncData(ctx: Context): Promise<Object> {
     const post = new PostsApi(buildConfiguration());
+    const tagApi = new TagsApi(buildConfiguration());
     const response = await post.postsGet(1);
-    return {result: response.data}
+    const tagsResponse = await tagApi.tagsGet();
+    console.log(tagsResponse.data)
+    return {
+      result: response.data,
+      tags: tagsResponse.data
+    }
   },
   components: {
     Button,

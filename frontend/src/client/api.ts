@@ -673,3 +673,103 @@ export class PostsApi extends BaseAPI {
 }
 
 
+/**
+ * TagsApi - axios parameter creator
+ * @export
+ */
+export const TagsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Get all tags
+         * @summary Get tags
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tagsGet: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/tags`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * TagsApi - functional programming interface
+ * @export
+ */
+export const TagsApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * Get all tags
+         * @summary Get tags
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tagsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await TagsApiAxiosParamCreator(configuration).tagsGet(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * TagsApi - factory interface
+ * @export
+ */
+export const TagsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * Get all tags
+         * @summary Get tags
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tagsGet(options?: any): AxiosPromise<Array<string>> {
+            return TagsApiFp(configuration).tagsGet(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * TagsApi - object-oriented interface
+ * @export
+ * @class TagsApi
+ * @extends {BaseAPI}
+ */
+export class TagsApi extends BaseAPI {
+    /**
+     * Get all tags
+     * @summary Get tags
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TagsApi
+     */
+    public tagsGet(options?: any) {
+        return TagsApiFp(this.configuration).tagsGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
+
