@@ -19,6 +19,7 @@
     "bootstrap-vue": "^2.18.1",
     "cross-env": "^7.0.2",
     "express-asyncify": "^1.0.1",
+    "html-to-text": "^6.0.0",
     "marked": "^1.2.5",
     "nuxt": "^2.14.5",
     "safe-marked": "^4.0.1"

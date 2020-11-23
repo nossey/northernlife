@@ -20,7 +20,7 @@ export default defineComponent({
   },
   setup(props: Props) {
     const state = reactive({
-      renderedBody: computed(() => markdown(props.body))
+      renderedBody: computed(() => markdown(props.body)),
     });
     return {
       state
