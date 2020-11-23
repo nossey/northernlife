@@ -5,7 +5,6 @@
     Body
     <textarea v-model="state.body"></textarea>
     PlainBody
-    <input type="text" v-model="state.plain_body">
     <Button @click.native="postman">POST</Button>
 
     <Post v-bind:body="state.body"></Post>
@@ -21,6 +20,7 @@ import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
 import { createMarkdown } from "safe-marked";
 const markdown = createMarkdown();
+const { htmlToText } = require('html-to-text');
 
 type Props = {
   isPosting: boolean
@@ -38,8 +38,8 @@ export default defineComponent({
     const state = reactive({
       title: "Hello world",
       body: "# Hello World ## This is power",
-      plain_body: "# Hello World ## This is power",
       renderedBody: computed(() => markdown(state.body)),
+      plainBody: computed(() => htmlToText(state.renderedBody))
     });
 
     const postman = async () => {
@@ -47,7 +47,7 @@ export default defineComponent({
         return;
       props.isPosting = true;
       const api = new PostsApi(buildConfiguration());
-      await api.postsPost({title: state.title, body: state.body, plain_body: state.plain_body}).then(res => {
+      await api.postsPost({title: state.title, body: state.body, plain_body: state.plainBody}).then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.post_id}`)
       }).catch(err => {
