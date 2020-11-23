@@ -38,6 +38,7 @@ func (c *TagController) GetTags(ctx *gin.Context) {
 // @Success 200 {object} model.TagCreatedResult
 // @Failure 400 {object} model.TagCreateFailResult
 // @Failure 401 {object} model.UnauthorizedMessage
+// @Failure 409 {object} model.TagCreateFailResult
 // @Router /tags [post]
 // @Tags Tags
 func (c *TagController) CreateTag(ctx *gin.Context) {
@@ -56,9 +57,9 @@ func (c *TagController) CreateTag(ctx *gin.Context) {
 	err := application.CreateTag(createRequest.TagName, userID)
 	if err != nil {
 		result := model.TagCreateFailResult{
-			Message: "Tag " + createRequest.TagName + " already exists.",
+			Message: "Tag " + createRequest.TagName + " is already exists.",
 		}
-		ctx.JSON(http.StatusBadRequest, result)
+		ctx.JSON(http.StatusConflict, result)
 		return
 	}
 	result := model.TagCreatedResult{
