@@ -8,7 +8,7 @@
     <input type="text" v-model="state.plain_body">
     <Button @click.native="postman">POST</Button>
 
-    <div v-html="state.renderedBody"></div>
+    <Post v-bind:body="state.body"></Post>
   </div>
 </template>
 
@@ -18,6 +18,7 @@ import {defineComponent, reactive, computed} from "@nuxtjs/composition-api";
 import {PostsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
+import Post from "~/components/molecules/Post.vue"
 import { createMarkdown } from "safe-marked";
 const markdown = createMarkdown();
 
@@ -27,7 +28,8 @@ type Props = {
 
 export default defineComponent({
   components: {
-    Button
+    Button,
+    Post
   },
   name: "post",
   middleware: 'auth',
