@@ -214,6 +214,23 @@ paths:
       summary: Get single post with specific id
       tags:
       - Posts
+  /tags:
+    get:
+      consumes:
+      - application/json
+      description: Get all tags
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: Get tags
+      tags:
+      - Tags
 securityDefinitions:
   ApiKeyAuth:
     in: header

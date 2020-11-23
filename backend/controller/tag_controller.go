@@ -22,6 +22,8 @@ type TagController struct {
 // @Accept json
 // @Produce json
 // @Success 200 {array} string
+// @Router /tags [get]
+// @Tags Tags
 func (c *TagController) GetTags(ctx *gin.Context) {
 	tags := application.GetTags()
 	ctx.JSON(http.StatusOK, tags)
