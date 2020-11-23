@@ -269,6 +269,12 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/model.UnauthorizedMessage"
                         }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/model.TagCreateFailResult"
+                        }
                     }
                 }
             }

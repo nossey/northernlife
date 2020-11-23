@@ -260,6 +260,10 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/model.UnauthorizedMessage'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/model.TagCreateFailResult'
       summary: Create tag
       tags:
       - Tags
