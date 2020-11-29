@@ -51,11 +51,16 @@ definitions:
         type: string
       plain_body:
         type: string
+      tags:
+        items:
+          type: string
+        type: array
       title:
         type: string
     required:
     - body
     - plain_body
+    - tags
     - title
     type: object
   model.PostCreateResult:
