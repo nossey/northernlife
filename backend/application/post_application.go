@@ -31,6 +31,7 @@ type PostCreate struct {
 	Body      string
 	PlainBody string
 	Published bool
+	Tags      pq.StringArray
 }
 
 // PostListResult is application layer's post list result
@@ -150,8 +151,30 @@ func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 		Published: create.Published,
 	}
 
+	tagsAttachmentSQL := `
+insert into tags_posts_attachment 
+(
+	created_at,
+	id,
+	post_id,
+	tag_id
+)
+select
+	current_timestamp as created_at,
+	uuid_generate_v4() as id,
+	? as post_id,
+	t.id as tag_id
+from
+	tags t
+where
+	tag_name = any(?)
+`
+
 	err = db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&post).Error; err != nil {
+			return err
+		}
+		if err = tx.Exec(tagsAttachmentSQL, postID.String(), create.Tags).Error; err != nil {
 			return err
 		}
 		return nil

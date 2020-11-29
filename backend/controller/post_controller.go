@@ -111,6 +111,7 @@ func (c *Controller) CreatePost(ctx *gin.Context) {
 		Body:      json.Body,
 		PlainBody: json.PlainBody,
 		Published: true,
+		Tags:      json.Tags,
 	}
 	postID, err := application.CreatePost(create)
 	if err != nil {
