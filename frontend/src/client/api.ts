@@ -151,6 +151,12 @@ export interface ModelPostCreateBody {
     plain_body: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof ModelPostCreateBody
+     */
+    tags: Array<string>;
+    /**
+     * 
      * @type {string}
      * @memberof ModelPostCreateBody
      */

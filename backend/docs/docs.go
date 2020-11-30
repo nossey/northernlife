@@ -355,6 +355,7 @@ var doc = `{
             "required": [
                 "body",
                 "plain_body",
+                "tags",
                 "title"
             ],
             "properties": {
@@ -363,6 +364,12 @@ var doc = `{
                 },
                 "plain_body": {
                     "type": "string"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "title": {
                     "type": "string"

@@ -340,6 +340,7 @@
             "required": [
                 "body",
                 "plain_body",
+                "tags",
                 "title"
             ],
             "properties": {
@@ -348,6 +349,12 @@
                 },
                 "plain_body": {
                     "type": "string"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "title": {
                     "type": "string"

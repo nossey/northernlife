@@ -26,9 +26,10 @@ type PostListModel struct {
 
 // PostCreateBody is body to create a new post
 type PostCreateBody struct {
-	Body      string `json:"body" binding:"required"`
-	Title     string `json:"title" binding:"required"`
-	PlainBody string `json:"plain_body" binding:"required"`
+	Body      string   `json:"body" binding:"required"`
+	Title     string   `json:"title" binding:"required"`
+	PlainBody string   `json:"plain_body" binding:"required"`
+	Tags      []string `json:"tags" binding:"required"`
 }
 
 // PostCreateResult contains results of post creation
