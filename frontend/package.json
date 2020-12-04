@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon --inspect node_modules/.bin/nuxt",
     "build": "NODE_ENV=production nuxt build",
-    "start": "nuxt-ts start --max_old_space_size=340",
+    "start": "nuxt-ts start --max_old_space_size=1024",
     "test": "jest"
   },
   "dependencies": {
