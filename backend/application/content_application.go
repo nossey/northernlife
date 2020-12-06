@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	"github.com/google/uuid"
 )
 
 // ContentApplication manages file uploads of northernlife
@@ -34,7 +35,7 @@ func (app *ContentApplication) Upload() error {
 
 	result, err := app.Uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String("northernlife-content"),
-		Key:    aws.String("hogehoge"),
+		Key:    aws.String(uuid.New().String()),
 		Body:   f,
 	})
 	if err != nil {
