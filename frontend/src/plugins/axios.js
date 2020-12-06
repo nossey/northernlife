@@ -1,11 +1,15 @@
 import globalAxios from 'axios';
 export default ({store}) => {
-  globalAxios.interceptors.request.use(req => {
-    const token = store.$auth.getToken('local');
-    if (token && !req.headers.Authorization)
-    {
-      req.headers.Authorization = token;
-    }
-    return req
-  })
+  const manager = globalAxios.interceptors.request;
+  if (manager.handlers.length == 0){
+    console.log("Registered!")
+    globalAxios.interceptors.request.use(req => {
+      const token = store.$auth.getToken('local');
+      if (token && !req.headers.Authorization)
+      {
+        req.headers.Authorization = token;
+      }
+      return req
+    })
+  }
 }
