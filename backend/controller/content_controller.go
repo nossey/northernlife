@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nossey/northernlife/application"
+	"github.com/nossey/northernlife/model"
 )
 
 // ContentController handles content
@@ -21,12 +21,25 @@ func init() {
 
 // UploadFile uploads a file
 func (c *ContentController) UploadFile(ctx *gin.Context) {
-	contentApplication := application.ContentApp
-	err := contentApplication.Upload()
-	if err != nil {
-		fmt.Println(err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{})
+	var json model.FileImageUploadModel
+	if err := ctx.ShouldBind(&json); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{})
 		return
 	}
-	ctx.JSON(http.StatusCreated, gin.H{})
+
+	contentApplication := application.ContentApp
+	id, result := contentApplication.Upload(json.Image)
+	url := "https://northernlife-content/" + id
+
+	switch result {
+	case application.Success:
+		ctx.JSON(http.StatusCreated, &model.FileImageUploadSuccessResultModel{URL: url})
+		break
+	case application.InvalidEncodedImage:
+		ctx.JSON(http.StatusBadRequest, &model.ErrorMessage{Message: "Invalid encoded image data"})
+		break
+	case application.S3UploadFailed:
+		ctx.JSON(http.StatusInternalServerError, &model.ErrorMessage{Message: "S3 upload failed"})
+		break
+	}
 }

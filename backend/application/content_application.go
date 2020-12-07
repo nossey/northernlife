@@ -1,8 +1,9 @@
 package application
 
 import (
-	"fmt"
-	"os"
+	"bytes"
+	"encoding/base64"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -25,22 +26,40 @@ func init() {
 	ContentApp.Uploader = s3manager.NewUploader(ContentApp.Session)
 }
 
-// Upload uploads a file to s3 bucket
-func (app *ContentApplication) Upload() error {
-	f, err := os.Open("./main.go")
-	if err != nil {
-		return err
-	}
-	defer f.Close()
+// UploadResult represents result type of upload
+type UploadResult int
 
-	result, err := app.Uploader.Upload(&s3manager.UploadInput{
+const (
+	// Success represents success of upload
+	Success UploadResult = iota
+	// InvalidEncodedImage represents invalid image input
+	InvalidEncodedImage
+	// S3UploadFailed represents failure of s3 upload
+	S3UploadFailed
+)
+
+// Upload uploads a file to s3 bucket
+func (app *ContentApplication) Upload(base64EncodedImage string) (id string, result UploadResult) {
+	id = ""
+
+	dec, err := base64.StdEncoding.DecodeString(base64EncodedImage)
+	if err != nil {
+		result = InvalidEncodedImage
+		return
+	}
+	r := bytes.NewReader(dec)
+
+	id = strings.Replace(uuid.New().String(), "-", "", -1)
+	_, err = app.Uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String("northernlife-content"),
-		Key:    aws.String(uuid.New().String()),
-		Body:   f,
+		Key:    aws.String(id),
+		Body:   r,
 	})
 	if err != nil {
-		return err
+		id = ""
+		result = S3UploadFailed
+		return
 	}
-	fmt.Println(result)
-	return nil
+	result = Success
+	return
 }
