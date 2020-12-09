@@ -28,8 +28,7 @@ func (c *ContentController) UploadFile(ctx *gin.Context) {
 	}
 
 	contentApplication := application.ContentApp
-	id, result := contentApplication.Upload(json.Image)
-	url := "https://northernlife-content/" + id
+	url, result := contentApplication.Upload(json.Image)
 
 	switch result {
 	case application.Success:
