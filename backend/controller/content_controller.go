@@ -19,11 +19,20 @@ func init() {
 	ContentCtrl = &ContentController{}
 }
 
-// UploadFile uploads a file
-func (c *ContentController) UploadFile(ctx *gin.Context) {
+// UploadImageFile godoc
+// @Summary Upload a image file of base64 encoded data url type
+// @Accept  json
+// @Produce  json
+// @Param message body model.FileImageUploadModel true "Image Data"
+// @Success 201 {object} model.FileImageUploadSuccessResultModel
+// @Failure 400 {object} model.ErrorMessage
+// @Failure 500 {object} model.ErrorMessage
+// @Router /contents [post]
+// @Tags Contents
+func (c *ContentController) UploadImageFile(ctx *gin.Context) {
 	var json model.FileImageUploadModel
 	if err := ctx.ShouldBind(&json); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{})
+		ctx.JSON(http.StatusBadRequest, &model.ErrorMessage{Message: "Invalid request"})
 		return
 	}
 

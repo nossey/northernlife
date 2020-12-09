@@ -5,6 +5,16 @@ definitions:
       message:
         type: string
     type: object
+  model.FileImageUploadModel:
+    properties:
+      'image:':
+        type: string
+    type: object
+  model.FileImageUploadSuccessResultModel:
+    properties:
+      url:
+        type: string
+    type: object
   model.Login:
     properties:
       password:
@@ -156,6 +166,35 @@ paths:
       summary: Login
       tags:
       - Auth
+  /contents:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Image Data
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.FileImageUploadModel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.FileImageUploadSuccessResultModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+      summary: Upload a image file of base64 encoded data url type
+      tags:
+      - Contents
   /posts:
     get:
       consumes:

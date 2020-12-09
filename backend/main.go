@@ -97,7 +97,7 @@ func main() {
 			cc := controller.ContentCtrl
 			content.Use(handler.MiddlewareFunc())
 			{
-				content.POST("", cc.UploadFile)
+				content.POST("", cc.UploadImageFile)
 			}
 		}
 	}
