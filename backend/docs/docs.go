@@ -336,8 +336,11 @@ var doc = `{
         },
         "model.FileImageUploadModel": {
             "type": "object",
+            "required": [
+                "image"
+            ],
             "properties": {
-                "image:": {
+                "image": {
                     "type": "string"
                 }
             }

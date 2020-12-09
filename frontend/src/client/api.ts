@@ -35,6 +35,32 @@ export interface ModelErrorMessage {
 /**
  * 
  * @export
+ * @interface ModelFileImageUploadModel
+ */
+export interface ModelFileImageUploadModel {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelFileImageUploadModel
+     */
+    image: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModelFileImageUploadSuccessResultModel
+ */
+export interface ModelFileImageUploadSuccessResultModel {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelFileImageUploadSuccessResultModel
+     */
+    url?: string;
+}
+/**
+ * 
+ * @export
  * @interface ModelLogin
  */
 export interface ModelLogin {
@@ -437,6 +463,118 @@ export class AuthApi extends BaseAPI {
      */
     public authUserGet(options?: any) {
         return AuthApiFp(this.configuration).authUserGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
+
+/**
+ * ContentsApi - axios parameter creator
+ * @export
+ */
+export const ContentsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Upload a image file of base64 encoded data url type
+         * @param {ModelFileImageUploadModel} message Image Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contentsPost: async (message: ModelFileImageUploadModel, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'message' is not null or undefined
+            if (message === null || message === undefined) {
+                throw new RequiredError('message','Required parameter message was null or undefined when calling contentsPost.');
+            }
+            const localVarPath = `/contents`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof message !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(message !== undefined ? message : {}) : (message || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ContentsApi - functional programming interface
+ * @export
+ */
+export const ContentsApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Upload a image file of base64 encoded data url type
+         * @param {ModelFileImageUploadModel} message Image Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contentsPost(message: ModelFileImageUploadModel, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelFileImageUploadSuccessResultModel>> {
+            const localVarAxiosArgs = await ContentsApiAxiosParamCreator(configuration).contentsPost(message, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * ContentsApi - factory interface
+ * @export
+ */
+export const ContentsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @summary Upload a image file of base64 encoded data url type
+         * @param {ModelFileImageUploadModel} message Image Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contentsPost(message: ModelFileImageUploadModel, options?: any): AxiosPromise<ModelFileImageUploadSuccessResultModel> {
+            return ContentsApiFp(configuration).contentsPost(message, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ContentsApi - object-oriented interface
+ * @export
+ * @class ContentsApi
+ * @extends {BaseAPI}
+ */
+export class ContentsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Upload a image file of base64 encoded data url type
+     * @param {ModelFileImageUploadModel} message Image Data
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ContentsApi
+     */
+    public contentsPost(message: ModelFileImageUploadModel, options?: any) {
+        return ContentsApiFp(this.configuration).contentsPost(message, options).then((request) => request(this.axios, this.basePath));
     }
 
 }

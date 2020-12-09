@@ -7,8 +7,10 @@ definitions:
     type: object
   model.FileImageUploadModel:
     properties:
-      'image:':
+      image:
         type: string
+    required:
+    - image
     type: object
   model.FileImageUploadSuccessResultModel:
     properties:
