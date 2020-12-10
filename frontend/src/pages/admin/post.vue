@@ -60,6 +60,7 @@ export default defineComponent({
       }).catch(err => {
         // TODO:トーストとか色々出してあげる
         console.log(err)
+        console.log(err.response.data)
         props.isPosting = false;
       });
     }
