@@ -116,7 +116,7 @@ func (c *Controller) CreatePost(ctx *gin.Context) {
 	postID, err := application.CreatePost(create)
 	if err != nil {
 		errorMessage := model.ErrorMessage{
-			Message: "Invalid Request",
+			Message: err.Error(),
 		}
 		ctx.JSON(http.StatusBadRequest, errorMessage)
 		return
