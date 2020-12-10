@@ -91,6 +91,15 @@ func main() {
 				tag.POST("", tc.CreateTag)
 			}
 		}
+
+		content := v1.Group("/contents")
+		{
+			cc := controller.ContentCtrl
+			content.Use(handler.MiddlewareFunc())
+			{
+				content.POST("", cc.UploadImageFile)
+			}
+		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
