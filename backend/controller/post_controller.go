@@ -100,7 +100,7 @@ func (c *Controller) CreatePost(ctx *gin.Context) {
 	var json model.PostCreateBody
 	if err := ctx.ShouldBindJSON(&json); err != nil {
 		errorMessage := model.ErrorMessage{
-			Message: "Invalid Request",
+			Message: err.Error(),
 		}
 		ctx.JSON(http.StatusBadRequest, errorMessage)
 		return
