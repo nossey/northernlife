@@ -42,7 +42,7 @@ const (
 )
 
 // ParseDataURIBase64 parse uri base64 encoded data
-func ParseDataURIBase64(base64Encoded string) (fileExtension string, rawBase64Data string, err error) {
+func ParseDataURIBase64(base64Encoded string) (fileExtension string, mimeType string, rawBase64Data string, err error) {
 	fileExtension = ""
 	rawBase64Data = base64Encoded
 
@@ -53,7 +53,7 @@ func ParseDataURIBase64(base64Encoded string) (fileExtension string, rawBase64Da
 	}
 	colonIdx := strings.Index(base64Encoded, ":")
 	semicolonIdx := strings.Index(base64Encoded, ";")
-	mimeType := base64Encoded[colonIdx+1 : semicolonIdx]
+	mimeType = base64Encoded[colonIdx+1 : semicolonIdx]
 	extensions, err := mime.ExtensionsByType(mimeType)
 	if extensions == nil {
 		err = errors.New("Invalid mime type")
@@ -71,7 +71,7 @@ func ParseDataURIBase64(base64Encoded string) (fileExtension string, rawBase64Da
 func (app *ContentApplication) Upload(base64EncodedImage string) (url string, result UploadResult) {
 	url = ""
 
-	extension, raw, err := ParseDataURIBase64(base64EncodedImage)
+	extension, mimeType, raw, err := ParseDataURIBase64(base64EncodedImage)
 	if err != nil {
 		result = InvalidEncodedImage
 		return
@@ -87,9 +87,10 @@ func (app *ContentApplication) Upload(base64EncodedImage string) (url string, re
 	id := strings.Replace(uuid.New().String(), "-", "", -1)
 	key := id + extension
 	_, err = app.Uploader.Upload(&s3manager.UploadInput{
-		Bucket: aws.String("northernlife-content"),
-		Key:    aws.String(key),
-		Body:   r,
+		Bucket:      aws.String("northernlife-content"),
+		Key:         aws.String(key),
+		Body:        r,
+		ContentType: &mimeType,
 	})
 	if err != nil {
 		url = ""
