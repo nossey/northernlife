@@ -31,6 +31,7 @@ type PostCreate struct {
 	Body      string
 	PlainBody string
 	Published bool
+	Thumbnail string
 	Tags      pq.StringArray
 }
 
@@ -149,6 +150,7 @@ func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 		Body:      create.Body,
 		PlainBody: create.PlainBody,
 		Published: create.Published,
+		Thumbnail: create.Thumbnail,
 	}
 
 	tagsAttachmentSQL := `

@@ -30,6 +30,7 @@ type PostCreateBody struct {
 	Title     string   `json:"title" binding:"required"`
 	PlainBody string   `json:"plain_body" binding:"required"`
 	Tags      []string `json:"tags" binding:"required"`
+	Thumbnail string   `json:"thumbnail" binding:"required"`
 }
 
 // PostCreateResult contains results of post creation
