@@ -72,7 +72,7 @@ export default defineComponent({
         return;
       props.isPosting = true;
       const api = new PostsApi(buildConfiguration());
-      await api.postsPost({title: state.title, body: state.body, plain_body: state.plainBody, tags: []}).then(res => {
+      await api.postsPost({title: state.title, body: state.body, plain_body: state.plainBody, tags: [], thumbnail: "https://northernlife-content.net/lunch.jpg"}).then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.post_id}`)
       }).catch(err => {
