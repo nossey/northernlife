@@ -143,6 +143,12 @@ export interface ModelPost {
      * @type {string}
      * @memberof ModelPost
      */
+    thumbnail?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPost
+     */
     title?: string;
     /**
      * 
@@ -181,6 +187,12 @@ export interface ModelPostCreateBody {
      * @memberof ModelPostCreateBody
      */
     tags: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostCreateBody
+     */
+    thumbnail: string;
     /**
      * 
      * @type {string}

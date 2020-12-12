@@ -388,6 +388,9 @@
                         "type": "string"
                     }
                 },
+                "thumbnail": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
                 },
@@ -405,6 +408,7 @@
                 "body",
                 "plain_body",
                 "tags",
+                "thumbnail",
                 "title"
             ],
             "properties": {
@@ -419,6 +423,9 @@
                     "items": {
                         "type": "string"
                     }
+                },
+                "thumbnail": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"

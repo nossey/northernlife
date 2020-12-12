@@ -21,6 +21,7 @@ type Post struct {
 	Body      string         `gorm:"body"`
 	PlainBody string         `gorm:"plain_body"`
 	Published bool           `gorm:"published"`
+	Thumbnail string         `gorm:"thumbnail"`
 	Tags      pq.StringArray `gorm:"tags type:text[]"`
 }
 
@@ -31,6 +32,7 @@ type PostCreate struct {
 	Body      string
 	PlainBody string
 	Published bool
+	Thumbnail string
 	Tags      pq.StringArray
 }
 
@@ -65,7 +67,9 @@ select
 	p.user_id,
 	p.title,
 	p.body,
-	p.plain_body, p.published,
+	p.plain_body,
+	p.published,
+	p.thumbnail,
 	array_remove(array_agg(t.tag_name), null) as tags
 from
 	posts p
@@ -114,6 +118,7 @@ select
 	p.body,
 	p.plain_body,
 	p.published,
+	p.thumbnail,
 	array_remove(array_agg(t.tag_name), null) as tags
 from
 	posts p
@@ -130,7 +135,7 @@ group by
 `
 
 	row := db.Raw(sql, id.String()).Row()
-	err = row.Scan(&post.CreatedAt, &post.UpdatedAt, &post.ID, &post.UserID, &post.Title, &post.Body, &post.PlainBody, &post.Published, &post.Tags)
+	err = row.Scan(&post.CreatedAt, &post.UpdatedAt, &post.ID, &post.UserID, &post.Title, &post.Body, &post.PlainBody, &post.Published, &post.Thumbnail, &post.Tags)
 
 	return
 }
@@ -149,6 +154,7 @@ func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 		Body:      create.Body,
 		PlainBody: create.PlainBody,
 		Published: create.Published,
+		Thumbnail: create.Thumbnail,
 	}
 
 	tagsAttachmentSQL := `

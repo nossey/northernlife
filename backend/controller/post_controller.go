@@ -26,6 +26,7 @@ func ToPostViewModel(post application.Post) (viewmodel model.Post) {
 		Body:      post.Body,
 		PlainBody: post.PlainBody,
 		Published: post.Published,
+		Thumbnail: post.Thumbnail,
 		Tags:      post.Tags,
 	}
 	return
@@ -111,6 +112,7 @@ func (c *Controller) CreatePost(ctx *gin.Context) {
 		Body:      json.Body,
 		PlainBody: json.PlainBody,
 		Published: true,
+		Thumbnail: json.Thumbnail,
 		Tags:      json.Tags,
 	}
 	postID, err := application.CreatePost(create)

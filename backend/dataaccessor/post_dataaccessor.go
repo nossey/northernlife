@@ -16,4 +16,5 @@ type Post struct {
 	Body      string    `gorm:"body"`
 	PlainBody string    `gorm:"plain_body"`
 	Published bool      `gorm:"published"`
+	Thumbnail string    `gorm:"thumbnail"`
 }

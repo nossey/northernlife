@@ -50,6 +50,8 @@ definitions:
         items:
           type: string
         type: array
+      thumbnail:
+        type: string
       title:
         type: string
       updated_at:
@@ -67,12 +69,15 @@ definitions:
         items:
           type: string
         type: array
+      thumbnail:
+        type: string
       title:
         type: string
     required:
     - body
     - plain_body
     - tags
+    - thumbnail
     - title
     type: object
   model.PostCreateResult:
