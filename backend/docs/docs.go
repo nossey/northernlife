@@ -403,6 +403,9 @@ var doc = `{
                         "type": "string"
                     }
                 },
+                "thumbnail": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
                 },
@@ -420,6 +423,7 @@ var doc = `{
                 "body",
                 "plain_body",
                 "tags",
+                "thumbnail",
                 "title"
             ],
             "properties": {
@@ -434,6 +438,9 @@ var doc = `{
                     "items": {
                         "type": "string"
                     }
+                },
+                "thumbnail": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"
