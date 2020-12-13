@@ -29,7 +29,7 @@ definitions:
     type: object
   model.LoginSuccessMessage:
     properties:
-      expired_at:
+      expiredAt:
         type: string
       token:
         type: string
@@ -38,11 +38,11 @@ definitions:
     properties:
       body:
         type: string
-      created_at:
+      createdAt:
         type: string
       id:
         type: string
-      plain_body:
+      plainBody:
         type: string
       published:
         type: boolean
@@ -54,16 +54,16 @@ definitions:
         type: string
       title:
         type: string
-      updated_at:
+      updatedAt:
         type: string
-      user_id:
+      userID:
         type: string
     type: object
   model.PostCreateBody:
     properties:
       body:
         type: string
-      plain_body:
+      plainBody:
         type: string
       tags:
         items:
@@ -75,25 +75,25 @@ definitions:
         type: string
     required:
     - body
-    - plain_body
+    - plainBody
     - tags
     - thumbnail
     - title
     type: object
   model.PostCreateResult:
     properties:
-      post_id:
+      postID:
         type: string
     type: object
   model.PostListModel:
     properties:
-      per_page_count:
+      perPageCount:
         type: integer
       posts:
         items:
           $ref: '#/definitions/model.Post'
         type: array
-      total_count:
+      totalCount:
         type: integer
     type: object
   model.TagCreateFailResult:
