@@ -5,7 +5,7 @@
       v-for="post in result.posts"
       :id="post.id"
       :title="post.title"
-      :plainBody="post.plain_body"
+      :plainBody="post.plainBody"
       :thumbnail="post.thumbnail"
       :key="post.id"></PostCard>
   </div>

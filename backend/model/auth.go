@@ -11,7 +11,7 @@ type Login struct {
 // LoginSuccessMessage is returned when login successed
 type LoginSuccessMessage struct {
 	Token     string    `json:"token"`
-	ExpiredAt time.Time `json:"expired_at"`
+	ExpiredAt time.Time `json:"expiredAt"`
 }
 
 // UnauthorizedMessage is returned when login failed

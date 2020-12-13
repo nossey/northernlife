@@ -371,7 +371,7 @@ var doc = `{
         "model.LoginSuccessMessage": {
             "type": "object",
             "properties": {
-                "expired_at": {
+                "expiredAt": {
                     "type": "string"
                 },
                 "token": {
@@ -385,13 +385,13 @@ var doc = `{
                 "body": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "plain_body": {
+                "plainBody": {
                     "type": "string"
                 },
                 "published": {
@@ -409,10 +409,10 @@ var doc = `{
                 "title": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 },
-                "user_id": {
+                "userID": {
                     "type": "string"
                 }
             }
@@ -421,7 +421,7 @@ var doc = `{
             "type": "object",
             "required": [
                 "body",
-                "plain_body",
+                "plainBody",
                 "tags",
                 "thumbnail",
                 "title"
@@ -430,7 +430,7 @@ var doc = `{
                 "body": {
                     "type": "string"
                 },
-                "plain_body": {
+                "plainBody": {
                     "type": "string"
                 },
                 "tags": {
@@ -450,7 +450,7 @@ var doc = `{
         "model.PostCreateResult": {
             "type": "object",
             "properties": {
-                "post_id": {
+                "postID": {
                     "type": "string"
                 }
             }
@@ -458,7 +458,7 @@ var doc = `{
         "model.PostListModel": {
             "type": "object",
             "properties": {
-                "per_page_count": {
+                "perPageCount": {
                     "type": "integer"
                 },
                 "posts": {
@@ -467,7 +467,7 @@ var doc = `{
                         "$ref": "#/definitions/model.Post"
                     }
                 },
-                "total_count": {
+                "totalCount": {
                     "type": "integer"
                 }
             }

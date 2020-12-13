@@ -88,7 +88,7 @@ export interface ModelLoginSuccessMessage {
      * @type {string}
      * @memberof ModelLoginSuccessMessage
      */
-    expired_at?: string;
+    expiredAt?: string;
     /**
      * 
      * @type {string}
@@ -113,7 +113,7 @@ export interface ModelPost {
      * @type {string}
      * @memberof ModelPost
      */
-    created_at?: string;
+    createdAt?: string;
     /**
      * 
      * @type {string}
@@ -125,7 +125,7 @@ export interface ModelPost {
      * @type {string}
      * @memberof ModelPost
      */
-    plain_body?: string;
+    plainBody?: string;
     /**
      * 
      * @type {boolean}
@@ -155,13 +155,13 @@ export interface ModelPost {
      * @type {string}
      * @memberof ModelPost
      */
-    updated_at?: string;
+    updatedAt?: string;
     /**
      * 
      * @type {string}
      * @memberof ModelPost
      */
-    user_id?: string;
+    userID?: string;
 }
 /**
  * 
@@ -180,7 +180,7 @@ export interface ModelPostCreateBody {
      * @type {string}
      * @memberof ModelPostCreateBody
      */
-    plain_body: string;
+    plainBody: string;
     /**
      * 
      * @type {Array<string>}
@@ -211,7 +211,7 @@ export interface ModelPostCreateResult {
      * @type {string}
      * @memberof ModelPostCreateResult
      */
-    post_id?: string;
+    postID?: string;
 }
 /**
  * 
@@ -224,7 +224,7 @@ export interface ModelPostListModel {
      * @type {number}
      * @memberof ModelPostListModel
      */
-    per_page_count?: number;
+    perPageCount?: number;
     /**
      * 
      * @type {Array<ModelPost>}
@@ -236,7 +236,7 @@ export interface ModelPostListModel {
      * @type {number}
      * @memberof ModelPostListModel
      */
-    total_count?: number;
+    totalCount?: number;
 }
 /**
  * 
