@@ -1,12 +1,13 @@
 <template>
   <b-container class="card">
     <b-row>
-      <b-col>
-        <h2>{{title}}</h2>
-      </b-col>
+      <b-col><b-img class="img-fluid" :src="thumbnail" /></b-col>
     </b-row>
-    <b-row>
-      <b-col>{{body}}</b-col>
+    <b-row class="mt-1">
+      <b-container>
+        <b-row><b-col><h2>{{title}}</h2></b-col></b-row>
+        <b-row><b-col>{{plainBody}}</b-col></b-row>
+      </b-container>
     </b-row>
     <b-row align-h="end">
       <b-col class="foot">
@@ -27,9 +28,13 @@ export default defineComponent( {
       type: String,
       required: true
     },
-    body: {
+    plainBody: {
       type: String,
       required: true
+    },
+    thumbnail: {
+      type: String,
+      required:true
     },
     title: {
       type: String,
