@@ -41,7 +41,9 @@ export default defineComponent({
       title: "Hello world",
       body: "# Hello World ## This is power",
       renderedBody: computed(() => markdown(state.body)),
-      plainBody: computed(() => htmlToText(state.renderedBody))
+      plainBody: computed(() => htmlToText(state.renderedBody, {
+        ignoreImage: true
+      }))
     });
 
     const dragEnter = () => {
