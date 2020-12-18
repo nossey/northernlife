@@ -11,6 +11,17 @@ import (
 	"github.com/nossey/northernlife/infrastructure"
 )
 
+// PostApplication manages posts
+type PostApplication struct {
+}
+
+// PostApp provides functions for post
+var PostApp *PostApplication
+
+func init() {
+	PostApp = &PostApplication{}
+}
+
 // Post is application layer's post
 type Post struct {
 	CreatedAt time.Time      `gorm:"created_at"`
@@ -188,5 +199,15 @@ where
 	if err != nil {
 		postID = uuid.Nil
 	}
+	return
+}
+
+// DeletePost deletes a post
+func (app *PostApplication) DeletePost(userID string, postID string) (err error) {
+
+	fmt.Println(userID)
+	fmt.Println(postID)
+
+	err = nil
 	return
 }
