@@ -1,6 +1,7 @@
 package application
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -204,10 +205,24 @@ where
 
 // DeletePost deletes a post
 func (app *PostApplication) DeletePost(userID string, postID string) (err error) {
+	db := infrastructure.Db
 
-	fmt.Println(userID)
-	fmt.Println(postID)
+	postUUID, err := uuid.Parse(postID)
+	if err != nil {
+		return
+	}
 
-	err = nil
+	post := Post{
+		ID: postUUID,
+	}
+
+	err = db.Transaction(func(tx *gorm.DB) error {
+		affected := tx.Delete(&post).RowsAffected
+		if affected != 1 {
+			return errors.New("No post deleted")
+		}
+
+		return nil
+	})
 	return
 }
