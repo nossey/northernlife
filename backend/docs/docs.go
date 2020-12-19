@@ -284,7 +284,12 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "204": {},
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "$ref": "#/definitions/model.PostDeleteResult"
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
@@ -489,6 +494,14 @@ var doc = `{
             }
         },
         "model.PostCreateResult": {
+            "type": "object",
+            "properties": {
+                "postID": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PostDeleteResult": {
             "type": "object",
             "properties": {
                 "postID": {

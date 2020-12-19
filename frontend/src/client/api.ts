@@ -216,6 +216,19 @@ export interface ModelPostCreateResult {
 /**
  * 
  * @export
+ * @interface ModelPostDeleteResult
+ */
+export interface ModelPostDeleteResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostDeleteResult
+     */
+    postID?: string;
+}
+/**
+ * 
+ * @export
  * @interface ModelPostListModel
  */
 export interface ModelPostListModel {
@@ -635,6 +648,50 @@ export const PostsApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Delete single post
+         * @param {string} id Post ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postsIdDelete: async (id: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling postsIdDelete.');
+            }
+            const localVarPath = `/posts/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication ApiKeyAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get single post with specific id
          * @param {string} id Post ID
          * @param {*} [options] Override http request option.
@@ -741,6 +798,20 @@ export const PostsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Delete single post
+         * @param {string} id Post ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postsIdDelete(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostDeleteResult>> {
+            const localVarAxiosArgs = await PostsApiAxiosParamCreator(configuration).postsIdDelete(id, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary Get single post with specific id
          * @param {string} id Post ID
          * @param {*} [options] Override http request option.
@@ -788,6 +859,16 @@ export const PostsApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @summary Delete single post
+         * @param {string} id Post ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postsIdDelete(id: string, options?: any): AxiosPromise<ModelPostDeleteResult> {
+            return PostsApiFp(configuration).postsIdDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get single post with specific id
          * @param {string} id Post ID
          * @param {*} [options] Override http request option.
@@ -826,6 +907,18 @@ export class PostsApi extends BaseAPI {
      */
     public postsGet(page?: number, options?: any) {
         return PostsApiFp(this.configuration).postsGet(page, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Delete single post
+     * @param {string} id Post ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PostsApi
+     */
+    public postsIdDelete(id: string, options?: any) {
+        return PostsApiFp(this.configuration).postsIdDelete(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -85,6 +85,11 @@ definitions:
       postID:
         type: string
     type: object
+  model.PostDeleteResult:
+    properties:
+      postID:
+        type: string
+    type: object
   model.PostListModel:
     properties:
       perPageCount:
@@ -264,7 +269,10 @@ paths:
       produces:
       - application/json
       responses:
-        "204": {}
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/model.PostDeleteResult'
         "401":
           description: Unauthorized
           schema:

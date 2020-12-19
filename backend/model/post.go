@@ -38,3 +38,8 @@ type PostCreateBody struct {
 type PostCreateResult struct {
 	PostID string `json:"postID"`
 }
+
+// PostDeleteResult contains results of post creation
+type PostDeleteResult struct {
+	PostID string `json:"postID"`
+}

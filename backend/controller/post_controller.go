@@ -146,7 +146,7 @@ func (c *Controller) CreatePost(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Post ID"
-// @Success 204
+// @Success 204 {object} model.PostDeleteResult
 // @Failure 401 {object} model.UnauthorizedMessage
 // @Failure 404 {object} model.ErrorMessage
 // @Router /posts/{id} [delete]
@@ -164,5 +164,7 @@ func (pc *PostController) DeletePost(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusNoContent, gin.H{})
+	ctx.JSON(http.StatusNoContent, model.PostDeleteResult{
+		PostID: postID,
+	})
 }
