@@ -160,7 +160,7 @@ func (pc *PostController) DeletePost(ctx *gin.Context) {
 	postApplicaion := application.PostApp
 	err := postApplicaion.DeletePost(userID, postID)
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "NotFound"})
+		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "NotFound Post"})
 		return
 	}
 
