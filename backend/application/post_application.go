@@ -1,6 +1,7 @@
 package application
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -10,6 +11,17 @@ import (
 	"github.com/nossey/northernlife/dataaccessor"
 	"github.com/nossey/northernlife/infrastructure"
 )
+
+// PostApplication manages posts
+type PostApplication struct {
+}
+
+// PostApp provides functions for post
+var PostApp *PostApplication
+
+func init() {
+	PostApp = &PostApplication{}
+}
 
 // Post is application layer's post
 type Post struct {
@@ -74,7 +86,7 @@ select
 from
 	posts p
 left join
-	tags_posts_attachment tpa
+	tags_posts_attachments tpa
 	on p.id = tpa.post_id
 left join
 	tags t
@@ -123,7 +135,7 @@ select
 from
 	posts p
 left join
-	tags_posts_attachment tpa
+	tags_posts_attachments tpa
 	on p.id = tpa.post_id
 left join
 	tags t
@@ -158,7 +170,7 @@ func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 	}
 
 	tagsAttachmentSQL := `
-insert into tags_posts_attachment 
+insert into tags_posts_attachments
 (
 	created_at,
 	id,
@@ -188,5 +200,34 @@ where
 	if err != nil {
 		postID = uuid.Nil
 	}
+	return
+}
+
+// DeletePost deletes a post
+func (app *PostApplication) DeletePost(userID string, postID string) (err error) {
+	db := infrastructure.Db
+
+	postUUID, err := uuid.Parse(postID)
+	if err != nil {
+		return
+	}
+
+	post := Post{
+		ID: postUUID,
+	}
+
+	err = db.Transaction(func(tx *gorm.DB) error {
+		err = tx.Where("post_id = ?", postUUID).Delete(&dataaccessor.TagsPostsAttachments{}).Error
+		if err != nil {
+			return err
+		}
+
+		affected := tx.Delete(&post).RowsAffected
+		if affected != 1 {
+			return errors.New("No post deleted")
+		}
+
+		return nil
+	})
 	return
 }

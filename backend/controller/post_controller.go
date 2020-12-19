@@ -15,6 +15,17 @@ import (
 	"github.com/nossey/northernlife/model"
 )
 
+// PostController produces endpoints for manage post
+type PostController struct {
+}
+
+// PostCtrl provides endpoints for post
+var PostCtrl *PostController
+
+func init() {
+	PostCtrl = &PostController{}
+}
+
 // ToPostViewModel converts application post to viewmodel post
 func ToPostViewModel(post application.Post) (viewmodel model.Post) {
 	viewmodel = model.Post{
@@ -128,4 +139,32 @@ func (c *Controller) CreatePost(ctx *gin.Context) {
 		PostID: id,
 	}
 	ctx.JSON(http.StatusOK, successResult)
+}
+
+// DeletePost godoc
+// @Summary Delete single post
+// @Accept json
+// @Produce json
+// @Param id path string true "Post ID"
+// @Success 204 {object} model.PostDeleteResult
+// @Failure 401 {object} model.UnauthorizedMessage
+// @Failure 404 {object} model.ErrorMessage
+// @Router /posts/{id} [delete]
+// @Security ApiKeyAuth
+// @Tags Posts
+func (pc *PostController) DeletePost(ctx *gin.Context) {
+	claims := jwt.ExtractClaims(ctx)
+	userID := claims[identityKey].(string)
+	postID := ctx.Param("id")
+
+	postApplicaion := application.PostApp
+	err := postApplicaion.DeletePost(userID, postID)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "NotFound"})
+		return
+	}
+
+	ctx.JSON(http.StatusNoContent, model.PostDeleteResult{
+		PostID: postID,
+	})
 }
