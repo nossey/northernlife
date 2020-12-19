@@ -86,7 +86,7 @@ select
 from
 	posts p
 left join
-	tags_posts_attachment tpa
+	tags_posts_attachments tpa
 	on p.id = tpa.post_id
 left join
 	tags t
@@ -135,7 +135,7 @@ select
 from
 	posts p
 left join
-	tags_posts_attachment tpa
+	tags_posts_attachments tpa
 	on p.id = tpa.post_id
 left join
 	tags t
@@ -170,7 +170,7 @@ func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 	}
 
 	tagsAttachmentSQL := `
-insert into tags_posts_attachment 
+insert into tags_posts_attachments
 (
 	created_at,
 	id,
@@ -217,6 +217,11 @@ func (app *PostApplication) DeletePost(userID string, postID string) (err error)
 	}
 
 	err = db.Transaction(func(tx *gorm.DB) error {
+		err = tx.Where("post_id = ?", postUUID).Delete(&dataaccessor.TagsPostsAttachments{}).Error
+		if err != nil {
+			return err
+		}
+
 		affected := tx.Delete(&post).RowsAffected
 		if affected != 1 {
 			return errors.New("No post deleted")
