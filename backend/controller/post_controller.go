@@ -145,7 +145,7 @@ func (c *Controller) CreatePost(ctx *gin.Context) {
 // @Summary Delete single post
 // @Accept json
 // @Produce json
-// @Param message body model.PostCreateBody true "Post Data"
+// @Param id path string true "Post ID"
 // @Success 204
 // @Failure 401 {object} model.UnauthorizedMessage
 // @Failure 404 {object} model.ErrorMessage
