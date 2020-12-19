@@ -2,7 +2,7 @@
   <div>
     <b-container fluid>
       <b-row>
-        <b-col>
+        <b-col class="col edit-area">
           <b-container class="p-3">
             <b-row>
               <b-container>
@@ -21,15 +21,20 @@
               </b-container>
             </b-row>
             <b-row class="mt-2">
-              Thumbnail
-              :: TODO
+              <b-container>
+                <b-row>Thumbnail:</b-row>
+                <b-row>{{state.thumbnail}}</b-row>
+                <b-row>
+                  <input @change="uploadThumbnail" type="file">
+                </b-row>
+              </b-container>
             </b-row>
             <b-row class="mt-2">
               <Button @click.native="postman">POST</Button>
             </b-row>
           </b-container>
         </b-col>
-        <b-col>
+        <b-col class="col">
           <Post v-bind:body="state.body"></Post>
         </b-col>
       </b-row>
@@ -67,7 +72,8 @@ export default defineComponent({
       renderedBody: computed(() => markdown(state.body)),
       plainBody: computed(() => htmlToText(state.renderedBody, {
         ignoreImage: true
-      }))
+      })),
+      thumbnail: "https://northernlife-content.net/lunch.jpg"
     });
 
     const dragEnter = () => {
@@ -87,12 +93,23 @@ export default defineComponent({
      reader.readAsDataURL(file);
     }
 
+    const uploadThumbnail = (event) => {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const uploader = new ContentsApi(buildConfiguration());
+        const result = await uploader.contentsPost({image: reader.result as string});
+        state.thumbnail = result.data.url;
+      }
+      reader.readAsDataURL(file);
+    }
+
     const postman = async () => {
       if (props.isPosting)
         return;
       props.isPosting = true;
       const api = new PostsApi(buildConfiguration());
-      await api.postsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: [], thumbnail: "https://northernlife-content.net/lunch.jpg"}).then(res => {
+      await api.postsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: [], thumbnail: state.thumbnail}).then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.postID}`)
       }).catch(err => {
@@ -110,18 +127,24 @@ export default defineComponent({
 
       dragEnter,
       dragLeave,
-      dropFile
+      dropFile,
+      uploadThumbnail
     }
   }
 })
 </script>
 
 <style scoped lang="scss">
+@import "assets/colors.scss";
 
 textarea {
   width: 100%;
   height: 300px;
   box-sizing: border-box;
+}
+
+.edit-area {
+  border-right: 1px dotted $shadow-color;
 }
 
 </style>
