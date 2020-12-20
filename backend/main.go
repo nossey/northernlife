@@ -56,8 +56,6 @@ func main() {
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	r := gin.Default()
-	c := controller.NewController()
-	tc := controller.CreateTagController()
 
 	handler := controller.GetAuthHandler()
 	v1 := r.Group("/api/v1")
@@ -76,17 +74,19 @@ func main() {
 
 		auth := v1.Group("/auth")
 		{
-			auth.POST("/login", c.Login)
+			ac := controller.AuthCtrl
+			auth.POST("/login", ac.Login)
 			auth.POST("/logout", handler.LogoutHandler)
 			auth.Use(handler.MiddlewareFunc())
 			{
-				auth.GET("/user", c.GetUser)
+				auth.GET("/user", ac.GetUser)
 			}
 			auth.GET("/refresh", handler.RefreshHandler)
 		}
 
 		tag := v1.Group("/tags")
 		{
+			tc := controller.TagCtrl
 			tag.GET("", tc.GetTags)
 			tag.Use(handler.MiddlewareFunc())
 			{

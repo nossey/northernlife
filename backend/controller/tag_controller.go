@@ -8,13 +8,15 @@ import (
 	"github.com/nossey/northernlife/model"
 )
 
-// CreateTagController creates tag controller
-func CreateTagController() *TagController {
-	return &TagController{}
+// TagController provides endpoints for tag api
+type TagController struct {
 }
 
-// TagController routes rest api for tags
-type TagController struct {
+// TagCtrl is single instance of TagController
+var TagCtrl *TagController
+
+func init() {
+	TagCtrl = &TagController{}
 }
 
 // GetTags godocs
