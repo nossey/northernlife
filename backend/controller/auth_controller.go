@@ -10,10 +10,19 @@ import (
 	"github.com/nossey/northernlife/model"
 )
 
+// AuthController provides endpoints of auth api
+type AuthController struct {
+}
+
+// AuthCtrl is single instance of AuthController
+var AuthCtrl *AuthController
+
 var authHandler *jwt.GinJWTMiddleware
 var identityKey = "id"
 
 func init() {
+	AuthCtrl = &AuthController{}
+
 	authHandler, _ = jwt.New(&jwt.GinJWTMiddleware{
 		Realm:       "Northernlife Auth",
 		Key:         []byte("secret key"),
@@ -70,7 +79,7 @@ func init() {
 // @Failure 401 {object} model.UnauthorizedMessage
 // @Router /auth/login [post]
 // @Tags Auth
-func (c *Controller) Login(ctx *gin.Context) {
+func (c *AuthController) Login(ctx *gin.Context) {
 	authHandler.LoginHandler(ctx)
 }
 
@@ -87,7 +96,7 @@ func GetAuthHandler() *jwt.GinJWTMiddleware {
 // @Router /auth/user [get]
 // @Security ApiKeyAuth
 // @Tags Auth
-func (c *Controller) GetUser(ctx *gin.Context) {
+func (c *AuthController) GetUser(ctx *gin.Context) {
 	//claims := jwt.ExtractClaims(ctx)
 	user, _ := ctx.Get(identityKey)
 	//ctx.JSON(http.StatusOK, gin.H{

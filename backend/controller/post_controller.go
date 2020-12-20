@@ -51,7 +51,7 @@ func ToPostViewModel(post application.Post) (viewmodel model.Post) {
 // @Router /posts [get]
 // @Param page query int false "Page"
 // @Tags Posts
-func (c *Controller) GetPosts(ctx *gin.Context) {
+func (postController *PostController) GetPosts(ctx *gin.Context) {
 	pageQuery := ctx.Query("page")
 	page, err := strconv.Atoi(pageQuery)
 	if err != nil {
@@ -79,7 +79,7 @@ func (c *Controller) GetPosts(ctx *gin.Context) {
 // @Failure 404 {object} model.ErrorMessage
 // @Router /posts/{id} [get]
 // @Tags Posts
-func (c *Controller) GetPost(ctx *gin.Context) {
+func (postController *PostController) GetPost(ctx *gin.Context) {
 	id := ctx.Param("id")
 	postID, err := uuid.Parse(id)
 	if err != nil {
@@ -106,7 +106,7 @@ func (c *Controller) GetPost(ctx *gin.Context) {
 // @Router /posts [post]
 // @Security ApiKeyAuth
 // @Tags Posts
-func (c *Controller) CreatePost(ctx *gin.Context) {
+func (postController *PostController) CreatePost(ctx *gin.Context) {
 	claims := jwt.ExtractClaims(ctx)
 
 	var json model.PostCreateBody
@@ -152,7 +152,7 @@ func (c *Controller) CreatePost(ctx *gin.Context) {
 // @Router /posts/{id} [delete]
 // @Security ApiKeyAuth
 // @Tags Posts
-func (pc *PostController) DeletePost(ctx *gin.Context) {
+func (postController *PostController) DeletePost(ctx *gin.Context) {
 	claims := jwt.ExtractClaims(ctx)
 	userID := claims[identityKey].(string)
 	postID := ctx.Param("id")
