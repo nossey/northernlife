@@ -64,12 +64,12 @@ func main() {
 	{
 		post := v1.Group("/posts")
 		{
-			post.GET("", c.GetPosts)
-			post.GET("/:id", c.GetPost)
+			pc := controller.PostCtrl
+			post.GET("", pc.GetPosts)
+			post.GET("/:id", pc.GetPost)
 			post.Use(handler.MiddlewareFunc())
 			{
-				post.POST("", c.CreatePost)
-				pc := controller.PostCtrl
+				post.POST("", pc.CreatePost)
 				post.DELETE("/:id", pc.DeletePost)
 			}
 		}
