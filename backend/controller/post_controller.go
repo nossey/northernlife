@@ -155,18 +155,18 @@ func (postController *PostController) CreatePost(ctx *gin.Context) {
 // @Security ApiKeyAuth
 // @Tags Posts
 func (postController *PostController) UpdatePost(ctx *gin.Context) {
+	id := ctx.Param("id")
+	postID, err := uuid.Parse(id)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "Invalid post id (should be uuid)"})
+		return
+	}
+
 	var json model.PostUpdateModel
-	err := ctx.ShouldBindJSON(&json)
+	err = ctx.ShouldBindJSON(&json)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, model.ErrorMessage{
 			Message: "Invalid Request",
-		})
-		return
-	}
-	postID, err := uuid.Parse(json.PostID)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, model.ErrorMessage{
-			Message: "Invalid PostID",
 		})
 		return
 	}

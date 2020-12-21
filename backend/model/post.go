@@ -41,7 +41,6 @@ type PostCreateResult struct {
 
 // PostUpdateModel is body to update a post
 type PostUpdateModel struct {
-	PostID    string   `json:"postID" binding:"required"`
 	Body      string   `json:"body" binding:"required"`
 	Title     string   `json:"title" binding:"required"`
 	PlainBody string   `json:"plainBody" binding:"required"`
