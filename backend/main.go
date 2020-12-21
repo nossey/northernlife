@@ -68,6 +68,7 @@ func main() {
 			post.Use(handler.MiddlewareFunc())
 			{
 				post.POST("", pc.CreatePost)
+				post.PUT("/:id", pc.UpdatePost)
 				post.DELETE("/:id", pc.DeletePost)
 			}
 		}

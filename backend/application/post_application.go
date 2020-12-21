@@ -55,6 +55,18 @@ type PostListResult struct {
 	PerPageCount int
 }
 
+// PostUpdate is used to update a post
+type PostUpdate struct {
+	PostID    uuid.UUID
+	UserID    string
+	Title     string
+	Body      string
+	PlainBody string
+	Published bool
+	Thumbnail string
+	Tags      pq.StringArray
+}
+
 // GetPosts get posts with pagination
 func GetPosts(page int) (result PostListResult) {
 	perPageCount := 10
@@ -200,6 +212,12 @@ where
 	if err != nil {
 		postID = uuid.Nil
 	}
+	return
+}
+
+// UpdatePost updates a post
+func (app *PostApplication) UpdatePost(update PostUpdate) (err error) {
+	err = nil
 	return
 }
 
