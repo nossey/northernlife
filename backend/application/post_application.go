@@ -217,7 +217,60 @@ where
 
 // UpdatePost updates a post
 func (app *PostApplication) UpdatePost(update PostUpdate) (err error) {
-	err = nil
+	post := dataaccessor.Post{
+		UpdatedAt: time.Now(),
+		ID:        update.PostID,
+		UserID:    update.UserID,
+		Title:     update.Title,
+		Body:      update.Body,
+		PlainBody: update.PlainBody,
+		Published: update.Published,
+		Thumbnail: update.Thumbnail,
+	}
+	db := infrastructure.Db
+
+	deleteTagsAttachmentSQL := `
+delete from
+	tags_posts_attachments
+where
+	post_id = ?
+`
+
+	tagsAttachmentSQL := `
+insert into tags_posts_attachments
+(
+	created_at,
+	id,
+	post_id,
+	tag_id
+)
+select
+	current_timestamp as created_at,
+	uuid_generate_v4() as id,
+	? as post_id,
+	t.id as tag_id
+from
+	tags t
+where
+	tag_name = any(?)`
+
+	err = db.Transaction(func(tx *gorm.DB) error {
+		err = db.Exec(deleteTagsAttachmentSQL, update.PostID).Error
+		if err != nil {
+			return err
+		}
+
+		err = db.Update(&post).Error
+		if err != nil {
+			return err
+		}
+
+		if err = tx.Exec(tagsAttachmentSQL, update.PostID.String(), update.Tags).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 	return
 }
 
