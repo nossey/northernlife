@@ -141,6 +141,62 @@ func (postController *PostController) CreatePost(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, successResult)
 }
 
+// UpdatePost godoc
+// @Summary Update single post
+// @Accept json
+// @Produce json
+// @Param id path string true "Post ID"
+// @Param message body model.PostUpdateModel true "Post Data"
+// @Success 200 {object} model.PostUpdateResult
+// @Failure 400 {object} model.ErrorMessage
+// @Failure 401 {object} model.UnauthorizedMessage
+// @Failure 404 {object} model.ErrorMessage
+// @Router /posts/{id} [put]
+// @Security ApiKeyAuth
+// @Tags Posts
+func (postController *PostController) UpdatePost(ctx *gin.Context) {
+	id := ctx.Param("id")
+	postID, err := uuid.Parse(id)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "Invalid post id (should be uuid)"})
+		return
+	}
+
+	var json model.PostUpdateModel
+	err = ctx.ShouldBindJSON(&json)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, model.ErrorMessage{
+			Message: "Invalid Request",
+		})
+		return
+	}
+
+	claims := jwt.ExtractClaims(ctx)
+	userID := claims[identityKey].(string)
+	postApplication := application.PostApp
+	err = postApplication.UpdatePost(application.PostUpdate{
+		PostID:    postID,
+		UserID:    userID,
+		Body:      json.Body,
+		Title:     json.Title,
+		PlainBody: json.PlainBody,
+		Tags:      json.Tags,
+		Thumbnail: json.Thumbnail,
+		Published: json.Published,
+	})
+
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, model.ErrorMessage{
+			Message: "Post Not Found",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, model.PostUpdateResult{
+		PostID: id,
+	})
+}
+
 // DeletePost godoc
 // @Summary Delete single post
 // @Accept json

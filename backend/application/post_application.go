@@ -55,6 +55,18 @@ type PostListResult struct {
 	PerPageCount int
 }
 
+// PostUpdate is used to update a post
+type PostUpdate struct {
+	PostID    uuid.UUID
+	UserID    string
+	Title     string
+	Body      string
+	PlainBody string
+	Published bool
+	Thumbnail string
+	Tags      pq.StringArray
+}
+
 // GetPosts get posts with pagination
 func GetPosts(page int) (result PostListResult) {
 	perPageCount := 10
@@ -200,6 +212,68 @@ where
 	if err != nil {
 		postID = uuid.Nil
 	}
+	return
+}
+
+// UpdatePost updates a post
+func (app *PostApplication) UpdatePost(update PostUpdate) (err error) {
+	db := infrastructure.Db
+
+	deleteTagsAttachmentSQL := `
+delete from
+	tags_posts_attachments
+where
+	post_id = ?
+`
+
+	updatePostSQL := `
+update posts 
+set 
+	updated_at = current_timestamp,
+	title = ?,
+	body = ?,
+	plain_body = ?,
+	published = ?,
+	thumbnail = ? 
+where
+	id = ? 
+	and user_id = ?;`
+
+	tagsAttachmentSQL := `
+insert into tags_posts_attachments
+(
+	created_at,
+	id,
+	post_id,
+	tag_id
+)
+select
+	current_timestamp as created_at,
+	uuid_generate_v4() as id,
+	? as post_id,
+	t.id as tag_id
+from
+	tags t
+where
+	tag_name = any(?)`
+
+	err = db.Transaction(func(tx *gorm.DB) error {
+		err = db.Exec(deleteTagsAttachmentSQL, update.PostID).Error
+		if err != nil {
+			return err
+		}
+
+		err = db.Exec(updatePostSQL, update.Title, update.Body, update.PlainBody, update.Published, update.Thumbnail, update.PostID, update.UserID).Error
+		if err != nil {
+			return err
+		}
+
+		if err = tx.Exec(tagsAttachmentSQL, update.PostID.String(), update.Tags).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 	return
 }
 

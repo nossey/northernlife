@@ -39,6 +39,21 @@ type PostCreateResult struct {
 	PostID string `json:"postID"`
 }
 
+// PostUpdateModel is body to update a post
+type PostUpdateModel struct {
+	Body      string   `json:"body" binding:"required"`
+	Title     string   `json:"title" binding:"required"`
+	PlainBody string   `json:"plainBody" binding:"required"`
+	Tags      []string `json:"tags" binding:"required"`
+	Thumbnail string   `json:"thumbnail" binding:"required"`
+	Published bool     `json:"published" binding:"required"`
+}
+
+// PostUpdateResult is success result of update a post
+type PostUpdateResult struct {
+	PostID string `json:"postID"`
+}
+
 // PostDeleteResult contains results of post creation
 type PostDeleteResult struct {
 	PostID string `json:"postID"`
