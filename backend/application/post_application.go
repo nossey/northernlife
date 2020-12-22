@@ -217,16 +217,6 @@ where
 
 // UpdatePost updates a post
 func (app *PostApplication) UpdatePost(update PostUpdate) (err error) {
-	post := dataaccessor.Post{
-		UpdatedAt: time.Now(),
-		ID:        update.PostID,
-		UserID:    update.UserID,
-		Title:     update.Title,
-		Body:      update.Body,
-		PlainBody: update.PlainBody,
-		Published: update.Published,
-		Thumbnail: update.Thumbnail,
-	}
 	db := infrastructure.Db
 
 	deleteTagsAttachmentSQL := `
@@ -235,6 +225,19 @@ delete from
 where
 	post_id = ?
 `
+
+	updatePostSQL := `
+update posts 
+set 
+	updated_at = current_timestamp,
+	title = ?,
+	body = ?,
+	plain_body = ?,
+	published = ?,
+	thumbnail = ? 
+where
+	id = ? 
+	and user_id = ?;`
 
 	tagsAttachmentSQL := `
 insert into tags_posts_attachments
@@ -260,7 +263,7 @@ where
 			return err
 		}
 
-		err = db.Update(&post).Error
+		err = db.Exec(updatePostSQL, update.Title, update.Body, update.PlainBody, update.Published, update.Thumbnail, update.PostID, update.UserID).Error
 		if err != nil {
 			return err
 		}
