@@ -101,6 +101,35 @@ definitions:
       totalCount:
         type: integer
     type: object
+  model.PostUpdateModel:
+    properties:
+      body:
+        type: string
+      plainBody:
+        type: string
+      published:
+        type: boolean
+      tags:
+        items:
+          type: string
+        type: array
+      thumbnail:
+        type: string
+      title:
+        type: string
+    required:
+    - body
+    - plainBody
+    - published
+    - tags
+    - thumbnail
+    - title
+    type: object
+  model.PostUpdateResult:
+    properties:
+      postID:
+        type: string
+    type: object
   model.TagCreateFailResult:
     properties:
       message:
@@ -307,6 +336,45 @@ paths:
           schema:
             $ref: '#/definitions/model.ErrorMessage'
       summary: Get single post with specific id
+      tags:
+      - Posts
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Post Data
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.PostUpdateModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostUpdateResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Update single post
       tags:
       - Posts
   /tags:

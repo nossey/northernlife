@@ -254,6 +254,62 @@ export interface ModelPostListModel {
 /**
  * 
  * @export
+ * @interface ModelPostUpdateModel
+ */
+export interface ModelPostUpdateModel {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostUpdateModel
+     */
+    body: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostUpdateModel
+     */
+    plainBody: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ModelPostUpdateModel
+     */
+    published: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ModelPostUpdateModel
+     */
+    tags: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostUpdateModel
+     */
+    thumbnail: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostUpdateModel
+     */
+    title: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModelPostUpdateResult
+ */
+export interface ModelPostUpdateResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostUpdateResult
+     */
+    postID?: string;
+}
+/**
+ * 
+ * @export
  * @interface ModelTagCreateFailResult
  */
 export interface ModelTagCreateFailResult {
@@ -728,6 +784,59 @@ export const PostsApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Update single post
+         * @param {string} id Post ID
+         * @param {ModelPostUpdateModel} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postsIdPut: async (id: string, message: ModelPostUpdateModel, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling postsIdPut.');
+            }
+            // verify required parameter 'message' is not null or undefined
+            if (message === null || message === undefined) {
+                throw new RequiredError('message','Required parameter message was null or undefined when calling postsIdPut.');
+            }
+            const localVarPath = `/posts/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication ApiKeyAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof message !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(message !== undefined ? message : {}) : (message || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Create single post
          * @param {ModelPostCreateBody} message Post Data
          * @param {*} [options] Override http request option.
@@ -826,6 +935,21 @@ export const PostsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Update single post
+         * @param {string} id Post ID
+         * @param {ModelPostUpdateModel} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postsIdPut(id: string, message: ModelPostUpdateModel, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostUpdateResult>> {
+            const localVarAxiosArgs = await PostsApiAxiosParamCreator(configuration).postsIdPut(id, message, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary Create single post
          * @param {ModelPostCreateBody} message Post Data
          * @param {*} [options] Override http request option.
@@ -876,6 +1000,17 @@ export const PostsApiFactory = function (configuration?: Configuration, basePath
          */
         postsIdGet(id: string, options?: any): AxiosPromise<ModelPost> {
             return PostsApiFp(configuration).postsIdGet(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update single post
+         * @param {string} id Post ID
+         * @param {ModelPostUpdateModel} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postsIdPut(id: string, message: ModelPostUpdateModel, options?: any): AxiosPromise<ModelPostUpdateResult> {
+            return PostsApiFp(configuration).postsIdPut(id, message, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -931,6 +1066,19 @@ export class PostsApi extends BaseAPI {
      */
     public postsIdGet(id: string, options?: any) {
         return PostsApiFp(this.configuration).postsIdGet(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update single post
+     * @param {string} id Post ID
+     * @param {ModelPostUpdateModel} message Post Data
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PostsApi
+     */
+    public postsIdPut(id: string, message: ModelPostUpdateModel, options?: any) {
+        return PostsApiFp(this.configuration).postsIdPut(id, message, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

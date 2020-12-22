@@ -142,11 +142,11 @@ func (postController *PostController) CreatePost(ctx *gin.Context) {
 }
 
 // UpdatePost godoc
-// @Summary Delete single post
+// @Summary Update single post
 // @Accept json
 // @Produce json
 // @Param id path string true "Post ID"
-// @Param message body model.PostCreateBody true "Post Data"
+// @Param message body model.PostUpdateModel true "Post Data"
 // @Success 200 {object} model.PostUpdateResult
 // @Failure 400 {object} model.ErrorMessage
 // @Failure 401 {object} model.UnauthorizedMessage
@@ -182,6 +182,7 @@ func (postController *PostController) UpdatePost(ctx *gin.Context) {
 		PlainBody: json.PlainBody,
 		Tags:      json.Tags,
 		Thumbnail: json.Thumbnail,
+		Published: json.Published,
 	})
 
 	if err != nil {
@@ -190,6 +191,10 @@ func (postController *PostController) UpdatePost(ctx *gin.Context) {
 		})
 		return
 	}
+
+	ctx.JSON(http.StatusOK, model.PostUpdateResult{
+		PostID: id,
+	})
 }
 
 // DeletePost godoc
