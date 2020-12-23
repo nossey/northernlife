@@ -1,7 +1,10 @@
 <template>
-  <div>
-    <Post :body="this.post.body"></Post>
-  </div>
+  <b-container>
+    <Post
+      :title="this.post.title"
+      :body="this.post.body"
+      :thumbnail="this.post.thumbnail"></Post>
+  </b-container>
 </template>
 
 <script>
