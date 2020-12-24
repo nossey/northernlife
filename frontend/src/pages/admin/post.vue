@@ -35,7 +35,10 @@
           </b-container>
         </b-col>
         <b-col class="col">
-          <Post v-bind:body="state.body"></Post>
+          <Post
+            v-bind:thumbnail="state.thumbnail"
+            v-bind:title="state.title"
+            v-bind:body="state.body"></Post>
         </b-col>
       </b-row>
     </b-container>
