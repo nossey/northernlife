@@ -53,7 +53,10 @@ import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
 import { createMarkdown } from "safe-marked";
-const markdown = createMarkdown();
+const markdown = createMarkdown({
+  marked:{
+    breaks: true
+  }});
 const { htmlToText } = require('html-to-text');
 
 type Props = {
