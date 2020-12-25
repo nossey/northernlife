@@ -38,7 +38,9 @@
           <Post
             v-bind:thumbnail="state.thumbnail"
             v-bind:title="state.title"
-            v-bind:body="state.body"></Post>
+            v-bind:body="state.body"
+            v-bind:tags="state.tags"
+          ></Post>
         </b-col>
       </b-row>
     </b-container>
@@ -72,6 +74,7 @@ export default defineComponent({
   middleware: 'auth',
   setup(props:Props, context) {
     props.isPosting = false
+    const emptyTags: string[] = new Array();
     const state = reactive({
       title: "Hello world",
       body: "# Hello World",
@@ -79,7 +82,8 @@ export default defineComponent({
       plainBody: computed(() => htmlToText(state.renderedBody, {
         ignoreImage: true
       })),
-      thumbnail: "https://northernlife-content.net/lunch.jpg"
+      thumbnail: "https://northernlife-content.net/lunch.jpg",
+      tags: emptyTags
     });
 
     const dragEnter = () => {
