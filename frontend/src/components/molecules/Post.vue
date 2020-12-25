@@ -19,7 +19,11 @@
 <script lang="ts">
 import {computed, defineComponent, reactive} from "@nuxtjs/composition-api"
 import { createMarkdown } from "safe-marked";
-const markdown = createMarkdown();
+const markdown = createMarkdown({
+  marked:{
+    breaks:true
+  }
+});
 
 type Props = {
   body: string,
