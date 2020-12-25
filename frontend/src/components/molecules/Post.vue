@@ -5,8 +5,11 @@
         <b-img class="img-fluid" :src="state.thumbnail" />
       </b-col>
     </b-row>
-    <b-row>
+    <b-row v-if="state.title">
       <b-col>{{state.title}}</b-col>
+    </b-row>
+    <b-row v-if="state.tags.length > 0">
+      <b-col v-for="tag in state.tags">#{{tag}}</b-col>
     </b-row>
     <b-row>
       <b-col>
@@ -28,7 +31,8 @@ const markdown = createMarkdown({
 type Props = {
   body: string,
   title: string
-  thumbnail: string
+  thumbnail: string,
+  tags: string[]
 }
 
 export default defineComponent({
@@ -44,6 +48,10 @@ export default defineComponent({
     thumbnail: {
       type: String,
       required: true
+    },
+    tags: {
+      type: Array,
+      required: true
     }
   },
   setup(props: Props) {
@@ -51,6 +59,7 @@ export default defineComponent({
       thumbnail: computed(() => props.thumbnail),
       title: computed(() => props.title),
       renderedBody: computed(() => markdown(props.body)),
+      tags: computed(() => props.tags)
     });
     return {
       state

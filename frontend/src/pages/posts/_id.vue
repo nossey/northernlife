@@ -3,7 +3,8 @@
     <Post
       :title="this.post.title"
       :body="this.post.body"
-      :thumbnail="this.post.thumbnail"></Post>
+      :thumbnail="this.post.thumbnail"
+      :tags="this.post.tags"></Post>
   </b-container>
 </template>
 
