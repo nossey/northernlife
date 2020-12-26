@@ -99,73 +99,6 @@ export interface ModelLoginSuccessMessage {
 /**
  * 
  * @export
- * @interface ModelPost
- */
-export interface ModelPost {
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelPost
-     */
-    body?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelPost
-     */
-    createdAt?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelPost
-     */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelPost
-     */
-    plainBody?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ModelPost
-     */
-    published?: boolean;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ModelPost
-     */
-    tags?: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelPost
-     */
-    thumbnail?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelPost
-     */
-    title?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelPost
-     */
-    updatedAt?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelPost
-     */
-    userID?: string;
-}
-/**
- * 
- * @export
  * @interface ModelPostCreateBody
  */
 export interface ModelPostCreateBody {
@@ -229,6 +162,73 @@ export interface ModelPostDeleteResult {
 /**
  * 
  * @export
+ * @interface ModelPostListItem
+ */
+export interface ModelPostListItem {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostListItem
+     */
+    body?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostListItem
+     */
+    createdAt?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostListItem
+     */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostListItem
+     */
+    plainBody?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ModelPostListItem
+     */
+    published?: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ModelPostListItem
+     */
+    tags?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostListItem
+     */
+    thumbnail?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostListItem
+     */
+    title?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostListItem
+     */
+    updatedAt?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostListItem
+     */
+    userID?: string;
+}
+/**
+ * 
+ * @export
  * @interface ModelPostListModel
  */
 export interface ModelPostListModel {
@@ -240,16 +240,83 @@ export interface ModelPostListModel {
     perPageCount?: number;
     /**
      * 
-     * @type {Array<ModelPost>}
+     * @type {Array<ModelPostListItem>}
      * @memberof ModelPostListModel
      */
-    posts?: Array<ModelPost>;
+    posts?: Array<ModelPostListItem>;
     /**
      * 
      * @type {number}
      * @memberof ModelPostListModel
      */
     totalCount?: number;
+}
+/**
+ * 
+ * @export
+ * @interface ModelPostSingleItem
+ */
+export interface ModelPostSingleItem {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostSingleItem
+     */
+    body?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostSingleItem
+     */
+    createdAt?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostSingleItem
+     */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostSingleItem
+     */
+    plainBody?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ModelPostSingleItem
+     */
+    published?: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ModelPostSingleItem
+     */
+    tags?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostSingleItem
+     */
+    thumbnail?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostSingleItem
+     */
+    title?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostSingleItem
+     */
+    updatedAt?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelPostSingleItem
+     */
+    userID?: string;
 }
 /**
  * 
@@ -926,7 +993,7 @@ export const PostsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postsIdGet(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPost>> {
+        async postsIdGet(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostSingleItem>> {
             const localVarAxiosArgs = await PostsApiAxiosParamCreator(configuration).postsIdGet(id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -998,7 +1065,7 @@ export const PostsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postsIdGet(id: string, options?: any): AxiosPromise<ModelPost> {
+        postsIdGet(id: string, options?: any): AxiosPromise<ModelPostSingleItem> {
             return PostsApiFp(configuration).postsIdGet(id, options).then((request) => request(axios, basePath));
         },
         /**
