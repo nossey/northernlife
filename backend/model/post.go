@@ -4,8 +4,22 @@ import (
 	"time"
 )
 
-// Post is a post
-type Post struct {
+// PostSingleItem is a post
+type PostSingleItem struct {
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	ID        string    `json:"id"`
+	UserID    string    `json:"userID"`
+	Title     string    `json:"title"`
+	Body      string    `json:"body"`
+	PlainBody string    `json:"plainBody"`
+	Published bool      `json:"published"`
+	Thumbnail string    `json:"thumbnail"`
+	Tags      []string  `json:"tags"`
+}
+
+// PostListItem is a post
+type PostListItem struct {
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 	ID        string    `json:"id"`
@@ -20,9 +34,9 @@ type Post struct {
 
 // PostListModel bundles Posts and TotalCount
 type PostListModel struct {
-	Posts        []Post `json:"posts"`
-	TotalCount   int    `json:"totalCount"`
-	PerPageCount int    `json:"perPageCount"`
+	Posts        []PostListItem `json:"posts"`
+	TotalCount   int            `json:"totalCount"`
+	PerPageCount int            `json:"perPageCount"`
 }
 
 // PostCreateBody is body to create a new post

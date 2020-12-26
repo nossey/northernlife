@@ -247,7 +247,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.Post"
+                            "$ref": "#/definitions/model.PostSingleItem"
                         }
                     },
                     "404": {
@@ -486,44 +486,6 @@ var doc = `{
                 }
             }
         },
-        "model.Post": {
-            "type": "object",
-            "properties": {
-                "body": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "plainBody": {
-                    "type": "string"
-                },
-                "published": {
-                    "type": "boolean"
-                },
-                "tags": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "thumbnail": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "string"
-                }
-            }
-        },
         "model.PostCreateBody": {
             "type": "object",
             "required": [
@@ -570,6 +532,44 @@ var doc = `{
                 }
             }
         },
+        "model.PostListItem": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "plainBody": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "boolean"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "thumbnail": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
+                }
+            }
+        },
         "model.PostListModel": {
             "type": "object",
             "properties": {
@@ -579,11 +579,49 @@ var doc = `{
                 "posts": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Post"
+                        "$ref": "#/definitions/model.PostListItem"
                     }
                 },
                 "totalCount": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.PostSingleItem": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "plainBody": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "boolean"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "thumbnail": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
                 }
             }
         },

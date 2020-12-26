@@ -12,6 +12,7 @@ import (
 	"github.com/ahmetb/go-linq"
 	"github.com/gin-gonic/gin"
 	"github.com/nossey/northernlife/application"
+	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/model"
 )
 
@@ -26,9 +27,26 @@ func init() {
 	PostCtrl = &PostController{}
 }
 
-// ToPostViewModel converts application post to viewmodel post
-func ToPostViewModel(post application.Post) (viewmodel model.Post) {
-	viewmodel = model.Post{
+// ToPostListItem converts application post to viewmodel post
+func ToPostListItem(post domain.PostListItem) (viewmodel model.PostListItem) {
+	viewmodel = model.PostListItem{
+		CreatedAt: post.CreatedAt,
+		UpdatedAt: post.UpdatedAt,
+		ID:        strings.Replace(post.ID.String(), "-", "", -1),
+		UserID:    post.UserID,
+		Title:     post.Title,
+		Body:      post.Body,
+		PlainBody: post.PlainBody,
+		Published: post.Published,
+		Thumbnail: post.Thumbnail,
+		Tags:      post.Tags,
+	}
+	return
+}
+
+// ToPostSingleItem converts application post to viewmodel post
+func ToPostSingleItem(post domain.SinglePostItem) (viewmodel model.PostSingleItem) {
+	viewmodel = model.PostSingleItem{
 		CreatedAt: post.CreatedAt,
 		UpdatedAt: post.UpdatedAt,
 		ID:        strings.Replace(post.ID.String(), "-", "", -1),
@@ -61,10 +79,10 @@ func (postController *PostController) GetPosts(ctx *gin.Context) {
 	postListViewModel := model.PostListModel{
 		TotalCount:   postResult.TotalCount,
 		PerPageCount: postResult.PerPageCount,
-		Posts:        []model.Post{},
+		Posts:        []model.PostListItem{},
 	}
-	linq.From(postResult.Posts).SelectT(func(p application.Post) model.Post {
-		return ToPostViewModel(p)
+	linq.From(postResult.Posts).SelectT(func(p domain.PostListItem) model.PostListItem {
+		return ToPostListItem(p)
 	}).ToSlice(&postListViewModel.Posts)
 
 	ctx.JSON(http.StatusOK, postListViewModel)
@@ -75,7 +93,7 @@ func (postController *PostController) GetPosts(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Post ID"
-// @Success 200 {object} model.Post
+// @Success 200 {object} model.PostSingleItem
 // @Failure 404 {object} model.ErrorMessage
 // @Router /posts/{id} [get]
 // @Tags Posts
@@ -87,7 +105,7 @@ func (postController *PostController) GetPost(ctx *gin.Context) {
 		return
 	}
 	post, err := application.GetPost(postID)
-	postViewModel := ToPostViewModel(post)
+	postViewModel := ToPostSingleItem(post)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "Post not found"})
 		return
