@@ -34,31 +34,6 @@ definitions:
       token:
         type: string
     type: object
-  model.Post:
-    properties:
-      body:
-        type: string
-      createdAt:
-        type: string
-      id:
-        type: string
-      plainBody:
-        type: string
-      published:
-        type: boolean
-      tags:
-        items:
-          type: string
-        type: array
-      thumbnail:
-        type: string
-      title:
-        type: string
-      updatedAt:
-        type: string
-      userID:
-        type: string
-    type: object
   model.PostCreateBody:
     properties:
       body:
@@ -90,16 +65,66 @@ definitions:
       postID:
         type: string
     type: object
+  model.PostListItem:
+    properties:
+      body:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      plainBody:
+        type: string
+      published:
+        type: boolean
+      tags:
+        items:
+          type: string
+        type: array
+      thumbnail:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+      userID:
+        type: string
+    type: object
   model.PostListModel:
     properties:
       perPageCount:
         type: integer
       posts:
         items:
-          $ref: '#/definitions/model.Post'
+          $ref: '#/definitions/model.PostListItem'
         type: array
       totalCount:
         type: integer
+    type: object
+  model.PostSingleItem:
+    properties:
+      body:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      plainBody:
+        type: string
+      published:
+        type: boolean
+      tags:
+        items:
+          type: string
+        type: array
+      thumbnail:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+      userID:
+        type: string
     type: object
   model.PostUpdateModel:
     properties:
@@ -330,7 +355,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Post'
+            $ref: '#/definitions/model.PostSingleItem'
         "404":
           description: Not Found
           schema:
