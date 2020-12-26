@@ -2,13 +2,13 @@ package application
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 	"github.com/lib/pq"
 	"github.com/nossey/northernlife/dataaccessor"
+	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/infrastructure"
 )
 
@@ -48,13 +48,6 @@ type PostCreate struct {
 	Tags      pq.StringArray
 }
 
-// PostListResult is application layer's post list result
-type PostListResult struct {
-	Posts        []Post
-	TotalCount   int
-	PerPageCount int
-}
-
 // PostUpdate is used to update a post
 type PostUpdate struct {
 	PostID    uuid.UUID
@@ -68,69 +61,20 @@ type PostUpdate struct {
 }
 
 // GetPosts get posts with pagination
-func GetPosts(page int) (result PostListResult) {
+func GetPosts(page int) (result domain.PostListResult) {
+	postAccessor := dataaccessor.PostAccessor
+
+	result.TotalCount = postAccessor.GetPostsCount(dataaccessor.PublishedOnly)
 	perPageCount := 10
 	result.PerPageCount = perPageCount
 	offset := perPageCount * (page - 1)
-	result.Posts = []Post{}
-	db := infrastructure.Db
-	getPostsCountSQL := `
-select
-	count(1)
-from
-	posts
-`
-	row := db.Raw(getPostsCountSQL).Row()
-	row.Scan(&result.TotalCount)
+	result.Posts = postAccessor.GetPosts(offset, perPageCount, dataaccessor.PublishedOnly)
 
-	getPostsSQL := `
-select
-	p.created_at,
-	p.updated_at,
-	p.id,
-	p.user_id,
-	p.title,
-	p.body,
-	p.plain_body,
-	p.published,
-	p.thumbnail,
-	array_remove(array_agg(t.tag_name), null) as tags
-from
-	posts p
-left join
-	tags_posts_attachments tpa
-	on p.id = tpa.post_id
-left join
-	tags t
-	on t.id = tpa.tag_id
-group by
-	p.id
-order by
-	p.created_at desc
-offset
-	?
-limit
-	?
-`
-	rows, err := db.Raw(getPostsSQL, offset, perPageCount).Rows()
-	if err != nil {
-		return
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var post Post
-		post.Tags = []string{}
-		db.ScanRows(rows, &post)
-		if err != nil {
-			fmt.Println(err)
-		}
-		result.Posts = append(result.Posts, post)
-	}
 	return
 }
 
 // GetPost get post with specified id
-func GetPost(id uuid.UUID) (post Post, err error) {
+func GetPost(id uuid.UUID) (post domain.SinglePostItem, err error) {
 	db := infrastructure.Db
 	sql := `
 select

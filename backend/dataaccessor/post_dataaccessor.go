@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/lib/pq"
+	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/infrastructure"
 )
 
@@ -20,20 +20,6 @@ const (
 	// All get all draft & published posts
 	All
 )
-
-// PostListItem is single item of get posts
-type PostListItem struct {
-	CreatedAt time.Time      `gorm:"created_at"`
-	UpdatedAt time.Time      `gorm:"updated_at"`
-	ID        uuid.UUID      `gorm:"id"`
-	UserID    string         `gorm:"user_id"`
-	Title     string         `gorm:"title"`
-	Body      string         `gorm:"body"`
-	PlainBody string         `gorm:"plain_body"`
-	Published bool           `gorm:"published"`
-	Thumbnail string         `gorm:"thumbnail"`
-	Tags      pq.StringArray `gorm:"tags type:text[]"`
-}
 
 // PostDataAccessor provides access to posts for PostApplication
 type PostDataAccessor struct {
@@ -79,8 +65,8 @@ from
 }
 
 // GetPosts get posts
-func (accessor *PostDataAccessor) GetPosts(offset int, limit int, getPostType GetPostType) (result []PostListItem) {
-	result = []PostListItem{}
+func (accessor *PostDataAccessor) GetPosts(offset int, limit int, getPostType GetPostType) (result []domain.PostListItem) {
+	result = []domain.PostListItem{}
 	filterSQL := ""
 
 	switch getPostType {
@@ -138,7 +124,7 @@ where
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var post PostListItem
+		var post domain.PostListItem
 		post.Tags = []string{}
 		db.ScanRows(rows, &post)
 		if err != nil {
