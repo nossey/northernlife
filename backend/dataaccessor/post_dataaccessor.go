@@ -181,6 +181,25 @@ where
 	return
 }
 
+// UpdatePost update a post
+func (accessor *PostDataAccessor) UpdatePost(postID uuid.UUID, title string, body string, plainBody string, published bool, thumbnail string, userID string, tx *gorm.DB) (err error) {
+	updatePostSQL := `
+update posts 
+set 
+	updated_at = current_timestamp,
+	title = ?,
+	body = ?,
+	plain_body = ?,
+	published = ?,
+	thumbnail = ? 
+where
+	id = ? 
+	and user_id = ?;`
+
+	err = tx.Exec(updatePostSQL, title, body, plainBody, published, thumbnail, postID, userID).Error
+	return
+}
+
 // DeleteAttachedTags delete tags attached to post
 func (accessor *PostDataAccessor) DeleteAttachedTags(postID uuid.UUID, tx *gorm.DB) (err error) {
 	deleteAttachedTagsSQL := `

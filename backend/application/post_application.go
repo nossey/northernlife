@@ -183,12 +183,14 @@ where
 	tag_name = any(?)`
 
 	err = db.Transaction(func(tx *gorm.DB) error {
+		postAccessor := dataaccessor.PostAccessor
+
 		err = db.Exec(deleteTagsAttachmentSQL, update.PostID).Error
 		if err != nil {
 			return err
 		}
 
-		err = db.Exec(updatePostSQL, update.Title, update.Body, update.PlainBody, update.Published, update.Thumbnail, update.PostID, update.UserID).Error
+		err = postAccessor.UpdatePost(update.PostID, update.Title, update.Body, update.PlainBody, update.Published, update.Thumbnail, update.UserID, tx)
 		if err != nil {
 			return err
 		}
