@@ -1,7 +1,6 @@
 package application
 
 import (
-	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -224,14 +223,11 @@ where
 // DeletePost deletes a post
 func (app *PostApplication) DeletePost(userID string, postID string) (err error) {
 	db := infrastructure.Db
+	postAccessor := dataaccessor.PostAccessor
 
 	postUUID, err := uuid.Parse(postID)
 	if err != nil {
 		return
-	}
-
-	post := Post{
-		ID: postUUID,
 	}
 
 	err = db.Transaction(func(tx *gorm.DB) error {
@@ -240,9 +236,9 @@ func (app *PostApplication) DeletePost(userID string, postID string) (err error)
 			return err
 		}
 
-		affected := tx.Delete(&post).RowsAffected
-		if affected != 1 {
-			return errors.New("No post deleted")
+		err = postAccessor.DeletePost(postUUID, tx)
+		if err != nil {
+			return err
 		}
 
 		return nil

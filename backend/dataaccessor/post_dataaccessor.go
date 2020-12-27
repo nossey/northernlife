@@ -1,10 +1,12 @@
 package dataaccessor
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jinzhu/gorm"
 	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/infrastructure"
 )
@@ -132,6 +134,22 @@ where
 		}
 		result = append(result, post)
 	}
+	return
+}
+
+// DeletePost delete a post
+func (accessor *PostDataAccessor) DeletePost(postID uuid.UUID, tx *gorm.DB) (err error) {
+	deletePostSQL := `
+delete from
+	posts
+where
+	id = ?	
+	`
+	result := tx.Exec(deletePostSQL, postID)
+	if result.RowsAffected != 1 {
+		err = errors.New("No post deleted")
+	}
+
 	return
 }
 
