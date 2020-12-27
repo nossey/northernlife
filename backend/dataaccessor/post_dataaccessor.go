@@ -1,10 +1,12 @@
 package dataaccessor
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jinzhu/gorm"
 	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/infrastructure"
 )
@@ -132,6 +134,34 @@ where
 		}
 		result = append(result, post)
 	}
+	return
+}
+
+// DeleteAttachedTags delete tags attached to post
+func (accessor *PostDataAccessor) DeleteAttachedTags(postID uuid.UUID, tx *gorm.DB) (err error) {
+	deleteAttachedTagsSQL := `
+delete from
+	tags_posts_attachments
+where
+	post_id = ?`
+
+	err = tx.Exec(deleteAttachedTagsSQL, postID).Error
+	return
+}
+
+// DeletePost delete a post
+func (accessor *PostDataAccessor) DeletePost(postID uuid.UUID, tx *gorm.DB) (err error) {
+	deletePostSQL := `
+delete from
+	posts
+where
+	id = ?	
+	`
+	result := tx.Exec(deletePostSQL, postID)
+	if result.RowsAffected != 1 {
+		err = errors.New("No post deleted")
+	}
+
 	return
 }
 
