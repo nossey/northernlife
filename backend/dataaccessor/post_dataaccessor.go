@@ -7,9 +7,23 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
+	"github.com/lib/pq"
 	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/infrastructure"
 )
+
+// Post is posts table
+type Post struct {
+	CreatedAt time.Time `gorm:"created_at"`
+	UpdatedAt time.Time `gorm:"updated_at"`
+	ID        uuid.UUID `gorm:"id"`
+	UserID    string    `gorm:"user_id"`
+	Title     string    `gorm:"title"`
+	Body      string    `gorm:"body"`
+	PlainBody string    `gorm:"plain_body"`
+	Published bool      `gorm:"published"`
+	Thumbnail string    `gorm:"thumbnail"`
+}
 
 // GetPostType is kind of get posts
 type GetPostType int
@@ -137,6 +151,36 @@ where
 	return
 }
 
+// CreatePost create a post
+func (accessor *PostDataAccessor) CreatePost(p Post, tx *gorm.DB) (err error) {
+	err = tx.Create(&p).Error
+	return
+}
+
+// CreateTagAttachments attach tags to post
+func (accessor *PostDataAccessor) CreateTagAttachments(postID string, tags pq.StringArray, tx *gorm.DB) (err error) {
+	tagsAttachmentSQL := `
+insert into tags_posts_attachments
+(
+	created_at,
+	id,
+	post_id,
+	tag_id
+)
+select
+	current_timestamp as created_at,
+	uuid_generate_v4() as id,
+	? as post_id,
+	t.id as tag_id
+from
+	tags t
+where
+	tag_name = any(?)
+`
+	err = tx.Exec(tagsAttachmentSQL, postID, tags).Error
+	return
+}
+
 // DeleteAttachedTags delete tags attached to post
 func (accessor *PostDataAccessor) DeleteAttachedTags(postID uuid.UUID, tx *gorm.DB) (err error) {
 	deleteAttachedTagsSQL := `
@@ -163,17 +207,4 @@ where
 	}
 
 	return
-}
-
-// Post is posts table
-type Post struct {
-	CreatedAt time.Time `gorm:"created_at"`
-	UpdatedAt time.Time `gorm:"updated_at"`
-	ID        uuid.UUID `gorm:"id"`
-	UserID    string    `gorm:"user_id"`
-	Title     string    `gorm:"title"`
-	Body      string    `gorm:"body"`
-	PlainBody string    `gorm:"plain_body"`
-	Published bool      `gorm:"published"`
-	Thumbnail string    `gorm:"thumbnail"`
 }

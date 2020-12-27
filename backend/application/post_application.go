@@ -110,6 +110,7 @@ group by
 // CreatePost create post
 func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 	db := infrastructure.Db
+	postAccessor := dataaccessor.PostAccessor
 
 	postID = uuid.New()
 	post := dataaccessor.Post{
@@ -124,30 +125,11 @@ func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 		Thumbnail: create.Thumbnail,
 	}
 
-	tagsAttachmentSQL := `
-insert into tags_posts_attachments
-(
-	created_at,
-	id,
-	post_id,
-	tag_id
-)
-select
-	current_timestamp as created_at,
-	uuid_generate_v4() as id,
-	? as post_id,
-	t.id as tag_id
-from
-	tags t
-where
-	tag_name = any(?)
-`
-
 	err = db.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Create(&post).Error; err != nil {
+		if err := postAccessor.CreatePost(post, tx); err != nil {
 			return err
 		}
-		if err = tx.Exec(tagsAttachmentSQL, postID.String(), create.Tags).Error; err != nil {
+		if err = postAccessor.CreateTagAttachments(postID.String(), create.Tags, tx); err != nil {
 			return err
 		}
 		return nil
