@@ -137,6 +137,18 @@ where
 	return
 }
 
+// DeleteAttachedTags delete tags attached to post
+func (accessor *PostDataAccessor) DeleteAttachedTags(postID uuid.UUID, tx *gorm.DB) (err error) {
+	deleteAttachedTagsSQL := `
+delete from
+	tags_posts_attachments
+where
+	post_id = ?`
+
+	err = tx.Exec(deleteAttachedTagsSQL, postID).Error
+	return
+}
+
 // DeletePost delete a post
 func (accessor *PostDataAccessor) DeletePost(postID uuid.UUID, tx *gorm.DB) (err error) {
 	deletePostSQL := `

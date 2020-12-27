@@ -231,7 +231,7 @@ func (app *PostApplication) DeletePost(userID string, postID string) (err error)
 	}
 
 	err = db.Transaction(func(tx *gorm.DB) error {
-		err = tx.Where("post_id = ?", postUUID).Delete(&dataaccessor.TagsPostsAttachments{}).Error
+		err = postAccessor.DeleteAttachedTags(postUUID, tx)
 		if err != nil {
 			return err
 		}
