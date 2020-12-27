@@ -143,57 +143,21 @@ func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 // UpdatePost updates a post
 func (app *PostApplication) UpdatePost(update PostUpdate) (err error) {
 	db := infrastructure.Db
-
-	deleteTagsAttachmentSQL := `
-delete from
-	tags_posts_attachments
-where
-	post_id = ?
-`
-
-	updatePostSQL := `
-update posts 
-set 
-	updated_at = current_timestamp,
-	title = ?,
-	body = ?,
-	plain_body = ?,
-	published = ?,
-	thumbnail = ? 
-where
-	id = ? 
-	and user_id = ?;`
-
-	tagsAttachmentSQL := `
-insert into tags_posts_attachments
-(
-	created_at,
-	id,
-	post_id,
-	tag_id
-)
-select
-	current_timestamp as created_at,
-	uuid_generate_v4() as id,
-	? as post_id,
-	t.id as tag_id
-from
-	tags t
-where
-	tag_name = any(?)`
-
 	err = db.Transaction(func(tx *gorm.DB) error {
-		err = db.Exec(deleteTagsAttachmentSQL, update.PostID).Error
+		postAccessor := dataaccessor.PostAccessor
+
+		err = postAccessor.DeleteAttachedTags(update.PostID, tx)
 		if err != nil {
 			return err
 		}
 
-		err = db.Exec(updatePostSQL, update.Title, update.Body, update.PlainBody, update.Published, update.Thumbnail, update.PostID, update.UserID).Error
+		err = postAccessor.UpdatePost(update.PostID, update.Title, update.Body, update.PlainBody, update.Published, update.Thumbnail, update.UserID, tx)
 		if err != nil {
 			return err
 		}
 
-		if err = tx.Exec(tagsAttachmentSQL, update.PostID.String(), update.Tags).Error; err != nil {
+		err = postAccessor.CreateTagAttachments(update.PostID.String(), update.Tags, tx)
+		if err != nil {
 			return err
 		}
 
