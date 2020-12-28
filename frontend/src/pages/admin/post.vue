@@ -16,7 +16,7 @@
               <b-container>
                 <b-row>Body</b-row>
                 <b-row class="body">
-                  <textarea v-model="state.body" @dragenter="dragEnter" @dragleave="dragLeave" @drop.prevent="dropFile"></textarea>
+                  <textarea v-model="state.body" @drop.prevent="dropFile"></textarea>
                 </b-row>
               </b-container>
             </b-row>
@@ -49,8 +49,8 @@
 
 <script lang="ts">
 
-import {defineComponent, reactive, computed} from "@nuxtjs/composition-api";
-import {ContentsApi, PostsApi} from "~/client";
+import {defineComponent, reactive, computed, useFetch} from "@nuxtjs/composition-api";
+import {ContentsApi, PostsApi, TagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
@@ -74,7 +74,7 @@ export default defineComponent({
   middleware: 'auth',
   setup(props:Props, context) {
     props.isPosting = false
-    const emptyTags: string[] = new Array();
+    let emptyTags: string[] = new Array();
     const state = reactive({
       title: "Hello world",
       body: "# Hello World",
@@ -86,12 +86,12 @@ export default defineComponent({
       tags: emptyTags
     });
 
-    const dragEnter = () => {
-      console.log("dragenter")
-    }
-    const dragLeave = () => {
-      console.log("dragleave")
-    }
+    useFetch(async () => {
+      const tagApi = new TagsApi(buildConfiguration());
+      const result = await tagApi.tagsGet();
+      state.tags = result.data;
+    })
+
     const dropFile = async (event) => {
      const file = event.dataTransfer.files[0];
      const reader = new FileReader();
@@ -135,8 +135,6 @@ export default defineComponent({
       state,
       postman,
 
-      dragEnter,
-      dragLeave,
       dropFile,
       uploadThumbnail
     }
