@@ -12,6 +12,13 @@
                 </b-row>
               </b-container>
             </b-row>
+            <b-row>
+              <b-container>
+                <b-row>
+                  <b-col v-for="tag in state.tags" :key="tag"> <input type="checkbox">{{tag}}</b-col>
+                </b-row>
+              </b-container>
+            </b-row>
             <b-row class="mt-2">
               <b-container>
                 <b-row>Body</b-row>
@@ -65,6 +72,15 @@ type Props = {
   isPosting: boolean
 }
 
+class TagSelection{
+  constructor() {
+    this.name = ""
+    this.selected = false
+  }
+ name: string;
+ selected: boolean;
+}
+
 export default defineComponent({
   components: {
     Button,
@@ -75,6 +91,7 @@ export default defineComponent({
   setup(props:Props, context) {
     props.isPosting = false
     let emptyTags: string[] = new Array();
+    let tagSelections: Array<TagSelection> = new Array<TagSelection>();
     const state = reactive({
       title: "Hello world",
       body: "# Hello World",
@@ -83,7 +100,8 @@ export default defineComponent({
         ignoreImage: true
       })),
       thumbnail: "https://northernlife-content.net/lunch.jpg",
-      tags: emptyTags
+      tags: emptyTags,
+      tagSelections: tagSelections
     });
 
     useFetch(async () => {
