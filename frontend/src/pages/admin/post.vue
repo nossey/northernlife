@@ -14,8 +14,6 @@
             </b-row>
             <b-row>
               <b-container>
-                <button @click="checker">Check</button>
-                {{selectedTags}}
                 <b-row>
                   <b-col v-for="tag in state.tagSelections" :key="tag.name">
                     <input type="checkbox" v-bind:id="tag.name" v-bind:value="tag.name" v-model="selectedTags">
@@ -157,15 +155,10 @@ export default defineComponent({
       });
     }
 
-    const checker = () => {
-     console.log(selectedTags)
-    }
-
     return {
       props,
       state,
       postman,
-      checker,
       selectedTags,
 
       dropFile,
