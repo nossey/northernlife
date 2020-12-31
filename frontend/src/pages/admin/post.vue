@@ -14,8 +14,13 @@
             </b-row>
             <b-row>
               <b-container>
+                <button @click="checker">Check</button>
+                {{selectedTags}}
                 <b-row>
-                  <b-col v-for="tag in state.tags" :key="tag"> <input type="checkbox">{{tag}}</b-col>
+                  <b-col v-for="tag in state.tagSelections" :key="tag.name">
+                    <input type="checkbox" v-bind:id="tag.name" v-bind:value="tag.name" v-model="selectedTags">
+                    <label v-bind:for="tag.name">{{tag.name}}</label>
+                  </b-col>
                 </b-row>
               </b-container>
             </b-row>
@@ -46,7 +51,7 @@
             v-bind:thumbnail="state.thumbnail"
             v-bind:title="state.title"
             v-bind:body="state.body"
-            v-bind:tags="state.tags"
+            v-bind:tags="selectedTags"
           ></Post>
         </b-col>
       </b-row>
@@ -56,12 +61,13 @@
 
 <script lang="ts">
 
-import {defineComponent, reactive, computed, useFetch} from "@nuxtjs/composition-api";
+import {defineComponent, reactive, computed, watch, useFetch} from "@nuxtjs/composition-api";
 import {ContentsApi, PostsApi, TagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
 import { createMarkdown } from "safe-marked";
+import Enumerable from "linq"
 const markdown = createMarkdown({
   marked:{
     breaks: true
@@ -72,10 +78,10 @@ type Props = {
   isPosting: boolean
 }
 
-class TagSelection{
-  constructor() {
-    this.name = ""
-    this.selected = false
+class TagSelection {
+  constructor(name: string, selected: boolean) {
+    this.name = name
+    this.selected = selected
   }
  name: string;
  selected: boolean;
@@ -92,6 +98,7 @@ export default defineComponent({
     props.isPosting = false
     let emptyTags: string[] = new Array();
     let tagSelections: Array<TagSelection> = new Array<TagSelection>();
+    let selectedTags: string[] = new Array();
     const state = reactive({
       title: "Hello world",
       body: "# Hello World",
@@ -101,13 +108,15 @@ export default defineComponent({
       })),
       thumbnail: "https://northernlife-content.net/lunch.jpg",
       tags: emptyTags,
-      tagSelections: tagSelections
+      tagSelections: tagSelections,
+      selectedTags: selectedTags
     });
 
     useFetch(async () => {
       const tagApi = new TagsApi(buildConfiguration());
       const result = await tagApi.tagsGet();
       state.tags = result.data;
+      state.tagSelections = Enumerable.from(result.data).select(t => new TagSelection(t, false)).toArray();
     })
 
     const dropFile = async (event) => {
@@ -148,10 +157,16 @@ export default defineComponent({
       });
     }
 
+    const checker = () => {
+     console.log(selectedTags)
+    }
+
     return {
       props,
       state,
       postman,
+      checker,
+      selectedTags,
 
       dropFile,
       uploadThumbnail
