@@ -141,7 +141,7 @@ export default defineComponent({
         return;
       props.isPosting = true;
       const api = new PostsApi(buildConfiguration());
-      await api.postsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: [], thumbnail: state.thumbnail}).then(res => {
+      await api.postsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: state.selectedTags, thumbnail: state.thumbnail}).then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.postID}`)
       }).catch(err => {
