@@ -14,11 +14,10 @@
             </b-row>
             <b-row>
               <b-container>
-                <button @click="checker">Check</button>
                 <b-row>
-                  <b-col v-for="tag in state.tagSelections" :key="tag.name">
-                    <input type="checkbox" v-bind:id="tag.name" v-bind:value="tag.name" v-model="state.selectedTags">
-                    <label v-bind:for="tag.name">{{tag.name}}</label>
+                  <b-col v-for="(tag, index) in state.tags" :key="index">
+                    <input type="checkbox" v-bind:id="tag" v-bind:value="tag" v-model="state.selectedTags">
+                    <label v-bind:for="tag">{{tag}}</label>
                   </b-col>
                 </b-row>
               </b-container>
@@ -77,15 +76,6 @@ type Props = {
   isPosting: boolean
 }
 
-class TagSelection {
-  constructor(name: string, selected: boolean) {
-    this.name = name
-    this.selected = selected
-  }
- name: string;
- selected: boolean;
-}
-
 export default defineComponent({
   components: {
     Button,
@@ -95,7 +85,6 @@ export default defineComponent({
   middleware: 'auth',
   setup(props:Props, context) {
     props.isPosting = false
-    let tagSelections: Array<TagSelection> = new Array<TagSelection>();
     const state = reactive({
       title: "Hello world",
       body: "# Hello World",
@@ -104,14 +93,13 @@ export default defineComponent({
         ignoreImage: true
       })),
       thumbnail: "https://northernlife-content.net/lunch.jpg",
-      tagSelections: tagSelections,
+      tags: new Array<string>(),
       selectedTags: new Array<string>()
     });
 
-    state.tagSelections = useAsync(async() => {
+    state.tags = useAsync(async() => {
       const tagApi = new TagsApi(buildConfiguration());
-      const result = (await tagApi.tagsGet()).data;
-      return Enumerable.from(result).select(t => new TagSelection(t, false)).toArray();
+      return (await tagApi.tagsGet()).data;
     });
 
     const dropFile = async (event) => {
@@ -152,16 +140,10 @@ export default defineComponent({
       });
     }
 
-    const checker = () => {
-      console.log(state.tagSelections);
-      console.log(state.selectedTags);
-    }
-
     return {
       props,
       state,
       postman,
-      checker,
 
       dropFile,
       uploadThumbnail
