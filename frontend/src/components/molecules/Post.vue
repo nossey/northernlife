@@ -9,7 +9,7 @@
       <b-col>{{state.title}}</b-col>
     </b-row>
     <b-row v-if="state.tags.length > 0">
-      <b-col v-for="tag in state.tags">#{{tag}}</b-col>
+      <b-col v-for="tag in state.tags" :key="tag">#{{tag}}</b-col>
     </b-row>
     <b-row>
       <b-col>

@@ -12,11 +12,21 @@
                 </b-row>
               </b-container>
             </b-row>
+            <b-row>
+              <b-container>
+                <b-row>
+                  <b-col v-for="(tag, index) in state.tags" :key="index">
+                    <input type="checkbox" v-bind:id="tag" v-bind:value="tag" v-model="state.selectedTags">
+                    <label v-bind:for="tag">{{tag}}</label>
+                  </b-col>
+                </b-row>
+              </b-container>
+            </b-row>
             <b-row class="mt-2">
               <b-container>
                 <b-row>Body</b-row>
                 <b-row class="body">
-                  <textarea v-model="state.body" @dragenter="dragEnter" @dragleave="dragLeave" @drop.prevent="dropFile"></textarea>
+                  <textarea v-model="state.body" @drop.prevent="dropFile"></textarea>
                 </b-row>
               </b-container>
             </b-row>
@@ -39,7 +49,7 @@
             v-bind:thumbnail="state.thumbnail"
             v-bind:title="state.title"
             v-bind:body="state.body"
-            v-bind:tags="state.tags"
+            v-bind:tags="state.selectedTags"
           ></Post>
         </b-col>
       </b-row>
@@ -49,8 +59,8 @@
 
 <script lang="ts">
 
-import {defineComponent, reactive, computed} from "@nuxtjs/composition-api";
-import {ContentsApi, PostsApi} from "~/client";
+import {defineComponent, reactive, computed, useAsync, useFetch} from "@nuxtjs/composition-api";
+import {ContentsApi, PostsApi, TagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
@@ -74,7 +84,6 @@ export default defineComponent({
   middleware: 'auth',
   setup(props:Props, context) {
     props.isPosting = false
-    const emptyTags: string[] = new Array();
     const state = reactive({
       title: "Hello world",
       body: "# Hello World",
@@ -83,15 +92,15 @@ export default defineComponent({
         ignoreImage: true
       })),
       thumbnail: "https://northernlife-content.net/lunch.jpg",
-      tags: emptyTags
+      tags: new Array<string>(),
+      selectedTags: new Array<string>()
     });
 
-    const dragEnter = () => {
-      console.log("dragenter")
-    }
-    const dragLeave = () => {
-      console.log("dragleave")
-    }
+    state.tags = useAsync(async() => {
+      const tagApi = new TagsApi(buildConfiguration());
+      return (await tagApi.tagsGet()).data;
+    });
+
     const dropFile = async (event) => {
      const file = event.dataTransfer.files[0];
      const reader = new FileReader();
@@ -119,7 +128,7 @@ export default defineComponent({
         return;
       props.isPosting = true;
       const api = new PostsApi(buildConfiguration());
-      await api.postsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: [], thumbnail: state.thumbnail}).then(res => {
+      await api.postsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: state.selectedTags, thumbnail: state.thumbnail}).then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.postID}`)
       }).catch(err => {
@@ -135,8 +144,6 @@ export default defineComponent({
       state,
       postman,
 
-      dragEnter,
-      dragLeave,
       dropFile,
       uploadThumbnail
     }
