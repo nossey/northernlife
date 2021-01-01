@@ -17,7 +17,7 @@
                 <button @click="checker">Check</button>
                 <b-row>
                   <b-col v-for="tag in state.tagSelections" :key="tag.name">
-                    <input type="checkbox" v-bind:id="tag.name" v-bind:value="tag.name" v-model="selectedTags">
+                    <input type="checkbox" v-bind:id="tag.name" v-bind:value="tag.name" v-model="state.selectedTags">
                     <label v-bind:for="tag.name">{{tag.name}}</label>
                   </b-col>
                 </b-row>
@@ -50,7 +50,7 @@
             v-bind:thumbnail="state.thumbnail"
             v-bind:title="state.title"
             v-bind:body="state.body"
-            v-bind:tags="selectedTags"
+            v-bind:tags="state.selectedTags"
           ></Post>
         </b-col>
       </b-row>
@@ -96,7 +96,6 @@ export default defineComponent({
   setup(props:Props, context) {
     props.isPosting = false
     let tagSelections: Array<TagSelection> = new Array<TagSelection>();
-    let selectedTags: string[] = new Array();
     const state = reactive({
       title: "Hello world",
       body: "# Hello World",
@@ -106,7 +105,7 @@ export default defineComponent({
       })),
       thumbnail: "https://northernlife-content.net/lunch.jpg",
       tagSelections: tagSelections,
-      selectedTags: selectedTags
+      selectedTags: new Array<string>()
     });
 
     state.tagSelections = useAsync(async() => {
@@ -156,14 +155,12 @@ export default defineComponent({
     const checker = () => {
       console.log(state.tagSelections);
       console.log(state.selectedTags);
-      console.log(selectedTags);
     }
 
     return {
       props,
       state,
       postman,
-      selectedTags,
       checker,
 
       dropFile,
