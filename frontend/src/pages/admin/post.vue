@@ -14,6 +14,7 @@
             </b-row>
             <b-row>
               <b-container>
+                <button @click="checker">Check</button>
                 <b-row>
                   <b-col v-for="tag in state.tagSelections" :key="tag.name">
                     <input type="checkbox" v-bind:id="tag.name" v-bind:value="tag.name" v-model="selectedTags">
@@ -59,7 +60,7 @@
 
 <script lang="ts">
 
-import {defineComponent, reactive, computed, watch, useFetch} from "@nuxtjs/composition-api";
+import {defineComponent, reactive, computed, useAsync, useFetch} from "@nuxtjs/composition-api";
 import {ContentsApi, PostsApi, TagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
@@ -94,7 +95,6 @@ export default defineComponent({
   middleware: 'auth',
   setup(props:Props, context) {
     props.isPosting = false
-    let emptyTags: string[] = new Array();
     let tagSelections: Array<TagSelection> = new Array<TagSelection>();
     let selectedTags: string[] = new Array();
     const state = reactive({
@@ -105,17 +105,15 @@ export default defineComponent({
         ignoreImage: true
       })),
       thumbnail: "https://northernlife-content.net/lunch.jpg",
-      tags: emptyTags,
       tagSelections: tagSelections,
       selectedTags: selectedTags
     });
 
-    useFetch(async () => {
+    state.tagSelections = useAsync(async() => {
       const tagApi = new TagsApi(buildConfiguration());
-      const result = await tagApi.tagsGet();
-      state.tags = result.data;
-      state.tagSelections = Enumerable.from(result.data).select(t => new TagSelection(t, false)).toArray();
-    })
+      const result = (await tagApi.tagsGet()).data;
+      return Enumerable.from(result).select(t => new TagSelection(t, false)).toArray();
+    });
 
     const dropFile = async (event) => {
      const file = event.dataTransfer.files[0];
@@ -155,11 +153,18 @@ export default defineComponent({
       });
     }
 
+    const checker = () => {
+      console.log(state.tagSelections);
+      console.log(state.selectedTags);
+      console.log(selectedTags);
+    }
+
     return {
       props,
       state,
       postman,
       selectedTags,
+      checker,
 
       dropFile,
       uploadThumbnail
