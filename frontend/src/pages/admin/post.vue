@@ -65,7 +65,6 @@ import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
 import { createMarkdown } from "safe-marked";
-import Enumerable from "linq"
 const markdown = createMarkdown({
   marked:{
     breaks: true
