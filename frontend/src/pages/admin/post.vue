@@ -75,28 +75,6 @@ export default defineComponent({
       return (await tagApi.tagsGet()).data;
     });
 
-    const dropFile = async (event) => {
-     const file = event.dataTransfer.files[0];
-     const reader = new FileReader();
-     reader.onload = async () => {
-       const uploader = new ContentsApi(buildConfiguration());
-       const result = await uploader.contentsPost({image: reader.result as string});
-       console.log(result.data.url);
-     }
-     reader.readAsDataURL(file);
-    }
-
-    const uploadThumbnail = (event) => {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = async () => {
-        const uploader = new ContentsApi(buildConfiguration());
-        const result = await uploader.contentsPost({image: reader.result as string});
-        state.thumbnail = result.data.url;
-      }
-      reader.readAsDataURL(file);
-    }
-
     const postman = async () => {
       if (props.isPosting)
         return;
@@ -125,9 +103,6 @@ export default defineComponent({
       state,
       postman,
       updated,
-
-      dropFile,
-      uploadThumbnail
     }
   }
 })
