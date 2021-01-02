@@ -10,46 +10,6 @@
             :thumbnail="state.thumbnail"
             @updated="updated($event)"
           ></PostEditor>
-          <b-container class="p-3">
-            <b-row>
-              <b-container>
-               <b-row>Title</b-row>
-                <b-row>
-                  <input type="text" v-model="state.title">
-                </b-row>
-              </b-container>
-            </b-row>
-            <b-row>
-              <b-container>
-                <b-row>
-                  <b-col v-for="(tag, index) in state.tags" :key="index">
-                    <input type="checkbox" v-bind:id="tag" v-bind:value="tag" v-model="state.selectedTags">
-                    <label v-bind:for="tag">{{tag}}</label>
-                  </b-col>
-                </b-row>
-              </b-container>
-            </b-row>
-            <b-row class="mt-2">
-              <b-container>
-                <b-row>Body</b-row>
-                <b-row class="body">
-                  <textarea v-model="state.body" @drop.prevent="dropFile"></textarea>
-                </b-row>
-              </b-container>
-            </b-row>
-            <b-row class="mt-2">
-              <b-container>
-                <b-row>Thumbnail:</b-row>
-                <b-row>{{state.thumbnail}}</b-row>
-                <b-row>
-                  <input @change="uploadThumbnail" type="file">
-                </b-row>
-              </b-container>
-            </b-row>
-            <b-row class="mt-2">
-              <Button @click.native="postman">POST</Button>
-            </b-row>
-          </b-container>
         </b-col>
         <b-col class="col">
           <Post
@@ -170,12 +130,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "assets/colors.scss";
-
-textarea {
-  width: 100%;
-  height: 300px;
-  box-sizing: border-box;
-}
 
 .edit-area {
   border-right: 1px dotted $shadow-color;
