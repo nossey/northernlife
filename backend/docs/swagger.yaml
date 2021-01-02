@@ -191,6 +191,33 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /admin/posts:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: string enums
+        enum:
+        - all
+        - published
+        - draft
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostListModel'
+      summary: Get posts with pagination
+      tags:
+      - AdminPosts
   /auth/login:
     post:
       consumes:
