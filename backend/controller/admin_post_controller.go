@@ -46,7 +46,7 @@ func init() {
 // @Summary Get posts with pagination
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.PostListModel
+// @Success 200 {object} model.AdminPostListModel
 // @Router /admin/posts [get]
 // @Param page query int false "Page"
 // @Param type query string false "string enums" Enums(all, published, draft)

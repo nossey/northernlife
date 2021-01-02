@@ -68,7 +68,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.PostListModel"
+                            "$ref": "#/definitions/model.AdminPostListModel"
                         }
                     }
                 }
@@ -474,6 +474,61 @@ var doc = `{
         }
     },
     "definitions": {
+        "model.AdminPostListItem": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "plainBody": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "boolean"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "thumbnail": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.AdminPostListModel": {
+            "type": "object",
+            "properties": {
+                "perPageCount": {
+                    "type": "integer"
+                },
+                "posts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.AdminPostListItem"
+                    }
+                },
+                "totalCount": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.ErrorMessage": {
             "type": "object",
             "properties": {
