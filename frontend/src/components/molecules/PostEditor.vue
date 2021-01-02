@@ -73,7 +73,7 @@ export default defineComponent( {
       selectedTags: new Array<string>(),
     });
 
-    watch(() => state, () => {context.emit("updated", state)}, { deep: true })
+    watch(() => state, () => {context.emit("updated", state)})
 
     const dropFile = async (event) => {
       const file = event.dataTransfer.files[0];
