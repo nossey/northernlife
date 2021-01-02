@@ -3,6 +3,13 @@
     <b-container fluid>
       <b-row>
         <b-col class="col edit-area">
+          <PostEditor
+            :title="state.title"
+            :body="state.body"
+            :tags="state.tags"
+            :thumbnail="state.thumbnail"
+            @updated="updated"
+          ></PostEditor>
           <b-container class="p-3">
             <b-row>
               <b-container>
@@ -64,6 +71,7 @@ import {ContentsApi, PostsApi, TagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
+import PostEditor from "~/components/molecules/PostEditor.vue"
 import { createMarkdown } from "safe-marked";
 const markdown = createMarkdown({
   marked:{
@@ -77,6 +85,7 @@ type Props = {
 
 export default defineComponent({
   components: {
+    PostEditor,
     Button,
     Post
   },
@@ -139,10 +148,15 @@ export default defineComponent({
       });
     }
 
+    const updated = () => {
+      console.log("updated")
+    };
+
     return {
       props,
       state,
       postman,
+      updated,
 
       dropFile,
       uploadThumbnail
