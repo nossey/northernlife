@@ -41,7 +41,7 @@
 <script lang="ts">
 
 import {defineComponent, reactive, watch} from "@nuxtjs/composition-api";
-import {ContentsApi, PostsApi, TagsApi} from "~/client";
+import {ContentsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 
 export default defineComponent( {
