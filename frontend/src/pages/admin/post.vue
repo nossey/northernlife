@@ -8,7 +8,7 @@
             :body="state.body"
             :tags="state.tags"
             :thumbnail="state.thumbnail"
-            @updated="updated"
+            @updated="updated($event)"
           ></PostEditor>
           <b-container class="p-3">
             <b-row>
@@ -148,8 +148,11 @@ export default defineComponent({
       });
     }
 
-    const updated = () => {
-      console.log("updated")
+    const updated = (event) => {
+      state.title = event.title
+      state.body = event.body
+      state.thumbnail = event.thumbnail
+      state.selectedTags = event.selectedTags
     };
 
     return {
