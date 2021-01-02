@@ -3,42 +3,14 @@
     <b-container fluid>
       <b-row>
         <b-col class="col edit-area">
+          <PostEditor
+            :title="state.title"
+            :body="state.body"
+            :tags="state.tags"
+            :thumbnail="state.thumbnail"
+            @updated="updated($event)"
+          ></PostEditor>
           <b-container class="p-3">
-            <b-row>
-              <b-container>
-               <b-row>Title</b-row>
-                <b-row>
-                  <input type="text" v-model="state.title">
-                </b-row>
-              </b-container>
-            </b-row>
-            <b-row>
-              <b-container>
-                <b-row>
-                  <b-col v-for="(tag, index) in state.tags" :key="index">
-                    <input type="checkbox" v-bind:id="tag" v-bind:value="tag" v-model="state.selectedTags">
-                    <label v-bind:for="tag">{{tag}}</label>
-                  </b-col>
-                </b-row>
-              </b-container>
-            </b-row>
-            <b-row class="mt-2">
-              <b-container>
-                <b-row>Body</b-row>
-                <b-row class="body">
-                  <textarea v-model="state.body" @drop.prevent="dropFile"></textarea>
-                </b-row>
-              </b-container>
-            </b-row>
-            <b-row class="mt-2">
-              <b-container>
-                <b-row>Thumbnail:</b-row>
-                <b-row>{{state.thumbnail}}</b-row>
-                <b-row>
-                  <input @change="uploadThumbnail" type="file">
-                </b-row>
-              </b-container>
-            </b-row>
             <b-row class="mt-2">
               <Button @click.native="postman">POST</Button>
             </b-row>
@@ -64,6 +36,7 @@ import {ContentsApi, PostsApi, TagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
+import PostEditor from "~/components/molecules/PostEditor.vue"
 import { createMarkdown } from "safe-marked";
 const markdown = createMarkdown({
   marked:{
@@ -77,6 +50,7 @@ type Props = {
 
 export default defineComponent({
   components: {
+    PostEditor,
     Button,
     Post
   },
@@ -101,28 +75,6 @@ export default defineComponent({
       return (await tagApi.tagsGet()).data;
     });
 
-    const dropFile = async (event) => {
-     const file = event.dataTransfer.files[0];
-     const reader = new FileReader();
-     reader.onload = async () => {
-       const uploader = new ContentsApi(buildConfiguration());
-       const result = await uploader.contentsPost({image: reader.result as string});
-       console.log(result.data.url);
-     }
-     reader.readAsDataURL(file);
-    }
-
-    const uploadThumbnail = (event) => {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = async () => {
-        const uploader = new ContentsApi(buildConfiguration());
-        const result = await uploader.contentsPost({image: reader.result as string});
-        state.thumbnail = result.data.url;
-      }
-      reader.readAsDataURL(file);
-    }
-
     const postman = async () => {
       if (props.isPosting)
         return;
@@ -139,13 +91,18 @@ export default defineComponent({
       });
     }
 
+    const updated = (event) => {
+      state.title = event.title
+      state.body = event.body
+      state.thumbnail = event.thumbnail
+      state.selectedTags = event.selectedTags
+    };
+
     return {
       props,
       state,
       postman,
-
-      dropFile,
-      uploadThumbnail
+      updated,
     }
   }
 })
@@ -153,12 +110,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "assets/colors.scss";
-
-textarea {
-  width: 100%;
-  height: 300px;
-  box-sizing: border-box;
-}
 
 .edit-area {
   border-right: 1px dotted $shadow-color;
