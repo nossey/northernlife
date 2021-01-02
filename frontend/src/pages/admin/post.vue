@@ -136,12 +136,6 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "assets/colors.scss";
 
-textarea {
-  width: 100%;
-  height: 300px;
-  box-sizing: border-box;
-}
-
 .edit-area {
   border-right: 1px dotted $shadow-color;
 }
