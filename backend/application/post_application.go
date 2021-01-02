@@ -59,15 +59,28 @@ type PostUpdate struct {
 	Tags      pq.StringArray
 }
 
+// GetAdminPosts get posts with pagination
+func (app *PostApplication) GetAdminPosts(page int, userID string, getType domain.GetPostType) (result domain.PostListResult) {
+	postAccessor := dataaccessor.PostAccessor
+
+	result.TotalCount = postAccessor.GetAdminPostsCount(getType, userID)
+	perPageCount := 10
+	result.PerPageCount = perPageCount
+	offset := perPageCount * (page - 1)
+	result.Posts = postAccessor.GetAdminPosts(offset, perPageCount, getType, userID)
+
+	return
+}
+
 // GetPosts get posts with pagination
 func GetPosts(page int) (result domain.PostListResult) {
 	postAccessor := dataaccessor.PostAccessor
 
-	result.TotalCount = postAccessor.GetPostsCount(dataaccessor.PublishedOnly)
+	result.TotalCount = postAccessor.GetPostsCount(domain.Published)
 	perPageCount := 10
 	result.PerPageCount = perPageCount
 	offset := perPageCount * (page - 1)
-	result.Posts = postAccessor.GetPosts(offset, perPageCount, dataaccessor.PublishedOnly)
+	result.Posts = postAccessor.GetPosts(offset, perPageCount, domain.Published)
 
 	return
 }
