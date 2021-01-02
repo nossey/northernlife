@@ -10,6 +10,11 @@
             :thumbnail="state.thumbnail"
             @updated="updated($event)"
           ></PostEditor>
+          <b-container class="p-3">
+            <b-row class="mt-2">
+              <Button @click.native="postman">POST</Button>
+            </b-row>
+          </b-container>
         </b-col>
         <b-col class="col">
           <Post
@@ -130,6 +135,12 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "assets/colors.scss";
+
+textarea {
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+}
 
 .edit-area {
   border-right: 1px dotted $shadow-color;
