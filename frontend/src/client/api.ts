@@ -22,6 +22,98 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface ModelAdminPostListItem
+ */
+export interface ModelAdminPostListItem {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostListItem
+     */
+    body?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostListItem
+     */
+    createdAt?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostListItem
+     */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostListItem
+     */
+    plainBody?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ModelAdminPostListItem
+     */
+    published?: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ModelAdminPostListItem
+     */
+    tags?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostListItem
+     */
+    thumbnail?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostListItem
+     */
+    title?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostListItem
+     */
+    updatedAt?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostListItem
+     */
+    userID?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModelAdminPostListModel
+ */
+export interface ModelAdminPostListModel {
+    /**
+     * 
+     * @type {number}
+     * @memberof ModelAdminPostListModel
+     */
+    perPageCount?: number;
+    /**
+     * 
+     * @type {Array<ModelAdminPostListItem>}
+     * @memberof ModelAdminPostListModel
+     */
+    posts?: Array<ModelAdminPostListItem>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ModelAdminPostListModel
+     */
+    totalCount?: number;
+}
+/**
+ * 
+ * @export
  * @interface ModelErrorMessage
  */
 export interface ModelErrorMessage {
@@ -432,6 +524,449 @@ export interface ModelUser {
      */
     userID?: string;
 }
+
+/**
+ * AdminPostsApi - axios parameter creator
+ * @export
+ */
+export const AdminPostsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get posts with pagination
+         * @param {number} [page] Page
+         * @param {'all' | 'published' | 'draft'} [type] string enums
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsGet: async (page?: number, type?: 'all' | 'published' | 'draft', options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/admin/posts`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (type !== undefined) {
+                localVarQueryParameter['type'] = type;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Delete single post
+         * @param {string} id Post ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsIdDelete: async (id: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling adminPostsIdDelete.');
+            }
+            const localVarPath = `/admin/posts/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication ApiKeyAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get single post with specific id
+         * @param {string} id Post ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsIdGet: async (id: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling adminPostsIdGet.');
+            }
+            const localVarPath = `/admin/posts/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update single post
+         * @param {string} id Post ID
+         * @param {ModelPostUpdateModel} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsIdPut: async (id: string, message: ModelPostUpdateModel, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling adminPostsIdPut.');
+            }
+            // verify required parameter 'message' is not null or undefined
+            if (message === null || message === undefined) {
+                throw new RequiredError('message','Required parameter message was null or undefined when calling adminPostsIdPut.');
+            }
+            const localVarPath = `/admin/posts/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication ApiKeyAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof message !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(message !== undefined ? message : {}) : (message || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Create single post
+         * @param {ModelPostCreateBody} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsPost: async (message: ModelPostCreateBody, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'message' is not null or undefined
+            if (message === null || message === undefined) {
+                throw new RequiredError('message','Required parameter message was null or undefined when calling adminPostsPost.');
+            }
+            const localVarPath = `/admin/posts`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication ApiKeyAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof message !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(message !== undefined ? message : {}) : (message || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AdminPostsApi - functional programming interface
+ * @export
+ */
+export const AdminPostsApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get posts with pagination
+         * @param {number} [page] Page
+         * @param {'all' | 'published' | 'draft'} [type] string enums
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async adminPostsGet(page?: number, type?: 'all' | 'published' | 'draft', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelAdminPostListModel>> {
+            const localVarAxiosArgs = await AdminPostsApiAxiosParamCreator(configuration).adminPostsGet(page, type, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Delete single post
+         * @param {string} id Post ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async adminPostsIdDelete(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostDeleteResult>> {
+            const localVarAxiosArgs = await AdminPostsApiAxiosParamCreator(configuration).adminPostsIdDelete(id, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Get single post with specific id
+         * @param {string} id Post ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async adminPostsIdGet(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostSingleItem>> {
+            const localVarAxiosArgs = await AdminPostsApiAxiosParamCreator(configuration).adminPostsIdGet(id, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Update single post
+         * @param {string} id Post ID
+         * @param {ModelPostUpdateModel} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async adminPostsIdPut(id: string, message: ModelPostUpdateModel, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostUpdateResult>> {
+            const localVarAxiosArgs = await AdminPostsApiAxiosParamCreator(configuration).adminPostsIdPut(id, message, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Create single post
+         * @param {ModelPostCreateBody} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async adminPostsPost(message: ModelPostCreateBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostCreateResult>> {
+            const localVarAxiosArgs = await AdminPostsApiAxiosParamCreator(configuration).adminPostsPost(message, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * AdminPostsApi - factory interface
+ * @export
+ */
+export const AdminPostsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @summary Get posts with pagination
+         * @param {number} [page] Page
+         * @param {'all' | 'published' | 'draft'} [type] string enums
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsGet(page?: number, type?: 'all' | 'published' | 'draft', options?: any): AxiosPromise<ModelAdminPostListModel> {
+            return AdminPostsApiFp(configuration).adminPostsGet(page, type, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Delete single post
+         * @param {string} id Post ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsIdDelete(id: string, options?: any): AxiosPromise<ModelPostDeleteResult> {
+            return AdminPostsApiFp(configuration).adminPostsIdDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get single post with specific id
+         * @param {string} id Post ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsIdGet(id: string, options?: any): AxiosPromise<ModelPostSingleItem> {
+            return AdminPostsApiFp(configuration).adminPostsIdGet(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update single post
+         * @param {string} id Post ID
+         * @param {ModelPostUpdateModel} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsIdPut(id: string, message: ModelPostUpdateModel, options?: any): AxiosPromise<ModelPostUpdateResult> {
+            return AdminPostsApiFp(configuration).adminPostsIdPut(id, message, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Create single post
+         * @param {ModelPostCreateBody} message Post Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminPostsPost(message: ModelPostCreateBody, options?: any): AxiosPromise<ModelPostCreateResult> {
+            return AdminPostsApiFp(configuration).adminPostsPost(message, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * AdminPostsApi - object-oriented interface
+ * @export
+ * @class AdminPostsApi
+ * @extends {BaseAPI}
+ */
+export class AdminPostsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get posts with pagination
+     * @param {number} [page] Page
+     * @param {'all' | 'published' | 'draft'} [type] string enums
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminPostsApi
+     */
+    public adminPostsGet(page?: number, type?: 'all' | 'published' | 'draft', options?: any) {
+        return AdminPostsApiFp(this.configuration).adminPostsGet(page, type, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Delete single post
+     * @param {string} id Post ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminPostsApi
+     */
+    public adminPostsIdDelete(id: string, options?: any) {
+        return AdminPostsApiFp(this.configuration).adminPostsIdDelete(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get single post with specific id
+     * @param {string} id Post ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminPostsApi
+     */
+    public adminPostsIdGet(id: string, options?: any) {
+        return AdminPostsApiFp(this.configuration).adminPostsIdGet(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update single post
+     * @param {string} id Post ID
+     * @param {ModelPostUpdateModel} message Post Data
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminPostsApi
+     */
+    public adminPostsIdPut(id: string, message: ModelPostUpdateModel, options?: any) {
+        return AdminPostsApiFp(this.configuration).adminPostsIdPut(id, message, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Create single post
+     * @param {ModelPostCreateBody} message Post Data
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminPostsApi
+     */
+    public adminPostsPost(message: ModelPostCreateBody, options?: any) {
+        return AdminPostsApiFp(this.configuration).adminPostsPost(message, options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
 
 /**
  * AuthApi - axios parameter creator
