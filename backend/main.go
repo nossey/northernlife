@@ -114,6 +114,7 @@ func main() {
 					apc := controller.AdminPostCtrl
 					adminPost.GET("", apc.GetAdminPosts)
 					adminPost.POST("", apc.CreateAdminPost)
+					adminPost.PUT("/:id", apc.UpdatePost)
 				}
 			}
 		}
