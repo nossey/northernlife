@@ -146,7 +146,7 @@ func (ctrl *AdminPostController) GetAdminPosts(ctx *gin.Context) {
 // @Success 201 {object} model.PostCreateResult
 // @Failure 400 {object} model.ErrorMessage
 // @Failure 401 {object} model.UnauthorizedMessage
-// @Router /posts [post]
+// @Router /admin/posts [post]
 // @Security ApiKeyAuth
 // @Tags AdminPosts
 func (ctrl *AdminPostController) CreateAdminPost(ctx *gin.Context) {
@@ -249,7 +249,7 @@ func (ctrl *AdminPostController) UpdatePost(ctx *gin.Context) {
 // @Success 204 {object} model.PostDeleteResult
 // @Failure 401 {object} model.UnauthorizedMessage
 // @Failure 404 {object} model.ErrorMessage
-// @Router /posts/{id} [delete]
+// @Router /admin/posts/{id} [delete]
 // @Security ApiKeyAuth
 // @Tags AdminPosts
 func (ctrl *AdminPostController) DeletePost(ctx *gin.Context) {
