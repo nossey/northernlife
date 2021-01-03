@@ -251,7 +251,137 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.AdminPostListModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedMessage'
       summary: Get posts with pagination
+      tags:
+      - AdminPosts
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Post Data
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.PostCreateBody'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.PostCreateResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Create single post
+      tags:
+      - AdminPosts
+  /admin/posts/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/model.PostDeleteResult'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete single post
+      tags:
+      - AdminPosts
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostSingleItem'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+      summary: Get single post with specific id
+      tags:
+      - AdminPosts
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Post Data
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.PostUpdateModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PostUpdateResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedMessage'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Update single post
       tags:
       - AdminPosts
   /auth/login:

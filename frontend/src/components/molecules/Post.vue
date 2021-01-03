@@ -61,6 +61,7 @@ export default defineComponent({
       renderedBody: computed(() => markdown(props.body)),
       tags: computed(() => props.tags)
     });
+
     return {
       state
     }

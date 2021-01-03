@@ -120,6 +120,40 @@ group by
 	return
 }
 
+// CreatePost create a post
+func (app *PostApplication) CreatePost(create PostCreate) (postID uuid.UUID, err error) {
+	db := infrastructure.Db
+	postAccessor := dataaccessor.PostAccessor
+
+	postID = uuid.New()
+	post := dataaccessor.Post{
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		ID:        postID,
+		UserID:    create.UserID,
+		Title:     create.Title,
+		Body:      create.Body,
+		PlainBody: create.PlainBody,
+		Published: create.Published,
+		Thumbnail: create.Thumbnail,
+	}
+
+	err = db.Transaction(func(tx *gorm.DB) error {
+		if err := postAccessor.CreatePost(post, tx); err != nil {
+			return err
+		}
+		if err = postAccessor.CreateTagAttachments(postID.String(), create.Tags, tx); err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		postID = uuid.Nil
+	}
+	return
+
+}
+
 // CreatePost create post
 func CreatePost(create PostCreate) (postID uuid.UUID, err error) {
 	db := infrastructure.Db
