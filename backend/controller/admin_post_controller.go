@@ -47,6 +47,8 @@ func init() {
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} model.AdminPostListModel
+// @Failure 400 {object} model.ErrorMessage
+// @Failure 401 {object} model.UnauthorizedMessage
 // @Router /admin/posts [get]
 // @Param page query int false "Page"
 // @Param type query string false "string enums" Enums(all, published, draft)
@@ -92,4 +94,51 @@ func (ctrl *AdminPostController) GetAdminPosts(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, viewmodel)
 
 	return
+}
+
+// CreateAdminPost godocs
+// @Summary Create single post
+// @Accept json
+// @Produce json
+// @Param message body model.PostCreateBody true "Post Data"
+// @Success 201 {object} model.PostCreateResult
+// @Failure 400 {object} model.ErrorMessage
+// @Failure 401 {object} model.UnauthorizedMessage
+// @Router /posts [post]
+// @Security ApiKeyAuth
+// @Tags AdminPosts
+func (ctrl *AdminPostController) CreateAdminPost(ctx *gin.Context) {
+	claims := jwt.ExtractClaims(ctx)
+	postApp := application.PostApp
+
+	var json model.PostCreateBody
+	if err := ctx.ShouldBindJSON(&json); err != nil {
+		errorMessage := model.ErrorMessage{
+			Message: err.Error(),
+		}
+		ctx.JSON(http.StatusBadRequest, errorMessage)
+		return
+	}
+	create := application.PostCreate{
+		UserID:    claims[identityKey].(string),
+		Title:     json.Title,
+		Body:      json.Body,
+		PlainBody: json.PlainBody,
+		Published: true,
+		Thumbnail: json.Thumbnail,
+		Tags:      json.Tags,
+	}
+	postID, err := postApp.CreatePost(create)
+	if err != nil {
+		errorMessage := model.ErrorMessage{
+			Message: err.Error(),
+		}
+		ctx.JSON(http.StatusBadRequest, errorMessage)
+		return
+	}
+	id := strings.Replace(postID.String(), "-", "", -1)
+	successResult := model.PostCreateResult{
+		PostID: id,
+	}
+	ctx.JSON(http.StatusCreated, successResult)
 }
