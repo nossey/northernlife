@@ -16,6 +16,22 @@ import (
 	"github.com/nossey/northernlife/model"
 )
 
+func toPostSingleItem(post domain.SinglePostItem) (viewmodel model.PostSingleItem) {
+	viewmodel = model.PostSingleItem{
+		CreatedAt: post.CreatedAt,
+		UpdatedAt: post.UpdatedAt,
+		ID:        strings.Replace(post.ID.String(), "-", "", -1),
+		UserID:    post.UserID,
+		Title:     post.Title,
+		Body:      post.Body,
+		PlainBody: post.PlainBody,
+		Published: post.Published,
+		Thumbnail: post.Thumbnail,
+		Tags:      post.Tags,
+	}
+	return
+}
+
 func toPostListItem(post domain.PostListItem) (viewmodel model.AdminPostListItem) {
 	viewmodel = model.AdminPostListItem{
 		CreatedAt: post.CreatedAt,
@@ -41,6 +57,31 @@ var AdminPostCtrl *AdminPostController
 
 func init() {
 	AdminPostCtrl = &AdminPostController{}
+}
+
+// GetAdminPost godoc
+// @Summary Get single post with specific id
+// @Accept json
+// @Produce json
+// @Param id path string true "Post ID"
+// @Success 200 {object} model.PostSingleItem
+// @Failure 404 {object} model.ErrorMessage
+// @Router /admin/posts/{id} [get]
+// @Tags AdminPosts
+func (ctrl *AdminPostController) GetAdminPost(ctx *gin.Context) {
+	id := ctx.Param("id")
+	postID, err := uuid.Parse(id)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "Invalid post id (should be uuid)"})
+		return
+	}
+	post, err := application.GetPost(postID)
+	postViewModel := toPostSingleItem(post)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "Post not found"})
+		return
+	}
+	ctx.JSON(http.StatusOK, postViewModel)
 }
 
 // GetAdminPosts godoc
@@ -197,5 +238,33 @@ func (ctrl *AdminPostController) UpdatePost(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, model.PostUpdateResult{
 		PostID: id,
+	})
+}
+
+// DeletePost godoc
+// @Summary Delete single post
+// @Accept json
+// @Produce json
+// @Param id path string true "Post ID"
+// @Success 204 {object} model.PostDeleteResult
+// @Failure 401 {object} model.UnauthorizedMessage
+// @Failure 404 {object} model.ErrorMessage
+// @Router /posts/{id} [delete]
+// @Security ApiKeyAuth
+// @Tags AdminPosts
+func (ctrl *AdminPostController) DeletePost(ctx *gin.Context) {
+	claims := jwt.ExtractClaims(ctx)
+	userID := claims[identityKey].(string)
+	postID := ctx.Param("id")
+
+	postApplicaion := application.PostApp
+	err := postApplicaion.DeletePost(userID, postID)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, model.ErrorMessage{Message: "NotFound Post"})
+		return
+	}
+
+	ctx.JSON(http.StatusNoContent, model.PostDeleteResult{
+		PostID: postID,
 	})
 }

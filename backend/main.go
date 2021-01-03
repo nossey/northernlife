@@ -113,8 +113,10 @@ func main() {
 				{
 					apc := controller.AdminPostCtrl
 					adminPost.GET("", apc.GetAdminPosts)
+					adminPost.GET("/:id", apc.GetAdminPost)
 					adminPost.POST("", apc.CreateAdminPost)
 					adminPost.PUT("/:id", apc.UpdatePost)
+					adminPost.DELETE("/:id", apc.DeletePost)
 				}
 			}
 		}
