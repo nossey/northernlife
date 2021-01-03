@@ -7,6 +7,18 @@ import (
 	"github.com/lib/pq"
 )
 
+// GetPostType is kind of get posts
+type GetPostType int
+
+const (
+	// Published get all published posts
+	Published GetPostType = iota
+	// Draft get all draft posts
+	Draft
+	// All get all draft & published posts
+	All
+)
+
 // PostListResult is domain layer's post list result
 type PostListResult struct {
 	Posts        []PostListItem

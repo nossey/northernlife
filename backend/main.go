@@ -103,6 +103,19 @@ func main() {
 				content.POST("", cc.UploadImageFile)
 			}
 		}
+
+		admin := v1.Group("/admin")
+		{
+			admin.Use(handler.MiddlewareFunc())
+			{
+				adminPost := admin.Group("/posts")
+				adminPost.Group("")
+				{
+					apc := controller.AdminPostCtrl
+					adminPost.GET("", apc.GetAdminPosts)
+				}
+			}
+		}
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

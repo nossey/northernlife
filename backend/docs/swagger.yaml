@@ -1,5 +1,41 @@
 basePath: /api/v1
 definitions:
+  model.AdminPostListItem:
+    properties:
+      body:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      plainBody:
+        type: string
+      published:
+        type: boolean
+      tags:
+        items:
+          type: string
+        type: array
+      thumbnail:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+      userID:
+        type: string
+    type: object
+  model.AdminPostListModel:
+    properties:
+      perPageCount:
+        type: integer
+      posts:
+        items:
+          $ref: '#/definitions/model.AdminPostListItem'
+        type: array
+      totalCount:
+        type: integer
+    type: object
   model.ErrorMessage:
     properties:
       message:
@@ -191,6 +227,33 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /admin/posts:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: string enums
+        enum:
+        - all
+        - published
+        - draft
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.AdminPostListModel'
+      summary: Get posts with pagination
+      tags:
+      - AdminPosts
   /auth/login:
     post:
       consumes:

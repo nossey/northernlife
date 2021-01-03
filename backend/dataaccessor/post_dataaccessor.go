@@ -25,18 +25,6 @@ type Post struct {
 	Thumbnail string    `gorm:"thumbnail"`
 }
 
-// GetPostType is kind of get posts
-type GetPostType int
-
-const (
-	// PublishedOnly get all published posts
-	PublishedOnly GetPostType = iota
-	// DraftOnly get all draft posts
-	DraftOnly
-	// All get all draft & published posts
-	All
-)
-
 // PostDataAccessor provides access to posts for PostApplication
 type PostDataAccessor struct {
 }
@@ -49,22 +37,22 @@ func ini() {
 }
 
 // GetPostsCount get posts count with getPostType
-func (accessor *PostDataAccessor) GetPostsCount(getPostType GetPostType) (count int) {
+func (accessor *PostDataAccessor) GetPostsCount(getPostType domain.GetPostType) (count int) {
 	filterSQL := ""
 	switch getPostType {
-	case PublishedOnly:
+	case domain.Published:
 		filterSQL = `
 where
 	published = true
 `
 		break
-	case DraftOnly:
+	case domain.Draft:
 		filterSQL = `
 where
 	published = false
 `
 		break
-	case All:
+	case domain.All:
 		break
 	}
 
@@ -80,25 +68,63 @@ from
 	return
 }
 
+// GetAdminPostsCount get posts count
+func (accessor *PostDataAccessor) GetAdminPostsCount(getPostType domain.GetPostType, userID string) (count int) {
+	filterSQL := ""
+	switch getPostType {
+	case domain.Published:
+		filterSQL = `
+where
+	published = true
+	and user_id = ?
+`
+		break
+	case domain.Draft:
+		filterSQL = `
+where
+	published = false
+	and user_id = ?
+`
+		break
+	case domain.All:
+		filterSQL = `
+where
+	user_id = ?
+`
+		break
+	}
+
+	db := infrastructure.Db
+	getPostsCountSQL := `
+select
+	count(1)
+from
+	posts
+` + filterSQL
+	row := db.Raw(getPostsCountSQL, userID).Row()
+	row.Scan(&count)
+	return
+}
+
 // GetPosts get posts
-func (accessor *PostDataAccessor) GetPosts(offset int, limit int, getPostType GetPostType) (result []domain.PostListItem) {
+func (accessor *PostDataAccessor) GetPosts(offset int, limit int, getPostType domain.GetPostType) (result []domain.PostListItem) {
 	result = []domain.PostListItem{}
 	filterSQL := ""
 
 	switch getPostType {
-	case PublishedOnly:
+	case domain.Published:
 		filterSQL = `
 where
 	published = true
 `
 		break
-	case DraftOnly:
+	case domain.Draft:
 		filterSQL = `
 where
 	published = false 
 `
 		break
-	case All:
+	case domain.All:
 		break
 	}
 
@@ -149,6 +175,84 @@ where
 		result = append(result, post)
 	}
 	return
+}
+
+// GetAdminPosts get posts
+func (accessor *PostDataAccessor) GetAdminPosts(offset int, limit int, getPostType domain.GetPostType, userID string) (result []domain.PostListItem) {
+	result = []domain.PostListItem{}
+	filterSQL := ""
+
+	switch getPostType {
+	case domain.Published:
+		filterSQL = `
+where
+	p.published = true
+	and p.user_id = ?
+`
+		break
+	case domain.Draft:
+		filterSQL = `
+where
+	p.published = false 
+	and p.user_id = ?
+`
+		break
+	case domain.All:
+		filterSQL = `
+where
+	p.user_id = ?
+`
+		break
+	}
+
+	getPostsSQL := `
+	select
+		p.created_at,
+		p.updated_at,
+		p.id,
+		p.user_id,
+		p.title,
+		p.body,
+		p.plain_body,
+		p.published,
+		p.thumbnail,
+		array_remove(array_agg(t.tag_name), null) as tags
+	from
+		posts p
+	left join
+		tags_posts_attachments tpa
+		on p.id = tpa.post_id
+	left join
+		tags t
+		on t.id = tpa.tag_id` +
+		filterSQL +
+		`group by
+		p.id
+	order by
+		p.created_at desc
+	offset
+		?
+	limit
+		?
+	`
+
+	db := infrastructure.Db
+	rows, err := db.Raw(getPostsSQL, userID, offset, limit).Rows()
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var post domain.PostListItem
+		post.Tags = []string{}
+		db.ScanRows(rows, &post)
+		if err != nil {
+			fmt.Println(err)
+		}
+		result = append(result, post)
+	}
+	return
+
 }
 
 // CreatePost create a post
