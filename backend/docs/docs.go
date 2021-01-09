@@ -35,6 +35,11 @@ var doc = `{
     "paths": {
         "/admin/posts": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -136,6 +141,11 @@ var doc = `{
         },
         "/admin/posts/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
