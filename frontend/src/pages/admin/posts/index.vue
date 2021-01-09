@@ -48,7 +48,7 @@ export default {
       draftPosts: draftPosts.data,
       publishedPosts: published.data
     }
-  },
+  }
 }
 
 </script>
