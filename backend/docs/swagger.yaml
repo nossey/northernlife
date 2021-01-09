@@ -259,6 +259,8 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/model.UnauthorizedMessage'
+      security:
+      - ApiKeyAuth: []
       summary: Get posts with pagination
       tags:
       - AdminPosts
@@ -342,6 +344,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/model.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
       summary: Get single post with specific id
       tags:
       - AdminPosts

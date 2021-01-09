@@ -66,6 +66,7 @@ func init() {
 // @Param id path string true "Post ID"
 // @Success 200 {object} model.PostSingleItem
 // @Failure 404 {object} model.ErrorMessage
+// @Security ApiKeyAuth
 // @Router /admin/posts/{id} [get]
 // @Tags AdminPosts
 func (ctrl *AdminPostController) GetAdminPost(ctx *gin.Context) {
@@ -91,6 +92,7 @@ func (ctrl *AdminPostController) GetAdminPost(ctx *gin.Context) {
 // @Success 200 {object} model.AdminPostListModel
 // @Failure 400 {object} model.ErrorMessage
 // @Failure 401 {object} model.UnauthorizedMessage
+// @Security ApiKeyAuth
 // @Router /admin/posts [get]
 // @Param page query int false "Page"
 // @Param type query string false "string enums" Enums(all, published, draft)
