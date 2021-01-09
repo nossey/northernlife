@@ -8,13 +8,14 @@
         <div v-else-if="fetchState.error">{{fetchState.error}}</div>
         <div v-else>
           <PostEditor
-            :title="post.title"
-            :body="post.body"
-            :tags="post.tags"
-            :thumbnail="post.thumbnail"
-            @updated="update($event)"
+            :title="state.title"
+            :body="state.body"
+            :tags="state.tags"
+            :thumbnail="state.thumbnail"
+            @updated="updated($event)"
           ></PostEditor>
         </div>
+        <Button @click.native="putPost">Update</Button>
       </b-col>
       <b-col>
         <div v-if="fetchState.pending">
@@ -23,10 +24,10 @@
         <div v-else-if="fetchState.error">{{fetchState.error}}</div>
         <div v-else>
           <Post
-            :title="post.title"
-            :body="post.body"
-            :tags="post.selectedTags"
-            :thumbnail="post.thumbnail"
+            v-bind:title="state.title"
+            v-bind:body="state.body"
+            v-bind:tags="state.selectedTags"
+            v-bind:thumbnail="state.thumbnail"
           ></Post>
         </div>
       </b-col>
@@ -35,9 +36,15 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, useFetch, reactive, ref, toRefs, useContext, SetupContext} from "@nuxtjs/composition-api";
-import {AdminPostsApi, TagsApi} from "~/client";
+import {defineComponent, useFetch, reactive, useContext, computed} from "@nuxtjs/composition-api";
+import {AdminPostsApi, PostsApi, TagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
+import { createMarkdown } from "safe-marked";
+const markdown = createMarkdown({
+  marked:{
+    breaks: true
+  }});
+const { htmlToText } = require('html-to-text');
 
 import PostEditor from "~/components/molecules/PostEditor.vue"
 import Post from "~/components/molecules/Post.vue"
@@ -45,49 +52,64 @@ import Button from "~/components/atoms/Button.vue";
 
 export default defineComponent({
   components: {Button, PostEditor, Post},
-  setup(){
-    let post = reactive<{
-      title: String,
-      body: String,
-      plainBody: String,
-      selectedTags: Array<string>,
-      tags: string[],
-      thumbnail: String
-    }>({
+  setup(props, context){
+    const state = reactive({
       title: "",
       body: "",
-      plainBody: "",
-      selectedTags: [],
-      tags: [],
-      thumbnail: ""
+      selectedTags: new Array<string>(),
+      tags: new Array<string>(),
+      thumbnail: "",
+      renderedBody: computed(() => markdown(state.body)),
+      plainBody: computed(() => htmlToText(state.renderedBody, {
+        ignoreImage: true
+      })),
     });
+    const ctx = useContext();
+    const id = ctx.params.value["id"];
     const {fetchState} = useFetch(async() => {
-      const context = useContext();
-      const id = context.params.value["id"];
       const api = new AdminPostsApi(buildConfiguration());
       const tagApi = new TagsApi(buildConfiguration());
       const postResult = await api.adminPostsIdGet(id);
       const tags = await tagApi.tagsGet();
 
-      post.title = (postResult.data.title) ? postResult.data.title : "";
-      post.tags = tags.data;
-      post.body =  (postResult.data.body) ?  postResult.data.body : "";
-      post.thumbnail = (postResult.data.thumbnail) ? postResult.data.thumbnail : "";
-      post.selectedTags = (postResult.data.tags) ? postResult.data.tags : [];
+      state.title = (postResult.data.title) ? postResult.data.title : "";
+      state.tags = tags.data;
+      state.body =  (postResult.data.body) ?  postResult.data.body : "";
+      state.thumbnail = (postResult.data.thumbnail) ? postResult.data.thumbnail : "";
+      state.selectedTags = (postResult.data.tags) ? postResult.data.tags : new Array<string>();
     })
 
-    const update = (event) => {
-      console.log(event.title)
-      post.title = event.title
-      post.body = event.body
-      post.thumbnail = event.thumbnail
-      post.selectedTags = event.selectedTags
+    const updated = (event) => {
+      state.title = event.title
+      state.body = event.body
+      state.thumbnail = event.thumbnail
+      state.selectedTags = event.selectedTags
     };
 
+    const putPost = async () => {
+      const api = new PostsApi(buildConfiguration());
+      await api.postsIdPut(id, {
+        title: state.title,
+        body: state.body,
+        plainBody: state.plainBody,
+        tags: state.selectedTags,
+        thumbnail: state.thumbnail,
+        published: true})
+      .then(res => {
+        // TODO:トーストとか色々出してあげる
+        context.root.$router.push(`/posts/${res.data.postID}`)
+      }).catch(err => {
+        // TODO:トーストとか色々出してあげる
+        console.log(err)
+        console.log(err.response.data)
+      });
+    }
+
     return {
-      post,
+      state,
       fetchState,
-      update
+      updated,
+      putPost
     }
   }
 })
