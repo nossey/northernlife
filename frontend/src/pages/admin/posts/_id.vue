@@ -16,6 +16,7 @@
           ></PostEditor>
         </div>
         <Button @click.native="putPost">Update</Button>
+        <Button @click.native="deletePost">Delete</Button>
       </b-col>
       <b-col>
         <div v-if="fetchState.pending">
@@ -87,8 +88,8 @@ export default defineComponent({
     };
 
     const putPost = async () => {
-      const api = new PostsApi(buildConfiguration());
-      await api.postsIdPut(id, {
+      const api = new AdminPostsApi(buildConfiguration());
+      await api.adminPostsIdPut(id, {
         title: state.title,
         body: state.body,
         plainBody: state.plainBody,
@@ -105,11 +106,25 @@ export default defineComponent({
       });
     }
 
+    const deletePost = async () => {
+      const api = new AdminPostsApi(buildConfiguration());
+      await api.adminPostsIdDelete(id)
+        .then(res => {
+          // TODO:トーストとか色々出してあげる
+          context.root.$router.push(`/admin/posts/`)
+        }).catch(err => {
+          // TODO:トーストとか色々出してあげる
+          console.log(err)
+          console.log(err.response.data)
+        });
+    }
+
     return {
       state,
       fetchState,
       updated,
-      putPost
+      putPost,
+      deletePost
     }
   }
 })
