@@ -60,7 +60,7 @@ type PostUpdateModel struct {
 	PlainBody string   `json:"plainBody" binding:"required"`
 	Tags      []string `json:"tags" binding:"required"`
 	Thumbnail string   `json:"thumbnail" binding:"required"`
-	Published bool     `json:"published" binding:"required"`
+	Published *bool    `json:"published" binding:"required"`
 }
 
 // PostUpdateResult is success result of update a post
