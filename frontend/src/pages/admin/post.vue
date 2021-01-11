@@ -12,8 +12,8 @@
           ></PostEditor>
           <b-container class="p-3">
             <b-row class="mt-2">
-              <Button @click.native="postman">Save</Button>
-              <Button @click.native="postman">Save as draft</Button>
+              <Button @click.native="postman(true)">Save</Button>
+              <Button @click.native="postman(false)">Save as draft</Button>
             </b-row>
           </b-container>
         </b-col>
@@ -81,7 +81,7 @@ export default defineComponent({
         return;
       props.isPosting = true;
       const api = new AdminPostsApi(buildConfiguration());
-      await api.adminPostsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: state.selectedTags, thumbnail: state.thumbnail}).then(res => {
+      await api.adminPostsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: state.selectedTags, thumbnail: state.thumbnail, published: publish}).then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.postID}`)
       }).catch(err => {

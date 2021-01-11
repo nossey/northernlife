@@ -1,5 +1,29 @@
 basePath: /api/v1
 definitions:
+  model.AdminPostCreateModel:
+    properties:
+      body:
+        type: string
+      plainBody:
+        type: string
+      published:
+        type: boolean
+      tags:
+        items:
+          type: string
+        type: array
+      thumbnail:
+        type: string
+      title:
+        type: string
+    required:
+    - body
+    - plainBody
+    - published
+    - tags
+    - thumbnail
+    - title
+    type: object
   model.AdminPostListItem:
     properties:
       body:
@@ -273,7 +297,7 @@ paths:
         name: message
         required: true
         schema:
-          $ref: '#/definitions/model.PostCreateBody'
+          $ref: '#/definitions/model.AdminPostCreateModel'
       produces:
       - application/json
       responses:

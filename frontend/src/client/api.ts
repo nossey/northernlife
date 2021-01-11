@@ -22,6 +22,49 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface ModelAdminPostCreateModel
+ */
+export interface ModelAdminPostCreateModel {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostCreateModel
+     */
+    body: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostCreateModel
+     */
+    plainBody: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ModelAdminPostCreateModel
+     */
+    published: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ModelAdminPostCreateModel
+     */
+    tags: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostCreateModel
+     */
+    thumbnail: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminPostCreateModel
+     */
+    title: string;
+}
+/**
+ * 
+ * @export
  * @interface ModelAdminPostListItem
  */
 export interface ModelAdminPostListItem {
@@ -723,11 +766,11 @@ export const AdminPostsApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Create single post
-         * @param {ModelPostCreateBody} message Post Data
+         * @param {ModelAdminPostCreateModel} message Post Data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        adminPostsPost: async (message: ModelPostCreateBody, options: any = {}): Promise<RequestArgs> => {
+        adminPostsPost: async (message: ModelAdminPostCreateModel, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'message' is not null or undefined
             if (message === null || message === undefined) {
                 throw new RequiredError('message','Required parameter message was null or undefined when calling adminPostsPost.');
@@ -837,11 +880,11 @@ export const AdminPostsApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Create single post
-         * @param {ModelPostCreateBody} message Post Data
+         * @param {ModelAdminPostCreateModel} message Post Data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async adminPostsPost(message: ModelPostCreateBody, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostCreateResult>> {
+        async adminPostsPost(message: ModelAdminPostCreateModel, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostCreateResult>> {
             const localVarAxiosArgs = await AdminPostsApiAxiosParamCreator(configuration).adminPostsPost(message, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -902,11 +945,11 @@ export const AdminPostsApiFactory = function (configuration?: Configuration, bas
         /**
          * 
          * @summary Create single post
-         * @param {ModelPostCreateBody} message Post Data
+         * @param {ModelAdminPostCreateModel} message Post Data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        adminPostsPost(message: ModelPostCreateBody, options?: any): AxiosPromise<ModelPostCreateResult> {
+        adminPostsPost(message: ModelAdminPostCreateModel, options?: any): AxiosPromise<ModelPostCreateResult> {
             return AdminPostsApiFp(configuration).adminPostsPost(message, options).then((request) => request(axios, basePath));
         },
     };
@@ -972,12 +1015,12 @@ export class AdminPostsApi extends BaseAPI {
     /**
      * 
      * @summary Create single post
-     * @param {ModelPostCreateBody} message Post Data
+     * @param {ModelAdminPostCreateModel} message Post Data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AdminPostsApi
      */
-    public adminPostsPost(message: ModelPostCreateBody, options?: any) {
+    public adminPostsPost(message: ModelAdminPostCreateModel, options?: any) {
         return AdminPostsApiFp(this.configuration).adminPostsPost(message, options).then((request) => request(this.axios, this.basePath));
     }
 

@@ -77,7 +77,7 @@ module.exports = {
       login: '/admin/login',
       logout: '/admin/login',
       callback: false,
-      home: '/'
+      home: '/admin'
     },
     strategies: {
       local : {
