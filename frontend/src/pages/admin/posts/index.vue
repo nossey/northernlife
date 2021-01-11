@@ -3,6 +3,7 @@
     <nuxt-link to="/admin">Admin Top</nuxt-link>
     <b-row>
       <b-col>
+        <Button to="/admin/post">Create New Post</Button>
         <b-tabs>
           <b-tab title="All">
             <b-container>
