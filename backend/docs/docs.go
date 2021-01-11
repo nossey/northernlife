@@ -113,7 +113,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.PostCreateBody"
+                            "$ref": "#/definitions/model.AdminPostCreateModel"
                         }
                     }
                 ],
@@ -688,6 +688,40 @@ var doc = `{
         }
     },
     "definitions": {
+        "model.AdminPostCreateModel": {
+            "type": "object",
+            "required": [
+                "body",
+                "plainBody",
+                "published",
+                "tags",
+                "thumbnail",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "plainBody": {
+                    "type": "string"
+                },
+                "published": {
+                    "type": "boolean"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "thumbnail": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "model.AdminPostListItem": {
             "type": "object",
             "properties": {
