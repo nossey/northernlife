@@ -11,11 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nossey/northernlife/controller"
-	"github.com/nossey/northernlife/docs"
 	"github.com/nossey/northernlife/infrastructure"
-
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title Swagger Example API
@@ -46,14 +42,6 @@ type User struct {
 
 func main() {
 	defer infrastructure.Db.Close()
-
-	// programatically set swagger info
-	docs.SwaggerInfo.Title = "Swagger Example API"
-	docs.SwaggerInfo.Description = "NorthernLife Backend API"
-	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:9000"
-	docs.SwaggerInfo.BasePath = "/api/v1"
-	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	r := gin.Default()
 
@@ -121,7 +109,6 @@ func main() {
 			}
 		}
 	}
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	srv := &http.Server{
 		Addr:    ":9000",

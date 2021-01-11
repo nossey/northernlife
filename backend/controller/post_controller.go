@@ -200,7 +200,7 @@ func (postController *PostController) UpdatePost(ctx *gin.Context) {
 		PlainBody: json.PlainBody,
 		Tags:      json.Tags,
 		Thumbnail: json.Thumbnail,
-		Published: json.Published,
+		Published: *json.Published,
 	})
 
 	if err != nil {
