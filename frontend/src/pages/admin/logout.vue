@@ -10,9 +10,9 @@ export default defineComponent( {
   middleware: 'auth',
   components: {Button},
   setup(props, context){
-    const logout = async () => {
+    const logout = () => {
       // SPEC:型推論が利かないためWorkAround
-      await (context.root as any).$auth.logout();
+      (context.root as any).$auth.logout();
     }
 
     return {
