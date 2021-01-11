@@ -83,7 +83,10 @@ export default defineComponent({
       const api = new AdminPostsApi(buildConfiguration());
       await api.adminPostsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: state.selectedTags, thumbnail: state.thumbnail, published: publish}).then(res => {
         // TODO:トーストとか色々出してあげる
-        context.root.$router.push(`/posts/${res.data.postID}`)
+        if (publish)
+          context.root.$router.push(`/posts/${res.data.postID}`)
+        else
+          context.root.$router.push(`/admin/posts/${res.data.postID}`)
       }).catch(err => {
         // TODO:トーストとか色々出してあげる
         console.log(err)
