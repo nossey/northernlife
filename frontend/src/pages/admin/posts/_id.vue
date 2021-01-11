@@ -15,7 +15,8 @@
             @updated="updated($event)"
           ></PostEditor>
         </div>
-        <Button @click.native="putPost">Update</Button>
+        <Button @click.native="putPost(true)">Save</Button>
+        <Button @click.native="putPost(false)">Save as draft</Button>
         <Button @click.native="deletePost">Delete</Button>
       </b-col>
       <b-col>
@@ -87,7 +88,7 @@ export default defineComponent({
       state.selectedTags = event.selectedTags
     };
 
-    const putPost = async () => {
+    const putPost = async (publish: boolean) => {
       const api = new AdminPostsApi(buildConfiguration());
       await api.adminPostsIdPut(id, {
         title: state.title,
@@ -95,7 +96,7 @@ export default defineComponent({
         plainBody: state.plainBody,
         tags: state.selectedTags,
         thumbnail: state.thumbnail,
-        published: true})
+        published: publish})
       .then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.postID}`)

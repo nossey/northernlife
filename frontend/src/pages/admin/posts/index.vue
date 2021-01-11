@@ -6,22 +6,26 @@
         <b-tabs>
           <b-tab title="All">
             <b-container>
-              <b-row v-for="post in allPosts.posts" :key="post.id">
-                <nuxt-link :to="`/admin/posts/${post.id}`">{{post.title}}</nuxt-link>
+              <b-row v-if="fetchState.pending">Loading...</b-row>
+              <b-row v-else v-for="post in allPosts.posts" :key="post.Id">
+                <nuxt-link :to="`/admin/posts/${post.Id}`">{{post.Title}}</nuxt-link>
+                <Button @click.native="deletePost(post.Id)">Delete</Button>
               </b-row>
             </b-container>
           </b-tab>
           <b-tab title="Published">
             <b-container>
-              <b-row v-for="post in publishedPosts.posts" :key="post.id">
-                <nuxt-link :to="`/admin/posts/${post.id}`">{{post.title}}</nuxt-link>
+              <b-row v-for="post in publishedPosts.posts" :key="post.Id">
+                <nuxt-link :to="`/admin/posts/${post.Id}`">{{post.Title}}</nuxt-link>
+                <Button @click.native="deletePost(post.Id)">Delete</Button>
               </b-row>
             </b-container>
           </b-tab>
           <b-tab title="Draft">
             <b-container v-if="draftPosts.posts.length > 0">
-              <b-row v-for="post in draftPosts.posts" :key="post.id">
-                <nuxt-link :to="`/admin/posts/${post.id}`">{{post.title}}</nuxt-link>
+              <b-row v-for="post in draftPosts.posts" :key="post.Id">
+                <nuxt-link :to="`/admin/posts/${post.Id}`">{{post.Title}}</nuxt-link>
+                <Button @click.native="deletePost(post.Id)">Delete</Button>
               </b-row>
             </b-container>
             <b-container v-else>No Draft Posts</b-container>
@@ -36,20 +40,77 @@
 
 import { buildConfiguration } from "~/client/configurationFactory"
 import {AdminPostsApi} from "~/client";
+import Button from "~/components/atoms/Button.vue"
+import {defineComponent, reactive, useFetch} from "@nuxtjs/composition-api";
 
-export default {
-  async asyncData(){
-    const api = new AdminPostsApi(buildConfiguration());
-    const allPosts = await api.adminPostsGet(1, "all");
-    const draftPosts = await api.adminPostsGet(1, "draft");
-    const published = await api.adminPostsGet(1, "published");
+interface PostListItem {
+  Id: string;
+  Title: string;
+}
+
+export default defineComponent({
+  components: {Button},
+  setup() {
+    const allPosts = reactive<{posts: PostListItem[]}>({posts: new Array<PostListItem>()}) ;
+    const draftPosts = reactive<{posts: Array<PostListItem>}>({posts: new Array<PostListItem>()}) ;
+    const publishedPosts = reactive<{posts: Array<PostListItem>}>({posts: new Array<PostListItem>()}) ;
+
+    const {fetch, fetchState} = useFetch(async() => {
+      const api = new AdminPostsApi(buildConfiguration());
+      const allPostsResult = await api.adminPostsGet(1, "all");
+      const draftPostsResult = await api.adminPostsGet(1, "draft");
+      const publishedResult = await api.adminPostsGet(1, "published");
+
+      allPosts.posts = new Array<PostListItem>();
+      draftPosts.posts = new Array<PostListItem>();
+      publishedPosts.posts = new Array<PostListItem>();
+      if (allPostsResult.data.posts)
+      {
+        allPostsResult.data.posts.forEach(p => {
+            if (p && p.id && p.title){
+              allPosts.posts.push({Id: p.id, Title: p.title})
+            }
+          }
+        )
+      }
+      if (draftPostsResult.data.posts)
+      {
+        draftPostsResult.data.posts.forEach(p => {
+            if (p && p.id && p.title){
+              draftPosts.posts.push({Id: p.id, Title: p.title})
+            }
+          }
+        )
+      }
+      if (publishedResult.data.posts)
+      {
+        publishedResult.data.posts.forEach(p => {
+            if (p && p.id && p.title){
+              publishedPosts.posts.push({Id: p.id, Title: p.title})
+            }
+          }
+        )
+      }
+    });
     return {
-      allPosts: allPosts.data,
-      draftPosts: draftPosts.data,
-      publishedPosts: published.data
+      fetchState,
+      fetch,
+      allPosts,
+      publishedPosts,
+      draftPosts
+    }
+  },
+  methods: {
+    async deletePost(id) {
+      const api = new AdminPostsApi(buildConfiguration());
+      await api.adminPostsIdDelete(id).then((result) => {
+        this.fetch()
+      }).catch((err) => {
+        // TODO:
+      })
     }
   }
-}
+})
 
 </script>
 
