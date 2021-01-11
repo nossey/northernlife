@@ -12,7 +12,8 @@
           ></PostEditor>
           <b-container class="p-3">
             <b-row class="mt-2">
-              <Button @click.native="postman">POST</Button>
+              <Button @click.native="postman">Save</Button>
+              <Button @click.native="postman">Save as draft</Button>
             </b-row>
           </b-container>
         </b-col>
@@ -32,7 +33,7 @@
 <script lang="ts">
 
 import {defineComponent, reactive, computed, useAsync, useFetch} from "@nuxtjs/composition-api";
-import {ContentsApi, PostsApi, TagsApi} from "~/client";
+import {ContentsApi, PostsApi, AdminPostsApi, TagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
@@ -75,12 +76,12 @@ export default defineComponent({
       return (await tagApi.tagsGet()).data;
     });
 
-    const postman = async () => {
+    const postman = async (publish: boolean) => {
       if (props.isPosting)
         return;
       props.isPosting = true;
-      const api = new PostsApi(buildConfiguration());
-      await api.postsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: state.selectedTags, thumbnail: state.thumbnail}).then(res => {
+      const api = new AdminPostsApi(buildConfiguration());
+      await api.adminPostsPost({title: state.title, body: state.body, plainBody: state.plainBody, tags: state.selectedTags, thumbnail: state.thumbnail}).then(res => {
         // TODO:トーストとか色々出してあげる
         context.root.$router.push(`/posts/${res.data.postID}`)
       }).catch(err => {

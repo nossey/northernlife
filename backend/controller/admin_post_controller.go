@@ -144,7 +144,7 @@ func (ctrl *AdminPostController) GetAdminPosts(ctx *gin.Context) {
 // @Summary Create single post
 // @Accept json
 // @Produce json
-// @Param message body model.PostCreateBody true "Post Data"
+// @Param message body model.AdminPostCreateModel true "Post Data"
 // @Success 201 {object} model.PostCreateResult
 // @Failure 400 {object} model.ErrorMessage
 // @Failure 401 {object} model.UnauthorizedMessage
@@ -155,7 +155,7 @@ func (ctrl *AdminPostController) CreateAdminPost(ctx *gin.Context) {
 	claims := jwt.ExtractClaims(ctx)
 	postApp := application.PostApp
 
-	var json model.PostCreateBody
+	var json model.AdminPostCreateModel
 	if err := ctx.ShouldBindJSON(&json); err != nil {
 		errorMessage := model.ErrorMessage{
 			Message: err.Error(),
@@ -168,7 +168,7 @@ func (ctrl *AdminPostController) CreateAdminPost(ctx *gin.Context) {
 		Title:     json.Title,
 		Body:      json.Body,
 		PlainBody: json.PlainBody,
-		Published: true,
+		Published: *json.Published,
 		Thumbnail: json.Thumbnail,
 		Tags:      json.Tags,
 	}

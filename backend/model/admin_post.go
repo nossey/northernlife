@@ -24,3 +24,13 @@ type AdminPostListModel struct {
 	TotalCount   int                 `json:"totalCount"`
 	PerPageCount int                 `json:"perPageCount"`
 }
+
+// AdminPostCreateModel is model to create a post
+type AdminPostCreateModel struct {
+	Body      string   `json:"body" binding:"required"`
+	Title     string   `json:"title" binding:"required"`
+	PlainBody string   `json:"plainBody" binding:"required"`
+	Tags      []string `json:"tags" binding:"required"`
+	Thumbnail string   `json:"thumbnail" binding:"required"`
+	Published *bool    `json:"published" binding:"required"`
+}
