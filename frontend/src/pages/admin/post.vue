@@ -56,7 +56,7 @@ export default defineComponent({
     Post
   },
   name: "post",
-  middleware: 'auth',
+  middleware: ['auth'],
   setup(props:Props, context) {
     props.isPosting = false
     const state = reactive({

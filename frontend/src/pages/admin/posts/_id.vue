@@ -53,6 +53,7 @@ import Post from "~/components/molecules/Post.vue"
 import Button from "~/components/atoms/Button.vue";
 
 export default defineComponent({
+  middleware: ['auth'],
   components: {Button, PostEditor, Post},
   setup(props, context){
     const state = reactive({

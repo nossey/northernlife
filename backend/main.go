@@ -70,7 +70,7 @@ func main() {
 			{
 				auth.GET("/user", ac.GetUser)
 			}
-			auth.GET("/refresh", handler.RefreshHandler)
+			auth.GET("/refresh", ac.Refresh)
 		}
 
 		tag := v1.Group("/tags")

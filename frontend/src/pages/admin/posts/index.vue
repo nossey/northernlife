@@ -50,6 +50,7 @@ interface PostListItem {
 }
 
 export default defineComponent({
+  middleware: ['auth'],
   components: {Button},
   setup() {
     const allPosts = reactive<{posts: PostListItem[]}>({posts: new Array<PostListItem>()}) ;
