@@ -83,6 +83,11 @@ func (c *AuthController) Login(ctx *gin.Context) {
 	authHandler.LoginHandler(ctx)
 }
 
+// Refresh godoc
+func (c *AuthController) Refresh(ctx *gin.Context) {
+	authHandler.RefreshHandler(ctx)
+}
+
 // GetAuthHandler return global handler
 func GetAuthHandler() *jwt.GinJWTMiddleware {
 	return authHandler
