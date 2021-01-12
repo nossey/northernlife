@@ -1,11 +1,11 @@
 <template>
   <b-container fluid class="header">
     <b-row class="text-center h-100">
-      <b-col v-if="loggedIn"></b-col>
+      <b-col v-if="$auth.loggedIn"></b-col>
       <b-col class="center" cols="8">
         <nuxt-link to="/">NorthernLife</nuxt-link>
       </b-col>
-      <b-col v-if="loggedIn">
+      <b-col v-if="$auth.loggedIn">
         <nuxt-link to="/admin">Admin</nuxt-link>
       </b-col>
     </b-row>
@@ -14,17 +14,7 @@
 
 <script lang="ts">
 import {defineComponent, ref} from "@nuxtjs/composition-api";
-
 export default defineComponent({
-  middleware: 'auth',
-  setup(_props, context) {
-    const root = context.root as any;
-    const loggedIn = ref(root.$auth.loggedIn);
-
-    return {
-      loggedIn
-    }
-  }
 })
 </script>
 
