@@ -7,7 +7,6 @@ export default ({store}) => {
       if (token && !req.headers.Authorization)
       {
         req.headers.Authorization = token;
-        console.log("Added Header");
       }
       return req
     })
