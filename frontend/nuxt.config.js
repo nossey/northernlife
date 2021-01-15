@@ -84,21 +84,11 @@ module.exports = {
     },
     strategies: {
       local : {
-        scheme: 'refresh',
-        token: {
-          property: 'token',
-          maxAge: 1800
-        },
-        refreshToken: {
-          property: 'token',
-          data: 'token',
-          maxAge: 60 * 60 * 24 * 30
-        },
         endpoints: {
           login: {url: '/api/auth/login', method: 'post', propertyName: 'token'},
           logout: {url: '/api/auth/logout', method: 'post'},
           refresh: {url: '/api/auth/refresh', method: 'get', propertyName: 'token'},
-          user: false
+          user: {url: '/api/auth/user', method: 'get', propertyName: 'UserID'}
         }
       }
     }

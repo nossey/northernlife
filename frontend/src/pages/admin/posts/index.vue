@@ -58,41 +58,54 @@ export default defineComponent({
     const publishedPosts = reactive<{posts: Array<PostListItem>}>({posts: new Array<PostListItem>()}) ;
 
     const {fetch, fetchState} = useFetch(async() => {
-      const api = new AdminPostsApi(buildConfiguration());
-      const allPostsResult = await api.adminPostsGet(1, "all");
-      const draftPostsResult = await api.adminPostsGet(1, "draft");
-      const publishedResult = await api.adminPostsGet(1, "published");
-
       allPosts.posts = new Array<PostListItem>();
-      draftPosts.posts = new Array<PostListItem>();
-      publishedPosts.posts = new Array<PostListItem>();
-      if (allPostsResult.data.posts)
-      {
-        allPostsResult.data.posts.forEach(p => {
-            if (p && p.id && p.title){
-              allPosts.posts.push({Id: p.id, Title: p.title})
-            }
+      const api = new AdminPostsApi(buildConfiguration());
+      await api.adminPostsGet(1, "all")
+        .then((res) => {
+          const result = res.data;
+          if (result.posts)
+          {
+            result.posts.forEach(p => {
+                if (p && p.id && p.title){
+                  allPosts.posts.push({Id: p.id, Title: p.title})
+                }
+              }
+            )
           }
-        )
-      }
-      if (draftPostsResult.data.posts)
-      {
-        draftPostsResult.data.posts.forEach(p => {
-            if (p && p.id && p.title){
-              draftPosts.posts.push({Id: p.id, Title: p.title})
+        }).catch(err => {
+          console.log(err);
+        });
+
+      await api.adminPostsGet(1, "draft").then(res => {
+        draftPosts.posts = new Array<PostListItem>();
+        const result = res.data;
+        if (result.posts)
+        {
+          result.posts.forEach(p => {
+              if (p && p.id && p.title){
+                draftPosts.posts.push({Id: p.id, Title: p.title})
+              }
             }
-          }
-        )
-      }
-      if (publishedResult.data.posts)
-      {
-        publishedResult.data.posts.forEach(p => {
-            if (p && p.id && p.title){
-              publishedPosts.posts.push({Id: p.id, Title: p.title})
+          )
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+      await api.adminPostsGet(1, "published").then(res => {
+        publishedPosts.posts = new Array<PostListItem>();
+        const result = res.data;
+        if (result.posts)
+        {
+          result.posts.forEach(p => {
+              if (p && p.id && p.title){
+                publishedPosts.posts.push({Id: p.id, Title: p.title})
+              }
             }
-          }
-        )
-      }
+          )
+        }
+      }).catch(err => {
+        console.log(err);
+      })
     });
     return {
       fetchState,

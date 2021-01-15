@@ -4,7 +4,7 @@ export default ({store}) => {
   if (manager.handlers.length == 0){
     globalAxios.interceptors.request.use(req => {
       const token = store.$auth.getToken('local');
-      if (token && !req.headers.Authorization)
+      if (token)
       {
         req.headers.Authorization = token;
       }
