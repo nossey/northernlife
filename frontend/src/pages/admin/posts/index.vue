@@ -59,22 +59,29 @@ export default defineComponent({
 
     const {fetch, fetchState} = useFetch(async() => {
       const api = new AdminPostsApi(buildConfiguration());
-      const allPostsResult = await api.adminPostsGet(1, "all");
+      await api.adminPostsGet(1, "all")
+        .then((res) => {
+          allPosts.posts = new Array<PostListItem>();
+          const result = res.data;
+          if (result.posts)
+          {
+            result.posts.forEach(p => {
+                if (p && p.id && p.title){
+                  allPosts.posts.push({Id: p.id, Title: p.title})
+                }
+              }
+            )
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+
       const draftPostsResult = await api.adminPostsGet(1, "draft");
       const publishedResult = await api.adminPostsGet(1, "published");
 
-      allPosts.posts = new Array<PostListItem>();
       draftPosts.posts = new Array<PostListItem>();
       publishedPosts.posts = new Array<PostListItem>();
-      if (allPostsResult.data.posts)
-      {
-        allPostsResult.data.posts.forEach(p => {
-            if (p && p.id && p.title){
-              allPosts.posts.push({Id: p.id, Title: p.title})
-            }
-          }
-        )
-      }
+
       if (draftPostsResult.data.posts)
       {
         draftPostsResult.data.posts.forEach(p => {
