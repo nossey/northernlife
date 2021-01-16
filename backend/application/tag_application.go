@@ -8,6 +8,41 @@ import (
 	"github.com/nossey/northernlife/infrastructure"
 )
 
+// TagApplication provides functions to manage tags
+type TagApplication struct {
+}
+
+// TagApp is singleton of TagApplication
+var TagApp *TagApplication
+
+func init() {
+	TagApp = &TagApplication{}
+}
+
+// GetTags get tags
+func (app *TagApplication) GetTags() (tags []string) {
+	tags = []string{}
+	db := infrastructure.Db
+
+	sql := `
+select
+	tag_name
+from
+	tags
+`
+	rows, err := db.Raw(sql).Rows()
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var tag string
+		rows.Scan(&tag)
+		tags = append(tags, tag)
+	}
+	return
+}
+
 // GetTags get all tags
 func GetTags() (tags []string) {
 	tags = []string{}
