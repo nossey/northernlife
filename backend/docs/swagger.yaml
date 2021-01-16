@@ -60,6 +60,25 @@ definitions:
       totalCount:
         type: integer
     type: object
+  model.AdminTagsCreateModel:
+    properties:
+      tagName:
+        type: string
+    required:
+    - tagName
+    type: object
+  model.AdminTagsCreateResult:
+    properties:
+      tagName:
+        type: string
+    type: object
+  model.AdminTagsGetModel:
+    properties:
+      tags:
+        items:
+          type: string
+        type: array
+    type: object
   model.ErrorMessage:
     properties:
       message:
@@ -412,6 +431,60 @@ paths:
       summary: Update single post
       tags:
       - AdminPosts
+  /admin/tags:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.AdminTagsGetModel'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Tags
+      tags:
+      - AdminTags
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Tag Data
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.AdminTagsCreateModel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.AdminTagsCreateResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.UnauthorizedMessage'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/model.ErrorMessage'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Tags
+      tags:
+      - AdminTags
   /auth/login:
     post:
       consumes:

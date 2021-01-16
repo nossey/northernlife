@@ -39,12 +39,12 @@ func (ctrl *AdminTagsController) GetTags(ctx *gin.Context) {
 // @Summary Get Tags
 // @Accept json
 // @Produce json
-// @Param message body model.AdminPostCreateModel true "Post Data"
+// @Param message body model.AdminTagsCreateModel true "Tag Data"
 // @Success 201 {object} model.AdminTagsCreateResult
 // @Failure 400 {object} model.ErrorMessage
 // @Failure 401 {object} model.UnauthorizedMessage
 // @Failure 409 {object} model.ErrorMessage
-// @Router /admin/tags [get]
+// @Router /admin/tags [post]
 // @Security ApiKeyAuth
 // @Tags AdminTags
 func (ctrl *AdminTagsController) CreateTag(ctx *gin.Context) {
