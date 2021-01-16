@@ -21,25 +21,12 @@ func init() {
 
 // GetTags get tags
 func (app *TagApplication) GetTags() (tags []string) {
-	tags = []string{}
-	db := infrastructure.Db
+	tags = dataaccessor.TagAccessor.GetTags()
+	return
+}
 
-	sql := `
-select
-	tag_name
-from
-	tags
-`
-	rows, err := db.Raw(sql).Rows()
-	if err != nil {
-		return
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var tag string
-		rows.Scan(&tag)
-		tags = append(tags, tag)
-	}
+// CreateTag create a tag
+func (app *TagApplication) CreateTag(tagName string) (err error) {
 	return
 }
 
