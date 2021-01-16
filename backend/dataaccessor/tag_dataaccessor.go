@@ -18,6 +18,12 @@ func init() {
 	TagAccessor = &TagDataAccessor{}
 }
 
+// TagCreate is structure to create a tag
+type TagCreate struct {
+	TagName string
+	UserID  string
+}
+
 // GetTags get tags
 func (accessor *TagDataAccessor) GetTags() (tags []string) {
 	db := infrastructure.Db
@@ -38,6 +44,32 @@ from
 		rows.Scan(&tag)
 		tags = append(tags, tag)
 	}
+	return
+}
+
+// CreateTag create a tag
+func (accessor *TagDataAccessor) CreateTag(create TagCreate) (err error) {
+	db := infrastructure.Db
+	createSQL := `
+insert into
+	tags
+(
+	created_at, 
+	updated_at, 
+	id,
+	tag_name, 
+	user_id
+)
+values
+(
+	current_timestamp,
+	current_timestamp,
+	uuid_generate_v4(),
+	$1,
+	$2
+)
+`
+	err = db.Exec(createSQL, create.TagName, create.UserID).Error
 	return
 }
 

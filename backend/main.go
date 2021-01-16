@@ -111,6 +111,7 @@ func main() {
 				{
 					atc := controller.AdminTagsCtrl
 					adminTag.GET("", atc.GetTags)
+					adminTag.POST("", atc.CreateTag)
 				}
 			}
 		}

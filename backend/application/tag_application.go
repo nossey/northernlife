@@ -12,6 +12,12 @@ import (
 type TagApplication struct {
 }
 
+// TagCreate is structure to create a tag
+type TagCreate struct {
+	Name   string
+	UserID string
+}
+
 // TagApp is singleton of TagApplication
 var TagApp *TagApplication
 
@@ -26,7 +32,12 @@ func (app *TagApplication) GetTags() (tags []string) {
 }
 
 // CreateTag create a tag
-func (app *TagApplication) CreateTag(tagName string) (err error) {
+func (app *TagApplication) CreateTag(create TagCreate) (err error) {
+	accessor := dataaccessor.TagAccessor
+	err = accessor.CreateTag(dataaccessor.TagCreate{
+		UserID:  create.UserID,
+		TagName: create.Name,
+	})
 	return
 }
 
