@@ -157,6 +157,45 @@ export interface ModelAdminPostListModel {
 /**
  * 
  * @export
+ * @interface ModelAdminTagsCreateModel
+ */
+export interface ModelAdminTagsCreateModel {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminTagsCreateModel
+     */
+    tagName: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModelAdminTagsCreateResult
+ */
+export interface ModelAdminTagsCreateResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelAdminTagsCreateResult
+     */
+    tagName?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModelAdminTagsGetModel
+ */
+export interface ModelAdminTagsGetModel {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ModelAdminTagsGetModel
+     */
+    tags?: Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface ModelErrorMessage
  */
 export interface ModelErrorMessage {
@@ -1022,6 +1061,197 @@ export class AdminPostsApi extends BaseAPI {
      */
     public adminPostsPost(message: ModelAdminPostCreateModel, options?: any) {
         return AdminPostsApiFp(this.configuration).adminPostsPost(message, options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
+
+/**
+ * AdminTagsApi - axios parameter creator
+ * @export
+ */
+export const AdminTagsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get Tags
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminTagsGet: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/admin/tags`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication ApiKeyAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Tags
+         * @param {ModelAdminTagsCreateModel} message Tag Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminTagsPost: async (message: ModelAdminTagsCreateModel, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'message' is not null or undefined
+            if (message === null || message === undefined) {
+                throw new RequiredError('message','Required parameter message was null or undefined when calling adminTagsPost.');
+            }
+            const localVarPath = `/admin/tags`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication ApiKeyAuth required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof message !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(message !== undefined ? message : {}) : (message || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AdminTagsApi - functional programming interface
+ * @export
+ */
+export const AdminTagsApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get Tags
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async adminTagsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelAdminTagsGetModel>> {
+            const localVarAxiosArgs = await AdminTagsApiAxiosParamCreator(configuration).adminTagsGet(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Get Tags
+         * @param {ModelAdminTagsCreateModel} message Tag Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async adminTagsPost(message: ModelAdminTagsCreateModel, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelAdminTagsCreateResult>> {
+            const localVarAxiosArgs = await AdminTagsApiAxiosParamCreator(configuration).adminTagsPost(message, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * AdminTagsApi - factory interface
+ * @export
+ */
+export const AdminTagsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @summary Get Tags
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminTagsGet(options?: any): AxiosPromise<ModelAdminTagsGetModel> {
+            return AdminTagsApiFp(configuration).adminTagsGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Tags
+         * @param {ModelAdminTagsCreateModel} message Tag Data
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        adminTagsPost(message: ModelAdminTagsCreateModel, options?: any): AxiosPromise<ModelAdminTagsCreateResult> {
+            return AdminTagsApiFp(configuration).adminTagsPost(message, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * AdminTagsApi - object-oriented interface
+ * @export
+ * @class AdminTagsApi
+ * @extends {BaseAPI}
+ */
+export class AdminTagsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get Tags
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminTagsApi
+     */
+    public adminTagsGet(options?: any) {
+        return AdminTagsApiFp(this.configuration).adminTagsGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Tags
+     * @param {ModelAdminTagsCreateModel} message Tag Data
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminTagsApi
+     */
+    public adminTagsPost(message: ModelAdminTagsCreateModel, options?: any) {
+        return AdminTagsApiFp(this.configuration).adminTagsPost(message, options).then((request) => request(this.axios, this.basePath));
     }
 
 }
