@@ -75,7 +75,7 @@ export default defineComponent({
 
     const {fetch: fetchTags, fetchState} = useFetch(async() => {
       const api = new AdminTagsApi(buildConfiguration());
-      state.tags = (await api.adminTagsGet()).data;
+      state.tags = (await api.adminTagsGet()).data.tags;
     });
 
     const postman = async (publish: boolean) => {
