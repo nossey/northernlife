@@ -27,7 +27,13 @@ func init() {
 
 // GetTags get tags
 func (app *TagApplication) GetTags() (tags []string) {
-	tags = dataaccessor.TagAccessor.GetTags()
+	tags = dataaccessor.TagAccessor.GetAttachedTags()
+	return
+}
+
+// GetAttachedTags get tags
+func (app *TagApplication) GetAttachedTags() (tags []string) {
+	tags = dataaccessor.TagAccessor.GetAttachedTags()
 	return
 }
 

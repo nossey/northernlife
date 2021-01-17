@@ -47,6 +47,38 @@ from
 	return
 }
 
+// GetAttachedTags get tags attached to posts
+func (accessor *TagDataAccessor) GetAttachedTags() (tags []string) {
+	db := infrastructure.Db
+	tags = []string{}
+	sql := `
+with attached_tag_ids as (
+	select distinct 
+		tag_id
+	from
+		tags_posts_attachments tpa
+)
+select 
+	t.tag_name
+from
+	tags t
+inner join
+	attached_tag_ids
+	on t.id = attached_tag_ids.tag_id;	
+`
+	rows, err := db.Raw(sql).Rows()
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var tag string
+		rows.Scan(&tag)
+		tags = append(tags, tag)
+	}
+	return
+}
+
 // CreateTag create a tag
 func (accessor *TagDataAccessor) CreateTag(create TagCreate) (err error) {
 	db := infrastructure.Db
