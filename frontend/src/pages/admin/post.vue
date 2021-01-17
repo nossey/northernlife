@@ -1,7 +1,9 @@
 <template>
   <div>
     <b-container fluid>
-      <b-row>
+      <b-row v-if="fetchState.pending">Loading...</b-row>
+      <b-row v-else-if="fetchState.error">Error!</b-row>
+      <b-row v-else>
         <b-col class="col edit-area">
           <PostEditor
             :title="state.title"
@@ -33,7 +35,7 @@
 <script lang="ts">
 
 import {defineComponent, reactive, computed, useAsync, useFetch} from "@nuxtjs/composition-api";
-import {ContentsApi, PostsApi, AdminPostsApi, TagsApi} from "~/client";
+import {AdminPostsApi, AdminTagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
@@ -71,9 +73,9 @@ export default defineComponent({
       selectedTags: new Array<string>()
     });
 
-    state.tags = useAsync(async() => {
-      const tagApi = new TagsApi(buildConfiguration());
-      return (await tagApi.tagsGet()).data;
+    const {fetch: fetchTags, fetchState} = useFetch(async() => {
+      const api = new AdminTagsApi(buildConfiguration());
+      state.tags = (await api.adminTagsGet()).data.tags;
     });
 
     const postman = async (publish: boolean) => {
@@ -107,6 +109,7 @@ export default defineComponent({
       state,
       postman,
       updated,
+      fetchState
     }
   }
 })
