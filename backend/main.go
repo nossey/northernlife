@@ -106,6 +106,13 @@ func main() {
 					adminPost.PUT("/:id", apc.UpdatePost)
 					adminPost.DELETE("/:id", apc.DeletePost)
 				}
+				adminTag := admin.Group("/tags")
+				adminTag.Group("")
+				{
+					atc := controller.AdminTagsCtrl
+					adminTag.GET("", atc.GetTags)
+					adminTag.POST("", atc.CreateTag)
+				}
 			}
 		}
 	}

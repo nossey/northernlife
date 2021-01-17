@@ -8,6 +8,39 @@ import (
 	"github.com/nossey/northernlife/infrastructure"
 )
 
+// TagApplication provides functions to manage tags
+type TagApplication struct {
+}
+
+// TagCreate is structure to create a tag
+type TagCreate struct {
+	Name   string
+	UserID string
+}
+
+// TagApp is singleton of TagApplication
+var TagApp *TagApplication
+
+func init() {
+	TagApp = &TagApplication{}
+}
+
+// GetTags get tags
+func (app *TagApplication) GetTags() (tags []string) {
+	tags = dataaccessor.TagAccessor.GetTags()
+	return
+}
+
+// CreateTag create a tag
+func (app *TagApplication) CreateTag(create TagCreate) (err error) {
+	accessor := dataaccessor.TagAccessor
+	err = accessor.CreateTag(dataaccessor.TagCreate{
+		UserID:  create.UserID,
+		TagName: create.Name,
+	})
+	return
+}
+
 // GetTags get all tags
 func GetTags() (tags []string) {
 	tags = []string{}
