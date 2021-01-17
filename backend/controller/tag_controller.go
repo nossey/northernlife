@@ -28,7 +28,7 @@ func init() {
 // @Router /tags [get]
 // @Tags Tags
 func (c *TagController) GetTags(ctx *gin.Context) {
-	tags := application.GetTags()
+	tags := application.TagApp.GetAttachedTags()
 	ctx.JSON(http.StatusOK, tags)
 }
 
