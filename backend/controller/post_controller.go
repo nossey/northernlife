@@ -75,7 +75,7 @@ func (postController *PostController) GetPosts(ctx *gin.Context) {
 	if err != nil {
 		page = 1
 	}
-	postResult := application.GetPosts(page)
+	postResult := application.PostApp.GetPostList(page, domain.Published)
 	postListViewModel := model.PostListModel{
 		TotalCount:   postResult.TotalCount,
 		PerPageCount: postResult.PerPageCount,
