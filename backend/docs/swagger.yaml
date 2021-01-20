@@ -564,6 +564,12 @@ paths:
         in: query
         name: page
         type: integer
+      - description: Tags
+        in: query
+        items:
+          type: string
+        name: tags
+        type: array
       produces:
       - application/json
       responses:

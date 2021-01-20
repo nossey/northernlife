@@ -68,6 +68,7 @@ func ToPostSingleItem(post domain.SinglePostItem) (viewmodel model.PostSingleIte
 // @Success 200 {object} model.PostListModel
 // @Router /posts [get]
 // @Param page query int false "Page"
+// @Param tags query []string false "Tags"
 // @Tags Posts
 func (postController *PostController) GetPosts(ctx *gin.Context) {
 	pageQuery := ctx.Query("page")
