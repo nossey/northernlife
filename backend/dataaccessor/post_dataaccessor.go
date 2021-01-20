@@ -255,23 +255,25 @@ from
 }
 
 // GetPostListCount get count of posts
-func (accessor *PostDataAccessor) GetPostListCount(getPostType domain.GetPostType) (count int) {
+func (accessor *PostDataAccessor) GetPostListCount(tags []string, getPostType domain.GetPostType) (count int) {
 	filterSQL := ""
 	switch getPostType {
 	case domain.Published:
 		filterSQL = `
 where
 	pwt.published = true
-`
+	and pwt.tags @> ?`
 		break
 	case domain.Draft:
 		filterSQL = `
 where
 	pwt.published = false 
-`
+	and pwt.tags @> ?`
 		break
 	case domain.All:
-		filterSQL = ``
+		filterSQL = `
+where
+	pwt.tags @> ?`
 		break
 	}
 
@@ -303,7 +305,8 @@ from
 	posts_with_tags pwt` + filterSQL
 
 	db := infrastructure.Db
-	row := db.Raw(getCountSQL).Row()
+	tagsSpecified := pq.StringArray(tags)
+	row := db.Raw(getCountSQL, tagsSpecified).Row()
 	row.Scan(&count)
 	return
 }

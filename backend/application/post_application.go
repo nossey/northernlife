@@ -98,7 +98,7 @@ func (app *PostApplication) GetPostList(tags []string, page int, getType domain.
 	result.PerPageCount = perPageCount
 	offset := perPageCount * (page - 1)
 	result.Posts = dataaccessor.PostAccessor.GetPostList(tags, offset, perPageCount, domain.Published)
-	result.TotalCount = dataaccessor.PostAccessor.GetPostListCount(getType)
+	result.TotalCount = dataaccessor.PostAccessor.GetPostListCount(tags, getType)
 	return
 }
 

@@ -75,7 +75,8 @@ func (postController *PostController) GetPosts(ctx *gin.Context) {
 	if err != nil {
 		page = 1
 	}
-	postResult := application.PostApp.GetPostList([]string{}, page, domain.Published)
+	tags, _ := ctx.GetQueryArray("tags")
+	postResult := application.PostApp.GetPostList(tags, page, domain.Published)
 	postListViewModel := model.PostListModel{
 		TotalCount:   postResult.TotalCount,
 		PerPageCount: postResult.PerPageCount,
