@@ -178,23 +178,25 @@ where
 }
 
 // GetPostList get posts
-func (accessor *PostDataAccessor) GetPostList(offset int, limit int, getPostType domain.GetPostType) (result []domain.PostListItem) {
+func (accessor *PostDataAccessor) GetPostList(tags []string, offset int, limit int, getPostType domain.GetPostType) (result []domain.PostListItem) {
 	filterSQL := ""
 	switch getPostType {
 	case domain.Published:
 		filterSQL = `
 where
 	pwt.published = true
-`
+	and pwt.tags @> ?`
 		break
 	case domain.Draft:
 		filterSQL = `
 where
 	pwt.published = false 
-`
+	and pwt.tags @> ?`
 		break
 	case domain.All:
-		filterSQL = ``
+		filterSQL = `
+where
+	pwt.tags @> ?`
 		break
 	}
 
@@ -234,7 +236,8 @@ from
 	posts_with_tags pwt` + filterSQL
 
 	db := infrastructure.Db
-	rows, err := db.Raw(getPostsSQL, offset, limit).Rows()
+	tagsSpecified := pq.StringArray(tags)
+	rows, err := db.Raw(getPostsSQL, offset, limit, tagsSpecified).Rows()
 	if err != nil {
 		return
 	}
