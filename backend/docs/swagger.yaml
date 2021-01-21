@@ -113,27 +113,6 @@ definitions:
       token:
         type: string
     type: object
-  model.PostCreateBody:
-    properties:
-      body:
-        type: string
-      plainBody:
-        type: string
-      tags:
-        items:
-          type: string
-        type: array
-      thumbnail:
-        type: string
-      title:
-        type: string
-    required:
-    - body
-    - plainBody
-    - tags
-    - thumbnail
-    - title
-    type: object
   model.PostCreateResult:
     properties:
       postID:
@@ -232,16 +211,6 @@ definitions:
   model.PostUpdateResult:
     properties:
       postID:
-        type: string
-    type: object
-  model.TagCreateFailResult:
-    properties:
-      message:
-        type: string
-    type: object
-  model.TagCreatedResult:
-    properties:
-      tagName:
         type: string
     type: object
   model.UnauthorizedMessage:
@@ -580,66 +549,7 @@ paths:
       summary: Get posts with pagination
       tags:
       - Posts
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: Post Data
-        in: body
-        name: message
-        required: true
-        schema:
-          $ref: '#/definitions/model.PostCreateBody'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.PostCreateResult'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/model.ErrorMessage'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/model.UnauthorizedMessage'
-      security:
-      - ApiKeyAuth: []
-      summary: Create single post
-      tags:
-      - Posts
   /posts/{id}:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: Post ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-          schema:
-            $ref: '#/definitions/model.PostDeleteResult'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/model.UnauthorizedMessage'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/model.ErrorMessage'
-      security:
-      - ApiKeyAuth: []
-      summary: Delete single post
-      tags:
-      - Posts
     get:
       consumes:
       - application/json
@@ -663,45 +573,6 @@ paths:
       summary: Get single post with specific id
       tags:
       - Posts
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: Post ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Post Data
-        in: body
-        name: message
-        required: true
-        schema:
-          $ref: '#/definitions/model.PostUpdateModel'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.PostUpdateResult'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/model.ErrorMessage'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/model.UnauthorizedMessage'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/model.ErrorMessage'
-      security:
-      - ApiKeyAuth: []
-      summary: Update single post
-      tags:
-      - Posts
   /tags:
     get:
       consumes:
@@ -717,32 +588,6 @@ paths:
               type: string
             type: array
       summary: Get tags
-      tags:
-      - Tags
-    post:
-      consumes:
-      - application/json
-      description: Create a new tag
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.TagCreatedResult'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/model.TagCreateFailResult'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/model.UnauthorizedMessage'
-        "409":
-          description: Conflict
-          schema:
-            $ref: '#/definitions/model.TagCreateFailResult'
-      summary: Create tag
       tags:
       - Tags
 securityDefinitions:

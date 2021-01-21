@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import {defineComponent, useFetch, reactive, useContext, computed} from "@nuxtjs/composition-api";
-import {AdminPostsApi, PostsApi, TagsApi} from "~/client";
+import {AdminPostsApi, AdminTagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 import { createMarkdown } from "safe-marked";
 const markdown = createMarkdown({
@@ -71,12 +71,12 @@ export default defineComponent({
     const id = ctx.params.value["id"];
     const {fetchState} = useFetch(async() => {
       const api = new AdminPostsApi(buildConfiguration());
-      const tagApi = new TagsApi(buildConfiguration());
+      const tagApi = new AdminTagsApi(buildConfiguration());
       const postResult = await api.adminPostsIdGet(id);
-      const tags = await tagApi.tagsGet();
+      const tags = await tagApi.adminTagsGet()
 
       state.title = (postResult.data.title) ? postResult.data.title : "";
-      state.tags = tags.data;
+      state.tags = tags.data.tags;
       state.body =  (postResult.data.body) ?  postResult.data.body : "";
       state.thumbnail = (postResult.data.thumbnail) ? postResult.data.thumbnail : "";
       state.selectedTags = (postResult.data.tags) ? postResult.data.tags : new Array<string>();
