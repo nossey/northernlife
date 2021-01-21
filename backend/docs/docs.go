@@ -523,54 +523,6 @@ var doc = `{
                         }
                     }
                 }
-            },
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Posts"
-                ],
-                "summary": "Create single post",
-                "parameters": [
-                    {
-                        "description": "Post Data",
-                        "name": "message",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.PostCreateBody"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.PostCreateResult"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.ErrorMessage"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/model.UnauthorizedMessage"
-                        }
-                    }
-                }
             }
         },
         "/posts/{id}": {
@@ -608,113 +560,6 @@ var doc = `{
                         }
                     }
                 }
-            },
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Posts"
-                ],
-                "summary": "Update single post",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Post ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Post Data",
-                        "name": "message",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.PostUpdateModel"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.PostUpdateResult"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.ErrorMessage"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/model.UnauthorizedMessage"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/model.ErrorMessage"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Posts"
-                ],
-                "summary": "Delete single post",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Post ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No Content",
-                        "schema": {
-                            "$ref": "#/definitions/model.PostDeleteResult"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/model.UnauthorizedMessage"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/model.ErrorMessage"
-                        }
-                    }
-                }
             }
         },
         "/tags": {
@@ -738,45 +583,6 @@ var doc = `{
                             "items": {
                                 "type": "string"
                             }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Create a new tag",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Tags"
-                ],
-                "summary": "Create tag",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.TagCreatedResult"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.TagCreateFailResult"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/model.UnauthorizedMessage"
-                        }
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {
-                            "$ref": "#/definitions/model.TagCreateFailResult"
                         }
                     }
                 }
@@ -956,36 +762,6 @@ var doc = `{
                 }
             }
         },
-        "model.PostCreateBody": {
-            "type": "object",
-            "required": [
-                "body",
-                "plainBody",
-                "tags",
-                "thumbnail",
-                "title"
-            ],
-            "properties": {
-                "body": {
-                    "type": "string"
-                },
-                "plainBody": {
-                    "type": "string"
-                },
-                "tags": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "thumbnail": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
         "model.PostCreateResult": {
             "type": "object",
             "properties": {
@@ -1133,22 +909,6 @@ var doc = `{
             "type": "object",
             "properties": {
                 "postID": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.TagCreateFailResult": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.TagCreatedResult": {
-            "type": "object",
-            "properties": {
-                "tagName": {
                     "type": "string"
                 }
             }

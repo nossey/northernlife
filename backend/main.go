@@ -53,12 +53,6 @@ func main() {
 			pc := controller.PostCtrl
 			post.GET("", pc.GetPosts)
 			post.GET("/:id", pc.GetPost)
-			post.Use(handler.MiddlewareFunc())
-			{
-				post.POST("", pc.CreatePost)
-				post.PUT("/:id", pc.UpdatePost)
-				post.DELETE("/:id", pc.DeletePost)
-			}
 		}
 
 		auth := v1.Group("/auth")
@@ -77,10 +71,6 @@ func main() {
 		{
 			tc := controller.TagCtrl
 			tag.GET("", tc.GetTags)
-			tag.Use(handler.MiddlewareFunc())
-			{
-				tag.POST("", tc.CreateTag)
-			}
 		}
 
 		content := v1.Group("/contents")
