@@ -1562,10 +1562,11 @@ export const PostsApiAxiosParamCreator = function (configuration?: Configuration
          * 
          * @summary Get posts with pagination
          * @param {number} [page] Page
+         * @param {Array<string>} [tags] Tags
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postsGet: async (page?: number, options: any = {}): Promise<RequestArgs> => {
+        postsGet: async (page?: number, tags?: Array<string>, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/posts`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -1578,6 +1579,10 @@ export const PostsApiAxiosParamCreator = function (configuration?: Configuration
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
+            }
+
+            if (tags) {
+                localVarQueryParameter['tags'] = tags.join(COLLECTION_FORMATS.csv);
             }
 
 
@@ -1786,11 +1791,12 @@ export const PostsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Get posts with pagination
          * @param {number} [page] Page
+         * @param {Array<string>} [tags] Tags
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postsGet(page?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostListModel>> {
-            const localVarAxiosArgs = await PostsApiAxiosParamCreator(configuration).postsGet(page, options);
+        async postsGet(page?: number, tags?: Array<string>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelPostListModel>> {
+            const localVarAxiosArgs = await PostsApiAxiosParamCreator(configuration).postsGet(page, tags, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1866,11 +1872,12 @@ export const PostsApiFactory = function (configuration?: Configuration, basePath
          * 
          * @summary Get posts with pagination
          * @param {number} [page] Page
+         * @param {Array<string>} [tags] Tags
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postsGet(page?: number, options?: any): AxiosPromise<ModelPostListModel> {
-            return PostsApiFp(configuration).postsGet(page, options).then((request) => request(axios, basePath));
+        postsGet(page?: number, tags?: Array<string>, options?: any): AxiosPromise<ModelPostListModel> {
+            return PostsApiFp(configuration).postsGet(page, tags, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1927,12 +1934,13 @@ export class PostsApi extends BaseAPI {
      * 
      * @summary Get posts with pagination
      * @param {number} [page] Page
+     * @param {Array<string>} [tags] Tags
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PostsApi
      */
-    public postsGet(page?: number, options?: any) {
-        return PostsApiFp(this.configuration).postsGet(page, options).then((request) => request(this.axios, this.basePath));
+    public postsGet(page?: number, tags?: Array<string>, options?: any) {
+        return PostsApiFp(this.configuration).postsGet(page, tags, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

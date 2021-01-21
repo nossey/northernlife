@@ -504,6 +504,15 @@ var doc = `{
                         "description": "Page",
                         "name": "page",
                         "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Tags",
+                        "name": "tags",
+                        "in": "query"
                     }
                 ],
                 "responses": {

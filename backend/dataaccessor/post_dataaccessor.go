@@ -177,6 +177,140 @@ where
 	return
 }
 
+// GetPostList get posts
+func (accessor *PostDataAccessor) GetPostList(tags []string, offset int, limit int, getPostType domain.GetPostType) (result []domain.PostListItem) {
+	filterSQL := ""
+	switch getPostType {
+	case domain.Published:
+		filterSQL = `
+where
+	pwt.published = true
+	and pwt.tags @> ?`
+		break
+	case domain.Draft:
+		filterSQL = `
+where
+	pwt.published = false 
+	and pwt.tags @> ?`
+		break
+	case domain.All:
+		filterSQL = `
+where
+	pwt.tags @> ?`
+		break
+	}
+
+	getPostsSQL := `
+with posts_with_tags as (
+select
+	p.created_at as created_at,
+	p.updated_at as updated_at,
+	p.id as id,
+	p.user_id as user_id,
+	p.title as title,
+	p.body as body,
+	p.plain_body as plain_body,
+	p.published as published,
+	p.thumbnail as thumbnail,
+	array_remove(array_agg(t.tag_name), null) as tags
+from
+	posts p
+left join
+	tags_posts_attachments tpa
+	on p.id = tpa.post_id
+left join
+	tags t
+	on t.id = tpa.tag_id
+group by
+	p.id
+order by
+	p.created_at desc
+offset
+	?
+limit
+	?
+)
+select
+	*
+from
+	posts_with_tags pwt` + filterSQL
+
+	db := infrastructure.Db
+	tagsSpecified := pq.StringArray(tags)
+	rows, err := db.Raw(getPostsSQL, offset, limit, tagsSpecified).Rows()
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var post domain.PostListItem
+		post.Tags = []string{}
+		db.ScanRows(rows, &post)
+		if err != nil {
+			fmt.Println(err)
+		}
+		result = append(result, post)
+	}
+	return
+}
+
+// GetPostListCount get count of posts
+func (accessor *PostDataAccessor) GetPostListCount(tags []string, getPostType domain.GetPostType) (count int) {
+	filterSQL := ""
+	switch getPostType {
+	case domain.Published:
+		filterSQL = `
+where
+	pwt.published = true
+	and pwt.tags @> ?`
+		break
+	case domain.Draft:
+		filterSQL = `
+where
+	pwt.published = false 
+	and pwt.tags @> ?`
+		break
+	case domain.All:
+		filterSQL = `
+where
+	pwt.tags @> ?`
+		break
+	}
+
+	getCountSQL := `
+with posts_with_tags as (
+select
+	p.user_id as user_id,
+	p.title as title,
+	p.body as body,
+	p.plain_body as plain_body,
+	p.published as published,
+	array_remove(array_agg(t.tag_name), null) as tags
+from
+	posts p
+left join
+	tags_posts_attachments tpa
+	on p.id = tpa.post_id
+left join
+	tags t
+	on t.id = tpa.tag_id
+group by
+	p.id
+order by
+	p.created_at desc
+)
+select
+	count(1)
+from
+	posts_with_tags pwt` + filterSQL
+
+	db := infrastructure.Db
+	tagsSpecified := pq.StringArray(tags)
+	row := db.Raw(getCountSQL, tagsSpecified).Row()
+	row.Scan(&count)
+	return
+}
+
 // GetAdminPosts get posts
 func (accessor *PostDataAccessor) GetAdminPosts(offset int, limit int, getPostType domain.GetPostType, userID string) (result []domain.PostListItem) {
 	result = []domain.PostListItem{}

@@ -36,6 +36,13 @@ type Post struct {
 	Tags      pq.StringArray `gorm:"tags type:text[]"`
 }
 
+// PostGetResult is result of get posts
+type PostGetResult struct {
+	TotalCount   int
+	PerPageCount int
+	Posts        []domain.PostListItem
+}
+
 // PostCreate is used to create a post
 type PostCreate struct {
 	UserID    string
@@ -82,6 +89,16 @@ func GetPosts(page int) (result domain.PostListResult) {
 	offset := perPageCount * (page - 1)
 	result.Posts = postAccessor.GetPosts(offset, perPageCount, domain.Published)
 
+	return
+}
+
+// GetPostList get posts
+func (app *PostApplication) GetPostList(tags []string, page int, getType domain.GetPostType) (result PostGetResult) {
+	perPageCount := 10
+	result.PerPageCount = perPageCount
+	offset := perPageCount * (page - 1)
+	result.Posts = dataaccessor.PostAccessor.GetPostList(tags, offset, perPageCount, domain.Published)
+	result.TotalCount = dataaccessor.PostAccessor.GetPostListCount(tags, getType)
 	return
 }
 
