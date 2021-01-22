@@ -3,8 +3,9 @@ package application
 import (
 	"time"
 
+	"gorm.io/gorm"
+
 	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
 	"github.com/lib/pq"
 	"github.com/nossey/northernlife/dataaccessor"
 	"github.com/nossey/northernlife/domain"

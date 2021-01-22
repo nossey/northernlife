@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
 	"github.com/lib/pq"
 	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/infrastructure"
+	"gorm.io/gorm"
 )
 
 // Post is posts table
@@ -379,11 +379,12 @@ where
 	for rows.Next() {
 		var post domain.PostListItem
 		post.Tags = []string{}
-		db.ScanRows(rows, &post)
+		err = db.ScanRows(rows, &post)
 		if err != nil {
 			fmt.Println(err)
+		} else {
+			result = append(result, post)
 		}
-		result = append(result, post)
 	}
 	return
 

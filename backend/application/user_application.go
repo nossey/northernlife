@@ -21,7 +21,6 @@ func CreateUser(id string, email string, password string) {
 	user := User{CreatedAt: time.Now(), UpdatedAt: time.Now(), ID: id, Email: email, HashedPassword: hashedPassword}
 
 	tx := infrastructure.Db.Begin()
-	defer tx.Close()
 	if err := tx.Create(&user).Error; err != nil {
 		tx.Rollback()
 	} else {
