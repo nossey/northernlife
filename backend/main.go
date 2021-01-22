@@ -11,7 +11,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nossey/northernlife/controller"
-	"github.com/nossey/northernlife/infrastructure"
 )
 
 // @title Swagger Example API
@@ -41,8 +40,6 @@ type User struct {
 }
 
 func main() {
-	defer infrastructure.Db.Close()
-
 	r := gin.Default()
 
 	handler := controller.GetAuthHandler()

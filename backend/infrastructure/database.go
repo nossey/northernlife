@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 // Db is the global DB instance
@@ -21,7 +21,7 @@ func init() {
 	dataSource := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbName)
 
 	var err error
-	Db, err = gorm.Open("postgres", dataSource)
+	Db, err = gorm.Open(postgres.Open(dataSource), &gorm.Config{})
 
 	if err != nil {
 		panic(err)

@@ -37,7 +37,7 @@ type PostListItem struct {
 	PlainBody string         `gorm:"plain_body"`
 	Published bool           `gorm:"published"`
 	Thumbnail string         `gorm:"thumbnail"`
-	Tags      pq.StringArray `gorm:"tags type:text[]"`
+	Tags      pq.StringArray `gorm:"type:text[]"`
 }
 
 // SinglePostItem is the result of get single post
