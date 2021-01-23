@@ -61,6 +61,10 @@ export default defineComponent( {
     thumbnail: {
       type: String,
       required:true
+    },
+    selectedTags: {
+      type: Array,
+      required:true
     }
   },
   setup(props, context){
@@ -70,7 +74,7 @@ export default defineComponent( {
       body: props.body,
       tags: props.tags,
       thumbnail: props.thumbnail,
-      selectedTags: new Array<string>(),
+      selectedTags: props.selectedTags,
     });
 
     watch(() => state, () => {context.emit("updated", state)}, {deep: true})

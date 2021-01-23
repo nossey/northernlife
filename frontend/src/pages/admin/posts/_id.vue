@@ -11,6 +11,7 @@
             :title="state.title"
             :body="state.body"
             :tags="state.tags"
+            :selectedTags="state.selectedTags"
             :thumbnail="state.thumbnail"
             @updated="updated($event)"
           ></PostEditor>

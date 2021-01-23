@@ -10,6 +10,7 @@
             :body="state.body"
             :tags="state.tags"
             :thumbnail="state.thumbnail"
+            :selectedTags="state.selectedTags"
             @updated="updated($event)"
           ></PostEditor>
           <b-container class="p-3">
