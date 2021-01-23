@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header></Header>
-    <b-container fluid>
+    <b-container fluid class="main-content">
       <b-row>
         <b-col>
           <nuxt />
@@ -20,7 +20,8 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss">
+@import "assets/colors.scss";
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -39,4 +40,9 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
+
+.main-content {
+  background: $background-color;
+}
+
 </style>

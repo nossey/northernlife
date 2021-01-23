@@ -1,10 +1,15 @@
 <template>
-  <b-container>
-    <Post
-      :title="this.post.title"
-      :body="this.post.body"
-      :thumbnail="this.post.thumbnail"
-      :tags="this.post.tags"></Post>
+  <b-container class="mt-4">
+    <b-row>
+      <b-col cols="12" md="9">
+        <Post
+          :title="this.post.title"
+          :body="this.post.body"
+          :thumbnail="this.post.thumbnail"
+          :tags="this.post.tags"></Post>
+      </b-col>
+      <b-col md="3" class="d-sm-none d-md-block">Table of contents</b-col>
+    </b-row>
   </b-container>
 </template>
 
