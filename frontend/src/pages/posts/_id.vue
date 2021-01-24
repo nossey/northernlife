@@ -8,7 +8,7 @@
           :thumbnail="this.post.thumbnail"
           :tags="this.post.tags"></Post>
       </b-col>
-      <b-col md="3" class="d-sm-none d-md-block">Table of contents</b-col>
+      <b-col md="3" class="d-none d-md-block">Table of contents</b-col>
     </b-row>
   </b-container>
 </template>
