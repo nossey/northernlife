@@ -1,6 +1,8 @@
 $main-theme: #01C58E;
 $font-color-white: #efefef;
 $shadow-color: #a1a1a1;
+$background-color: #F3F2EF;
+$background-white: #fefefe;
 
 @function ToDarkenColor($color){
   @return darken($color, 10%)

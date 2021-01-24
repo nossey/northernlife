@@ -1,15 +1,15 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="post-container pt-2">
+    <b-row>
+      <b-col><h1>{{state.title}}</h1></b-col>
+    </b-row>
+    <b-row v-if="state.tags.length > 0">
+      <b-col v-for="tag in state.tags" :key="tag">#{{tag}}</b-col>
+    </b-row>
     <b-row>
       <b-col>
         <b-img class="img-fluid" :src="state.thumbnail" />
       </b-col>
-    </b-row>
-    <b-row v-if="state.title">
-      <b-col>{{state.title}}</b-col>
-    </b-row>
-    <b-row v-if="state.tags.length > 0">
-      <b-col v-for="tag in state.tags" :key="tag">#{{tag}}</b-col>
     </b-row>
     <b-row>
       <b-col>
@@ -70,6 +70,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "assets/colors.scss";
+.post-container {
+  background: $background-white;
+}
 
 </style>
