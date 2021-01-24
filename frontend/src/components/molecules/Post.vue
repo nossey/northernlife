@@ -27,6 +27,7 @@ const markdown = createMarkdown({
     breaks:true
   }
 });
+import Tag from "~/components/atoms/Tag.vue"
 
 type Props = {
   body: string,
@@ -54,6 +55,7 @@ export default defineComponent({
       required: true
     }
   },
+  components: {Tag},
   setup(props: Props) {
     const state = reactive({
       thumbnail: computed(() => props.thumbnail),

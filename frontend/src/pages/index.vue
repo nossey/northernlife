@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Tag to="/admin/login">Hello</Tag>
     <PostCard
       class="margin"
       v-for="post in result.posts"
@@ -17,6 +18,7 @@ import { PostsApi, TagsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent } from "@nuxtjs/composition-api"
 import Button from "~/components/atoms/Button.vue"
+import Tag from "~/components/atoms/Tag.vue"
 import PostCard from "~/components/molecules/PostCard.vue"
 
 export default defineComponent({
@@ -29,6 +31,7 @@ export default defineComponent({
   },
   components: {
     Button,
+    Tag,
     PostCard
   }
 });
