@@ -7,6 +7,7 @@
       :title="post.title"
       :plainBody="post.plainBody"
       :thumbnail="post.thumbnail"
+      :tag-link-list="toTagLinks(post.tags)"
       :key="post.id"
     ></PostCard>
   </div>
@@ -14,8 +15,9 @@
 
 <script lang="ts">
 import { Context } from "@nuxt/types";
-import { PostsApi, TagsApi } from "~/client";
+import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
+import Enumerable from "linq";
 import { defineComponent } from "@nuxtjs/composition-api"
 import Button from "~/components/atoms/Button.vue"
 import Tag from "~/components/atoms/Tag.vue"
@@ -27,6 +29,16 @@ export default defineComponent({
     const response = await post.postsGet(1);
     return {
       result: response.data,
+    }
+  },
+  setup(){
+    const toTagLinks = (tags: string[]) => {
+      const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}`}}).toArray()
+      return {links: links}
+    }
+
+    return {
+      toTagLinks
     }
   },
   components: {
