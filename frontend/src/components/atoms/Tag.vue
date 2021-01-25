@@ -37,7 +37,11 @@ export default defineComponent({
   color: $main-theme;
   border: $main-theme solid 1px;
   border-radius: 2px;
-  padding: 3px 5px 3px 5px;
+  padding: 4px 7px 4px 7px;
+
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 </style>
