@@ -8,7 +8,8 @@
       :title="post.title"
       :plainBody="post.plainBody"
       :thumbnail="post.thumbnail"
-      :key="post.id"></PostCard>
+      :key="post.id"
+    ></PostCard>
   </div>
 </template>
 

@@ -4,7 +4,9 @@
       <b-col><h1>{{state.title}}</h1></b-col>
     </b-row>
     <b-row v-if="state.tags.length > 0">
-      <b-col v-for="tag in state.tags" :key="tag">#{{tag}}</b-col>
+      <b-col class="pt-2 pb-2">
+        <Tag v-for="link in state.linkList.links" :key="link.name" :to="link.link" class="tag">{{link.name}}</Tag>
+      </b-col>
     </b-row>
     <b-row>
       <b-col>
@@ -20,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, reactive} from "@nuxtjs/composition-api"
+import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition-api"
 import { createMarkdown } from "safe-marked";
 const markdown = createMarkdown({
   marked:{
@@ -33,7 +35,17 @@ type Props = {
   body: string,
   title: string
   thumbnail: string,
-  tags: string[]
+  tags: string[],
+  linkList: ITagLinkList
+}
+
+export interface ITagLink {
+  name: string
+  link: string
+}
+
+export interface ITagLinkList {
+ links: Array<ITagLink>
 }
 
 export default defineComponent({
@@ -53,6 +65,10 @@ export default defineComponent({
     tags: {
       type: Array,
       required: true
+    },
+    linkList: {
+      type: Object as PropType<ITagLinkList>,
+      required: true
     }
   },
   components: {Tag},
@@ -61,7 +77,8 @@ export default defineComponent({
       thumbnail: computed(() => props.thumbnail),
       title: computed(() => props.title),
       renderedBody: computed(() => markdown(props.body)),
-      tags: computed(() => props.tags)
+      tags: computed(() => props.tags),
+      linkList: computed(() => props.linkList)
     });
 
     return {
@@ -76,6 +93,10 @@ export default defineComponent({
 @import "assets/colors.scss";
 .post-container {
   background: $background-white;
+
+  .tag {
+    margin-right: 5px;
+  }
 }
 
 </style>
