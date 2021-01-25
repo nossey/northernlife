@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Tag to="/admin/login">Hello</Tag>
     <PostCard
       class="margin"
       v-for="post in result.posts"

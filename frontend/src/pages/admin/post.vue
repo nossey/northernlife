@@ -26,6 +26,7 @@
             v-bind:title="state.title"
             v-bind:body="state.body"
             v-bind:tags="state.selectedTags"
+            v-bind:linkList="state.linkList"
           ></Post>
         </b-col>
       </b-row>
@@ -42,6 +43,7 @@ import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
 import PostEditor from "~/components/molecules/PostEditor.vue"
 import { createMarkdown } from "safe-marked";
+import Enumerable from "linq";
 const markdown = createMarkdown({
   marked:{
     breaks: true
@@ -71,7 +73,11 @@ export default defineComponent({
       })),
       thumbnail: "https://northernlife-content.net/lunch.jpg",
       tags: new Array<string>(),
-      selectedTags: new Array<string>()
+      selectedTags: new Array<string>(),
+      linkList: computed(() => {
+        const links = Enumerable.from(state.selectedTags).select(function(t) {return {name: t, link: `/tags/${t}`}}).toArray();
+        return {links: links}
+      })
     });
 
     const {fetch: fetchTags, fetchState} = useFetch(async() => {
