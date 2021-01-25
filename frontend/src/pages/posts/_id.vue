@@ -3,10 +3,12 @@
     <b-row>
       <b-col cols="12" md="9">
         <Post
-          :title="this.post.title"
-          :body="this.post.body"
-          :thumbnail="this.post.thumbnail"
-          :tags="this.post.tags"></Post>
+          :title="title"
+          :body="body"
+          :thumbnail="thumbnail"
+          :tags="tags"
+          :linkList="tagLinks"
+        ></Post>
       </b-col>
       <b-col md="3" class="d-none d-md-block">Table of contents</b-col>
     </b-row>
@@ -16,7 +18,8 @@
 <script>
 import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
-import Post from "~/components/molecules/Post.vue"
+import Post  from "~/components/molecules/Post.vue"
+import Enumerable from "linq"
 
 export default {
   components: {
@@ -27,9 +30,9 @@ export default {
       title: this.title,
       meta: [
         // OGP
-        { hid: 'og:title', property: 'og:title', content: this.post.title },
-        { hid: 'og:description', property: 'og:description', content: this.post.plainBody },
-        { hid: 'og:image', property: 'og:image', content: this.post.thumbnail },
+        { hid: 'og:title', property: 'og:title', content: this.title },
+        { hid: 'og:description', property: 'og:description', content: this.plainBody },
+        { hid: 'og:image', property: 'og:image', content: this.thumbnail },
       ]
     }
   },
@@ -38,17 +41,24 @@ export default {
     const id = ctx.route.params['id'];
     try
     {
-      const post = await api.postsIdGet(id)
+      const post = (await api.postsIdGet(id)).data
+      const links = Enumerable.from(post.tags).select(function(t) { return {name: t, link: `/tags/${t}`}}).toArray()
       return {
-        post: post.data,
-        title: post.data.title
+        thumbnail: post.thumbnail,
+        title: post.title,
+        body: post.body,
+        tags: post.tags,
+        tagLinks: {links: links}
       }
     }
     catch (error)
     {
       ctx.error({statusCode: error.response.status});
       return {
-        post: null
+        thumbnail: "",
+        title: "",
+        body: "",
+        tags: []
       }
     }
   },

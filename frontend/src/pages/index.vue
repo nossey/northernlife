@@ -7,7 +7,8 @@
       :title="post.title"
       :plainBody="post.plainBody"
       :thumbnail="post.thumbnail"
-      :key="post.id"></PostCard>
+      :key="post.id"
+    ></PostCard>
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import { PostsApi, TagsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent } from "@nuxtjs/composition-api"
 import Button from "~/components/atoms/Button.vue"
+import Tag from "~/components/atoms/Tag.vue"
 import PostCard from "~/components/molecules/PostCard.vue"
 
 export default defineComponent({
@@ -29,6 +31,7 @@ export default defineComponent({
   },
   components: {
     Button,
+    Tag,
     PostCard
   }
 });

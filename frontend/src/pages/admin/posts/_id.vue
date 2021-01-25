@@ -31,6 +31,7 @@
             v-bind:body="state.body"
             v-bind:tags="state.selectedTags"
             v-bind:thumbnail="state.thumbnail"
+            v-bind:linkList="state.linklist"
           ></Post>
         </div>
       </b-col>
@@ -52,6 +53,7 @@ const { htmlToText } = require('html-to-text');
 import PostEditor from "~/components/molecules/PostEditor.vue"
 import Post from "~/components/molecules/Post.vue"
 import Button from "~/components/atoms/Button.vue";
+import Enumerable from "linq";
 
 export default defineComponent({
   middleware: ['auth'],
@@ -67,6 +69,10 @@ export default defineComponent({
       plainBody: computed(() => htmlToText(state.renderedBody, {
         ignoreImage: true
       })),
+      linklist: computed(() => {
+       const links = Enumerable.from(state.selectedTags).select(function(t) {return {name: t, link: `/tags/${t}`}}).toArray();
+       return {links: links}
+      })
     });
     const ctx = useContext();
     const id = ctx.params.value["id"];
