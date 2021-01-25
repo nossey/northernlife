@@ -3,6 +3,9 @@
     <b-row>
       <b-col><b-img class="img-fluid" :src="thumbnail" /></b-col>
     </b-row>
+    <b-row>
+      <b-col class="tag-area pt-2 pb-2"><Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag">{{tagLink.name}}</Tag></b-col>
+    </b-row>
     <b-row class="mt-1">
       <b-container>
         <b-row><b-col><h2>{{title}}</h2></b-col></b-row>
@@ -19,10 +22,20 @@
 
 <script lang="ts">
 
-import {defineComponent} from "@nuxtjs/composition-api"
+import {defineComponent, PropType} from "@nuxtjs/composition-api"
 import Button from '~/components/atoms/Button.vue'
+import Tag from "~/components/atoms/Tag.vue"
+
+export interface ITagLink {
+  name: string
+  link: string
+}
+
+export interface ITagLinkList {
+  links: Array<ITagLink>
+}
+
 export default defineComponent( {
-  name: "PostCard",
   props: {
     id: {
       type: String,
@@ -39,10 +52,15 @@ export default defineComponent( {
     title: {
       type: String,
       required: true
+    },
+    tagLinkList: {
+      type: Object as PropType<ITagLinkList>,
+      required: true
     }
   },
   components: {
-    Button
+    Button,
+    Tag
   }
 })
 </script>
@@ -59,6 +77,12 @@ export default defineComponent( {
   }
   max-width: 600px;
   padding: 10px 15px;
+
+  .tag-area{
+    .tag {
+      margin-right: 5px;
+    }
+  }
 
   .foot {
     margin-top: 10px;
