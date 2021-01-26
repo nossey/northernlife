@@ -2,7 +2,7 @@
   <div>
     <input type="text" v-model="state.userId">
     <input type="password" v-model="state.password">
-    <Button @click.native="login">Login</Button></div>
+    <Button @click="login">Login</Button></div>
 </template>
 
 <script lang="ts">

@@ -16,9 +16,9 @@
             @updated="updated($event)"
           ></PostEditor>
         </div>
-        <Button @click.native="putPost(true)">Save</Button>
-        <Button @click.native="putPost(false)">Save as draft</Button>
-        <Button @click.native="deletePost">Delete</Button>
+        <Button @click="putPost(true)">Save</Button>
+        <Button @click="putPost(false)">Save as draft</Button>
+        <Button @click="deletePost">Delete</Button>
       </b-col>
       <b-col>
         <div v-if="fetchState.pending">
