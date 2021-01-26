@@ -1,5 +1,5 @@
 <template>
-  <button type="button" @click.once="tryJumpToLink"><slot></slot></button>
+  <button type="button" @click="clickedEvent"><slot></slot></button>
 </template>
 
 <script lang="ts">
@@ -18,12 +18,17 @@ export default defineComponent({
     }
   },
   setup(props: Props, context){
-    const tryJumpToLink = () => {
-      if (props.to)
+    const clickedEvent = () => {
+      if (props.to){
         context.root.$router.push(props.to)
-    }
+      }
+      else{
+        context.emit('click')
+      }
+    };
+
     return {
-      tryJumpToLink
+      clickedEvent
     }
   }
 });
