@@ -15,8 +15,8 @@
           ></PostEditor>
           <b-container class="p-3">
             <b-row class="mt-2">
-              <Button @click.native="postman(true)">Save</Button>
-              <Button @click.native="postman(false)">Save as draft</Button>
+              <Button @click="postman(true)">Save</Button>
+              <Button @click="postman(false)">Save as draft</Button>
             </b-row>
           </b-container>
         </b-col>

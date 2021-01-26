@@ -10,7 +10,7 @@
               <b-row v-if="fetchState.pending">Loading...</b-row>
               <b-row v-else v-for="post in allPosts.posts" :key="post.Id">
                 <nuxt-link :to="`/admin/posts/${post.Id}`">{{post.Title}}</nuxt-link>
-                <Button @click.native="deletePost(post.Id)">Delete</Button>
+                <Button @click="deletePost(post.Id)">Delete</Button>
               </b-row>
             </b-container>
           </b-tab>
@@ -18,7 +18,7 @@
             <b-container>
               <b-row v-for="post in publishedPosts.posts" :key="post.Id">
                 <nuxt-link :to="`/admin/posts/${post.Id}`">{{post.Title}}</nuxt-link>
-                <Button @click.native="deletePost(post.Id)">Delete</Button>
+                <Button @click="deletePost(post.Id)">Delete</Button>
               </b-row>
             </b-container>
           </b-tab>
@@ -26,7 +26,7 @@
             <b-container v-if="draftPosts.posts.length > 0">
               <b-row v-for="post in draftPosts.posts" :key="post.Id">
                 <nuxt-link :to="`/admin/posts/${post.Id}`">{{post.Title}}</nuxt-link>
-                <Button @click.native="deletePost(post.Id)">Delete</Button>
+                <Button @click="deletePost(post.Id)">Delete</Button>
               </b-row>
             </b-container>
             <b-container v-else>No Draft Posts</b-container>
