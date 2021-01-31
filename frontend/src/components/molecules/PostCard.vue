@@ -1,22 +1,22 @@
 <template>
   <b-container class="card">
-    <b-row>
-      <b-col><b-img class="img-fluid" :src="thumbnail" /></b-col>
-    </b-row>
-    <b-row>
-      <b-col class="tag-area pt-2 pb-2"><Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag">{{tagLink.name}}</Tag></b-col>
-    </b-row>
-    <b-row class="mt-1">
-      <b-container>
-        <b-row><b-col><h2>{{title}}</h2></b-col></b-row>
-        <b-row><b-col>{{plainBody}}</b-col></b-row>
-      </b-container>
-    </b-row>
-    <b-row align-h="end">
-      <b-col class="foot">
-        <Button :to="`/posts/${id}`">READ</Button>
-      </b-col>
-    </b-row>
+    <b-img class="img-fluid img-area" :src="thumbnail" />
+    <b-container>
+      <b-row>
+        <b-col class="tag-area pt-2 pb-2"><Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag">{{tagLink.name}}</Tag></b-col>
+      </b-row>
+      <b-row class="mt-1">
+        <b-container>
+          <b-row><b-col><h2>{{title}}</h2></b-col></b-row>
+          <b-row><b-col><div class="plain-body-area">{{plainBody}}</div></b-col></b-row>
+        </b-container>
+      </b-row>
+      <b-row align-h="end">
+        <b-col class="foot">
+          <Button :to="`/posts/${id}`">READ</Button>
+        </b-col>
+      </b-row>
+    </b-container>
   </b-container>
 </template>
 
@@ -68,7 +68,7 @@ export default defineComponent( {
 <style lang="scss" scoped>
 @import "assets/colors";
 .card {
-  max-width: 400px;
+  min-width: 400px;
   transition: all .1s;
   filter: drop-shadow(2px 2px 3px $shadow-color);
   &:hover{
@@ -76,16 +76,30 @@ export default defineComponent( {
     transition: all .1s;
   }
   max-width: 600px;
-  padding: 10px 15px;
+  padding: 0px;
+
+  .img-area{
+    height: 350px;
+    width: auto;
+  }
+
+  .plain-body-area {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    height: 50px;
+  }
 
   .tag-area{
     .tag {
       margin-right: 5px;
     }
+    height: 30px;
   }
 
   .foot {
     margin-top: 10px;
+    padding-bottom: 15px;
     text-align: right;
   }
 }
