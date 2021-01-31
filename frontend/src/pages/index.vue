@@ -1,15 +1,19 @@
 <template>
   <div>
-    <PostCard
-      class="margin"
-      v-for="post in result.posts"
-      :id="post.id"
-      :title="post.title"
-      :plainBody="post.plainBody"
-      :thumbnail="post.thumbnail"
-      :tag-link-list="toTagLinks(post.tags)"
-      :key="post.id"
-    ></PostCard>
+    <b-container>
+      <b-row>
+       <b-col v-for="post in result.posts" :key="post.id">
+        <PostCard
+          class="margin"
+          :id="post.id"
+          :title="post.title"
+          :plainBody="post.plainBody"
+          :thumbnail="post.thumbnail"
+          :tag-link-list="toTagLinks(post.tags)"
+        ></PostCard>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 

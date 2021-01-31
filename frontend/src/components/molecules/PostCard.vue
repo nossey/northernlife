@@ -68,7 +68,7 @@ export default defineComponent( {
 <style lang="scss" scoped>
 @import "assets/colors";
 .card {
-  max-width: 400px;
+  min-width: 400px;
   transition: all .1s;
   filter: drop-shadow(2px 2px 3px $shadow-color);
   &:hover{
