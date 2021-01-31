@@ -2,7 +2,7 @@
   <div>
     <b-container>
       <b-row>
-       <b-col v-for="post in result.posts" :key="post.id">
+       <b-col v-for="post in result.posts" :key="post.id" cols="12" lg="6">
         <PostCard
           class="margin"
           :id="post.id"

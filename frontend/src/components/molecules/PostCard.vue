@@ -9,7 +9,7 @@
     <b-row class="mt-1">
       <b-container>
         <b-row><b-col><h2>{{title}}</h2></b-col></b-row>
-        <b-row><b-col>{{plainBody}}</b-col></b-row>
+        <b-row><b-col><div class="plain-body-area">{{plainBody}}</div></b-col></b-row>
       </b-container>
     </b-row>
     <b-row align-h="end">
@@ -78,10 +78,18 @@ export default defineComponent( {
   max-width: 600px;
   padding: 10px 15px;
 
+  .plain-body-area {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    height: 50px;
+  }
+
   .tag-area{
     .tag {
       margin-right: 5px;
     }
+    height: 30px;
   }
 
   .foot {
