@@ -79,7 +79,8 @@ export default defineComponent( {
   padding: 0px;
 
   .img-area{
-    margin: 0px;
+    height: 350px;
+    width: auto;
   }
 
   .plain-body-area {
