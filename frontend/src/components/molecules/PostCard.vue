@@ -1,6 +1,8 @@
 <template>
   <b-container class="card">
-    <b-img class="img-fluid img-area" :src="thumbnail" />
+    <div class="img-area">
+      <b-img :src="thumbnail" />
+    </div>
     <b-container>
       <b-row>
         <b-col class="tag-area pt-2 pb-2"><Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag">{{tagLink.name}}</Tag></b-col>
@@ -68,7 +70,6 @@ export default defineComponent( {
 <style lang="scss" scoped>
 @import "assets/colors";
 .card {
-  min-width: 400px;
   transition: all .1s;
   filter: drop-shadow(2px 2px 3px $shadow-color);
   &:hover{
@@ -78,9 +79,21 @@ export default defineComponent( {
   max-width: 600px;
   padding: 0px;
 
-  .img-area{
-    height: 350px;
-    width: auto;
+  .img-area {
+    width: 100%;
+    padding-top: 56.25%;
+
+    position: relative;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .plain-body-area {
