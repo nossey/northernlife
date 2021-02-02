@@ -17,7 +17,7 @@ export default defineComponent({
       if (props.to){
         context.root.$router.push(props.to)
       }
-      else{
+      else {
         context.emit('click')
       }
     }
@@ -32,12 +32,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "assets/colors";
 .tag {
+  font-size: 12px;
   background: $background-white;
   display: inline;
   color: $main-theme;
   border: $main-theme solid 1px;
-  border-radius: 2px;
-  padding: 4px 7px 4px 7px;
+  border-radius: 4px;
+  padding: 3px 6px 3px 6px;
+
 
   &:hover{
     cursor: pointer;
