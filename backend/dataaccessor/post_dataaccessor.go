@@ -178,25 +178,28 @@ where
 }
 
 // GetPostList get posts
-func (accessor *PostDataAccessor) GetPostList(tags []string, offset int, limit int, getPostType domain.GetPostType) (result []domain.PostListItem) {
+func (accessor *PostDataAccessor) GetPostList(tags []string, offset int, limit int, searchWord string, getPostType domain.GetPostType) (result []domain.PostListItem) {
 	filterSQL := ""
 	switch getPostType {
 	case domain.Published:
 		filterSQL = `
 where
 	pwt.published = true
-	and pwt.tags @> ?`
+	and pwt.tags @> ?
+	and pwt.plain_body ilike ?`
 		break
 	case domain.Draft:
 		filterSQL = `
 where
 	pwt.published = false 
-	and pwt.tags @> ?`
+	and pwt.tags @> ?
+	and pwt.plain_body ilike ?`
 		break
 	case domain.All:
 		filterSQL = `
 where
-	pwt.tags @> ?`
+	pwt.tags @> ?
+	and pwt.plain_body ilike ?`
 		break
 	}
 
@@ -237,7 +240,8 @@ from
 
 	db := infrastructure.Db
 	tagsSpecified := pq.StringArray(tags)
-	rows, err := db.Raw(getPostsSQL, offset, limit, tagsSpecified).Rows()
+	search := "%" + searchWord + "%"
+	rows, err := db.Raw(getPostsSQL, offset, limit, tagsSpecified, search).Rows()
 	if err != nil {
 		return
 	}

@@ -94,11 +94,11 @@ func GetPosts(page int) (result domain.PostListResult) {
 }
 
 // GetPostList get posts
-func (app *PostApplication) GetPostList(tags []string, page int, getType domain.GetPostType) (result PostGetResult) {
+func (app *PostApplication) GetPostList(tags []string, page int, searchWord string, getType domain.GetPostType) (result PostGetResult) {
 	perPageCount := 10
 	result.PerPageCount = perPageCount
 	offset := perPageCount * (page - 1)
-	result.Posts = dataaccessor.PostAccessor.GetPostList(tags, offset, perPageCount, domain.Published)
+	result.Posts = dataaccessor.PostAccessor.GetPostList(tags, offset, perPageCount, searchWord, domain.Published)
 	result.TotalCount = dataaccessor.PostAccessor.GetPostListCount(tags, getType)
 	return
 }
