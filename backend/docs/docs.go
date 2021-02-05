@@ -513,6 +513,12 @@ var doc = `{
                         "description": "Tags",
                         "name": "tags",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search",
+                        "name": "search",
+                        "in": "query"
                     }
                 ],
                 "responses": {

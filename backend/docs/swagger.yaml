@@ -539,6 +539,10 @@ paths:
           type: string
         name: tags
         type: array
+      - description: Search
+        in: query
+        name: search
+        type: string
       produces:
       - application/json
       responses:
