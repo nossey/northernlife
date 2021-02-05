@@ -67,6 +67,7 @@ func ToPostSingleItem(post domain.SinglePostItem) (viewmodel model.PostSingleIte
 // @Router /posts [get]
 // @Param page query int false "Page"
 // @Param tags query []string false "Tags"
+// @Param search query string false "Search"
 // @Tags Posts
 func (postController *PostController) GetPosts(ctx *gin.Context) {
 	pageQuery := ctx.Query("page")
@@ -75,7 +76,8 @@ func (postController *PostController) GetPosts(ctx *gin.Context) {
 		page = 1
 	}
 	tags, _ := ctx.GetQueryArray("tags")
-	postResult := application.PostApp.GetPostList(tags, page, domain.Published)
+	searchQuery := ctx.Query("search")
+	postResult := application.PostApp.GetPostList(tags, page, searchQuery, domain.Published)
 	postListViewModel := model.PostListModel{
 		TotalCount:   postResult.TotalCount,
 		PerPageCount: postResult.PerPageCount,
