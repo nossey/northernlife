@@ -58,8 +58,16 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     'bootstrap-vue/nuxt',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    'nuxt-fontawesome'
   ],
+
+  /*
+    Fontawesome
+  */
+  fontawesome: {
+    component: 'fa'
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

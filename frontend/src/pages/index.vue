@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container>
+    <b-container class="pt-4 pb-2">
       <b-row>
         <b-col>
           <SearchForm></SearchForm>
