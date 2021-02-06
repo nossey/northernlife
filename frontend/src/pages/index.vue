@@ -2,6 +2,13 @@
   <div>
     <b-container>
       <b-row>
+        <b-col>
+          <SearchForm></SearchForm>
+        </b-col>
+      </b-row>
+    </b-container>
+    <b-container>
+      <b-row>
        <b-col v-for="post in result.posts" :key="post.id" cols="12" lg="6">
         <PostCard
           class="margin"
@@ -26,6 +33,7 @@ import { defineComponent } from "@nuxtjs/composition-api"
 import Button from "~/components/atoms/Button.vue"
 import Tag from "~/components/atoms/Tag.vue"
 import PostCard from "~/components/molecules/PostCard.vue"
+import SearchForm from "~/components/atoms/SearchForm.vue"
 
 export default defineComponent({
   async asyncData(ctx: Context): Promise<Object> {
@@ -48,7 +56,8 @@ export default defineComponent({
   components: {
     Button,
     Tag,
-    PostCard
+    PostCard,
+    SearchForm
   }
 });
 </script>
