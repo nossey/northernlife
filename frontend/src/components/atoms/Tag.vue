@@ -39,10 +39,13 @@ export default defineComponent({
   border: $main-theme solid 1px;
   border-radius: 4px;
   padding: 3px 6px 3px 6px;
-
+  transition: .5s;
 
   &:hover{
     cursor: pointer;
+    background-color: $main-theme;
+    color: $font-color-white;
+    transition: .5s;
   }
 }
 
