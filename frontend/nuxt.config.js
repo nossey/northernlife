@@ -29,8 +29,7 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/northernlife.ico' }
     ]
   },
-  /*
-  ** Customize the progress-bar color
+  /* ** Customize the progress-bar color
   */
   loading: { color: '#fff' },
   /*
