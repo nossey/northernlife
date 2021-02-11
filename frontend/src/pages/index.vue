@@ -45,7 +45,7 @@ export default defineComponent({
   },
   setup(){
     const toTagLinks = (tags: string[]) => {
-      const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}`}}).toArray()
+      const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}/posts`}}).toArray()
       return {links: links}
     }
 
