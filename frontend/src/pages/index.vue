@@ -49,19 +49,28 @@ export default defineComponent({
     if (pageQuery)
       page = Number(pageQuery)
     const response = await post.postsGet(page);
-    const pageClicked = (page :string) => {
-      const pageNumber = Number(page);
-      if (pageNumber === 1)
-      {
-        ctx.redirect(`/`);
-      }
-      else
-        ctx.redirect(`/?page=${pageNumber}`);
-    }
+
+
     return {
       result: response.data,
       page: page,
-      pageClicked: pageClicked
+    }
+  },
+  methods: {
+    toTagLinks(tags: string[]){
+      const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}/posts`}}).toArray()
+      return {links: links}
+    },
+    pageClicked(page :string){
+      const pageNumber = Number(page);
+      if (pageNumber === 1)
+      {
+        this.$nuxt.context.redirect('/');
+      }
+      else
+      {
+        this.$nuxt.context.redirect(`/?page=${pageNumber}`);
+      }
     }
   },
   async validate(ctx: Context){
@@ -72,17 +81,7 @@ export default defineComponent({
       return false
     return true
   },
-  watchQuery: ["page"],
-  setup(){
-    const toTagLinks = (tags: string[]) => {
-      const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}/posts`}}).toArray()
-      return {links: links}
-    }
-
-    return {
-      toTagLinks
-    }
-  },
+  watchQuery: ['page'],
   components: {
     Button,
     Tag,
