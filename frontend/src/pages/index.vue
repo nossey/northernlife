@@ -20,6 +20,12 @@
         ></PostCard>
         </b-col>
       </b-row>
+      <b-pagination
+         :total-rows="result.totalCount"
+         :per-page="result.perPageCount"
+         v-model="page"
+         @input="pageClicked"
+      ></b-pagination>
     </b-container>
   </div>
 </template>
@@ -38,21 +44,44 @@ import SearchForm from "~/components/atoms/SearchForm.vue"
 export default defineComponent({
   async asyncData(ctx: Context): Promise<Object> {
     const post = new PostsApi(buildConfiguration());
-    const response = await post.postsGet(1);
-    return {
-      result: response.data,
-    }
-  },
-  setup(){
-    const toTagLinks = (tags: string[]) => {
-      const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}/posts`}}).toArray()
-      return {links: links}
-    }
+    const pageQuery = ctx.query["page"];
+    let page = 1;
+    if (pageQuery)
+      page = Number(pageQuery)
+    const response = await post.postsGet(page);
+
 
     return {
-      toTagLinks
+      result: response.data,
+      page: page,
     }
   },
+  methods: {
+    toTagLinks(tags: string[]){
+      const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}/posts`}}).toArray()
+      return {links: links}
+    },
+    pageClicked(page :string){
+      const pageNumber = Number(page);
+      if (pageNumber === 1)
+      {
+        this.$nuxt.context.redirect('/');
+      }
+      else
+      {
+        this.$nuxt.context.redirect(`/?page=${pageNumber}`);
+      }
+    }
+  },
+  async validate(ctx: Context){
+    const page = ctx.query["page"];
+    if (!page)
+      return true
+    if (isNaN(Number(page)))
+      return false
+    return true
+  },
+  watchQuery: ['page'],
   components: {
     Button,
     Tag,
