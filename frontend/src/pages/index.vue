@@ -20,6 +20,12 @@
         ></PostCard>
         </b-col>
       </b-row>
+      <b-pagination
+         :total-rows="result.totalCount"
+         :per-page="result.perPageCount"
+         v-model="page"
+         @input="pageClicked"
+      ></b-pagination>
     </b-container>
   </div>
 </template>
@@ -38,11 +44,35 @@ import SearchForm from "~/components/atoms/SearchForm.vue"
 export default defineComponent({
   async asyncData(ctx: Context): Promise<Object> {
     const post = new PostsApi(buildConfiguration());
-    const response = await post.postsGet(1);
+    const pageQuery = ctx.query["page"];
+    let page = 1;
+    if (pageQuery)
+      page = Number(pageQuery)
+    const response = await post.postsGet(page);
+    const pageClicked = (page :string) => {
+      const pageNumber = Number(page);
+      if (pageNumber === 1)
+      {
+        ctx.redirect(`/`);
+      }
+      else
+        ctx.redirect(`/?page=${pageNumber}`);
+    }
     return {
       result: response.data,
+      page: page,
+      pageClicked: pageClicked
     }
   },
+  async validate(ctx: Context){
+    const page = ctx.query["page"];
+    if (!page)
+      return true
+    if (isNaN(Number(page)))
+      return false
+    return true
+  },
+  watchQuery: ["page"],
   setup(){
     const toTagLinks = (tags: string[]) => {
       const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}/posts`}}).toArray()
