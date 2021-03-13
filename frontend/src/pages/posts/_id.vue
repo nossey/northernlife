@@ -42,7 +42,7 @@ export default {
     try
     {
       const post = (await api.postsIdGet(id)).data
-      const links = Enumerable.from(post.tags).select(function(t) { return {name: t, link: `/tags/${t}`}}).toArray()
+      const links = Enumerable.from(post.tags).select(function(t) { return {name: t, link: `/tags/${t}/posts`}}).toArray()
       return {
         thumbnail: post.thumbnail,
         title: post.title,
