@@ -3,7 +3,7 @@
     <b-container class="pt-4 pb-2">
       <b-row>
         <b-col>
-          <SearchForm></SearchForm>
+          <SearchForm :on-submit="search"></SearchForm>
         </b-col>
       </b-row>
     </b-container>
@@ -49,8 +49,6 @@ export default defineComponent({
     if (pageQuery)
       page = Number(pageQuery)
     const response = await post.postsGet(page);
-
-
     return {
       result: response.data,
       page: page,
@@ -61,16 +59,44 @@ export default defineComponent({
       const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}/posts`}}).toArray()
       return {links: links}
     },
+    search(text: string){
+      this.$nuxt.context.redirect(`/?search=${text}`);
+    },
     pageClicked(page :string){
       const pageNumber = Number(page);
-      if (pageNumber === 1)
+      const params: {[key: string]: string} = {};
+      if (pageNumber != 1)
       {
-        this.$nuxt.context.redirect('/');
+        params['page'] = pageNumber.toString();
       }
-      else
+      const searchWord = this.$nuxt.context.query["search"];
+      if (searchWord)
       {
-        this.$nuxt.context.redirect(`/?page=${pageNumber}`);
+        params['search'] = searchWord as string;
       }
+
+      const p = this.createQueryParams(params);
+      this.$nuxt.context.redirect(`/${p}`);
+    },
+    createQueryParams(params: {[key: string]: string}){
+      if(Object.keys(params).length === 0)
+        return "";
+
+      let result = "?";
+      let added = false;
+      for (const key in params)
+      {
+        if (added)
+        {
+          result += `&${key}=${params[key]}`
+        }
+        else
+        {
+          result += `${key}=${params[key]}`
+        }
+        added = true
+      }
+      return result;
     }
   },
   async validate(ctx: Context){
@@ -81,7 +107,7 @@ export default defineComponent({
       return false
     return true
   },
-  watchQuery: ['page'],
+  watchQuery: ['page', 'search'],
   components: {
     Button,
     Tag,

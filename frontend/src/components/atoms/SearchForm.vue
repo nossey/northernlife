@@ -1,27 +1,43 @@
 <template>
   <form @submit.prevent="submit">
     <fa :icon="faSearch"></fa>
-    <input type="search" placeholder="検索">
+    <input type="search" placeholder="検索" v-model="state.text">
   </form>
 </template>
 
 <script lang="ts">
 
-import {defineComponent, computed} from "@nuxtjs/composition-api";
-
+import {defineComponent, reactive} from "@nuxtjs/composition-api";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 
-export default defineComponent({
- setup(){
-   const submit = () => {
-     console.log("Hello")
-   }
+type Props = {
+  onSubmit: (text: string) => {},
+}
 
-   return {
-     submit,
-     faSearch
-   }
- }
+export default defineComponent({
+  props: {
+    onSubmit: {
+      type: Function,
+      required: false
+    }
+  },
+  setup(props: Props){
+    const state = reactive({
+      text: ""
+    });
+    const submit = () => {
+      if (props.onSubmit)
+      {
+        props.onSubmit(state.text)
+      }
+    }
+
+    return {
+      submit,
+      state,
+      faSearch
+    }
+  }
 
 })
 
