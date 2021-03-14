@@ -75,9 +75,7 @@ export default defineComponent({
         params['search'] = searchWord as string;
       }
 
-      console.log(params)
       const p = this.createQueryParams(params);
-      console.log(p)
       this.$nuxt.context.redirect(`/${p}`);
     },
     createQueryParams(params: {[key: string]: string}){
