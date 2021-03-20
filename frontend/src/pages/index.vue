@@ -45,10 +45,15 @@ export default defineComponent({
   async asyncData(ctx: Context): Promise<Object> {
     const post = new PostsApi(buildConfiguration());
     const pageQuery = ctx.query["page"];
+    let search = "";
+    if (ctx.query["search"])
+      search = ctx.query["search"] as string;
+
     let page = 1;
     if (pageQuery)
       page = Number(pageQuery)
-    const response = await post.postsGet(page);
+    const response = await post.postsGet(page, undefined, search);
+
     return {
       result: response.data,
       page: page,
