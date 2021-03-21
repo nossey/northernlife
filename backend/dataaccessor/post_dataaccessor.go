@@ -178,7 +178,7 @@ where
 }
 
 // GetPostList get posts
-func (accessor *PostDataAccessor) GetPostList(tags []string, offset int, limit int, searchWord string, getPostType domain.GetPostType) (result []domain.PostListItem) {
+func (accessor *PostDataAccessor) GetPostList(tags []string, searchWord string, getPostType domain.GetPostType) (result []domain.PostListItem) {
 	filterSQL := ""
 	switch getPostType {
 	case domain.Published:
@@ -228,10 +228,6 @@ group by
 	p.id
 order by
 	p.created_at desc
-offset
-	?
-limit
-	?
 )
 select
 	*
@@ -241,7 +237,7 @@ from
 	db := infrastructure.Db
 	tagsSpecified := pq.StringArray(tags)
 	search := "%" + searchWord + "%"
-	rows, err := db.Raw(getPostsSQL, offset, limit, tagsSpecified, search).Rows()
+	rows, err := db.Raw(getPostsSQL, tagsSpecified, search).Rows()
 	if err != nil {
 		return
 	}
