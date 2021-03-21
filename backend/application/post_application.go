@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/google/uuid"
+	"github.com/ahmetb/go-linq"
 	"github.com/lib/pq"
 	"github.com/nossey/northernlife/dataaccessor"
 	"github.com/nossey/northernlife/domain"
@@ -98,8 +99,9 @@ func (app *PostApplication) GetPostList(tags []string, page int, searchWord stri
 	perPageCount := 10
 	result.PerPageCount = perPageCount
 	offset := perPageCount * (page - 1)
-	result.Posts = dataaccessor.PostAccessor.GetPostList(tags, offset, perPageCount, searchWord, domain.Published)
-	result.TotalCount = dataaccessor.PostAccessor.GetPostListCount(tags, getType)
+	result.Posts = dataaccessor.PostAccessor.GetPostList(tags, searchWord, domain.Published)
+	result.TotalCount = len(result.Posts)
+	linq.From(result.Posts).Skip(offset).Take(perPageCount).ToSlice(&result.Posts)
 	return
 }
 
