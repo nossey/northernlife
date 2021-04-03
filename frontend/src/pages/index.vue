@@ -7,6 +7,9 @@
         </b-col>
       </b-row>
     </b-container>
+    <b-container v-if="searchWord">
+      {{searchWord}}の検索結果
+    </b-container>
     <b-container>
       <b-row>
        <b-col v-for="post in result.posts" :key="post.id" cols="12" lg="6">
@@ -48,20 +51,28 @@ export default defineComponent({
     let search = "";
     if (ctx.query["search"])
       search = ctx.query["search"] as string;
+    let tags: Array<string> | undefined = undefined;
+    if (ctx.query["tag"])
+    {
+      const tagName = ctx.query["tag"] as string;
+      tags = Array<string>();
+      tags.push(tagName);
+    }
 
     let page = 1;
     if (pageQuery)
       page = Number(pageQuery)
-    const response = await post.postsGet(page, undefined, search);
+    const response = await post.postsGet(page, tags, search);
 
     return {
       result: response.data,
       page: page,
+      searchWord: search
     }
   },
   methods: {
     toTagLinks(tags: string[]){
-      const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/tags/${t}/posts`}}).toArray()
+      const links =  Enumerable.from(tags).select(function (t) {return {name: t, link:`/?tag=${encodeURIComponent(t)}`}}).toArray()
       return {links: links}
     },
     search(text: string){
@@ -78,6 +89,11 @@ export default defineComponent({
       if (searchWord)
       {
         params['search'] = searchWord as string;
+      }
+      const tag = this.$nuxt.context.query['tag'];
+      if (tag)
+      {
+        params['tag'] = tag as string;
       }
 
       const p = this.createQueryParams(params);
@@ -112,7 +128,7 @@ export default defineComponent({
       return false
     return true
   },
-  watchQuery: ['page', 'search'],
+  watchQuery: ['page', 'search', 'tag'],
   components: {
     Button,
     Tag,
