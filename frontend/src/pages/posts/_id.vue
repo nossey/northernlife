@@ -42,7 +42,7 @@ export default defineComponent({
       })
     });
 
-    const { meta } = useMeta();
+    const { title } = useMeta();
     const {_, fetchState} = useFetch(async() => {
       const api = new PostsApi(buildConfiguration());
       const id = useContext().params.value["id"];
@@ -52,9 +52,11 @@ export default defineComponent({
       state.body = post.body;
       state.plainBody = post.plainBody;
       state.tags = (post.tags) ? post.tags : [];
+
+      title.value = state.title;
     });
 
-  return {
+    return {
       state,
       fetchState
     }
