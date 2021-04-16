@@ -42,8 +42,8 @@ export default defineComponent({
       })
     });
 
-    const { title } = useMeta();
-    const {_, fetchState} = useFetch(async() => {
+    const { title, meta } = useMeta();
+    const {fetch, fetchState} = useFetch(async() => {
       const api = new PostsApi(buildConfiguration());
       const id = useContext().params.value["id"];
       const post = (await api.postsIdGet(id)).data;
@@ -54,7 +54,21 @@ export default defineComponent({
       state.tags = (post.tags) ? post.tags : [];
 
       title.value = state.title;
+      meta.value = [
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: state.plainBody,
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: state.thumbnail,
+        },
+      ]
     });
+
+    fetch()
 
     return {
       state,
