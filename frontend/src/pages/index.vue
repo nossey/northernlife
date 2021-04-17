@@ -3,12 +3,15 @@
     <b-container class="pt-4 pb-2">
       <b-row>
         <b-col>
-          <SearchForm :on-submit="search"></SearchForm>
+          <SearchForm :on-submit="search" :text="searchWord"></SearchForm>
         </b-col>
       </b-row>
     </b-container>
     <b-container v-if="searchWord">
-      {{searchWord}}の検索結果
+      検索ワード:{{searchWord}}の検索結果
+    </b-container>
+    <b-container v-if="tagName">
+      タグ:{{tagName}}の検索結果
     </b-container>
     <b-container>
       <b-row>
@@ -52,9 +55,9 @@ export default defineComponent({
     if (ctx.query["search"])
       search = ctx.query["search"] as string;
     let tags: Array<string> | undefined = undefined;
+    const tagName = ctx.query["tag"] as string;
     if (ctx.query["tag"])
     {
-      const tagName = ctx.query["tag"] as string;
       tags = Array<string>();
       tags.push(tagName);
     }
@@ -67,7 +70,8 @@ export default defineComponent({
     return {
       result: response.data,
       page: page,
-      searchWord: search
+      searchWord: search,
+      tagName: tagName
     }
   },
   methods: {
