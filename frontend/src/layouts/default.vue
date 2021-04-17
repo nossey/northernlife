@@ -4,7 +4,18 @@
     <b-container fluid class="main-content">
       <b-row>
         <b-col>
-          <nuxt />
+          <b-container>
+            <b-row>
+              <b-col>
+                <SearchPostForm class="mt-4 mb-4"></SearchPostForm>
+              </b-col>
+            </b-row>
+            <b-row>
+             <b-col>
+               <nuxt />
+             </b-col>
+            </b-row>
+          </b-container>
         </b-col>
       </b-row>
     </b-container>
@@ -13,15 +24,16 @@
 
 <script lang="ts">
 import Header from "~/components/molecules/Header.vue";
+import SearchPostForm from "~/components/organism/SearchPostForm.vue";
 
 export default {
-  components: {Header}
+  components: {Header, SearchPostForm},
 }
 
 </script>
 
 <style lang="scss">
-@import "assets/colors.scss";
+@import "~assets/colors.scss";
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
