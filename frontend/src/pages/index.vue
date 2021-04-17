@@ -1,12 +1,5 @@
 <template>
   <div>
-    <b-container class="pt-4 pb-2">
-      <b-row>
-        <b-col>
-          <SearchForm :on-submit="search" :text="searchWord"></SearchForm>
-        </b-col>
-      </b-row>
-    </b-container>
     <b-container v-if="searchWord">
       検索ワード:{{searchWord}}の検索結果
     </b-container>
@@ -45,7 +38,6 @@ import { defineComponent } from "@nuxtjs/composition-api"
 import Button from "~/components/atoms/Button.vue"
 import Tag from "~/components/atoms/Tag.vue"
 import PostCard from "~/components/molecules/PostCard.vue"
-import SearchForm from "~/components/atoms/SearchForm.vue"
 
 export default defineComponent({
   async asyncData(ctx: Context): Promise<Object> {
@@ -137,7 +129,6 @@ export default defineComponent({
     Button,
     Tag,
     PostCard,
-    SearchForm
   }
 });
 </script>
