@@ -12,6 +12,7 @@ import {faSearch} from "@fortawesome/free-solid-svg-icons";
 
 type Props = {
   onSubmit: (text: string) => {},
+  text: string
 }
 
 export default defineComponent({
@@ -19,11 +20,15 @@ export default defineComponent({
     onSubmit: {
       type: Function,
       required: false
+    },
+    text: {
+      type: String,
+      required: false
     }
   },
   setup(props: Props){
     const state = reactive({
-      text: ""
+      text: (props.text) ? props.text : ""
     });
     const submit = () => {
       if (props.onSubmit)
