@@ -8,22 +8,22 @@
     </b-container>
     <b-container>
       <b-row>
-       <b-col v-for="post in result.posts" :key="post.id" cols="12" lg="6">
-        <PostCard
-          class="margin"
-          :id="post.id"
-          :title="post.title"
-          :plainBody="post.plainBody"
-          :thumbnail="post.thumbnail"
-          :tag-link-list="toTagLinks(post.tags)"
-        ></PostCard>
+        <b-col v-for="post in result.posts" :key="post.id" cols="12" lg="6">
+          <PostCard
+            class="margin"
+            :id="post.id"
+            :title="post.title"
+            :plainBody="post.plainBody"
+            :thumbnail="post.thumbnail"
+            :tag-link-list="toTagLinks(post.tags)"
+          ></PostCard>
         </b-col>
       </b-row>
       <b-pagination
-         :total-rows="result.totalCount"
-         :per-page="result.perPageCount"
-         v-model="page"
-         @input="pageClicked"
+        :total-rows="result.totalCount"
+        :per-page="result.perPageCount"
+        v-model="page"
+        @input="pageClicked"
       ></b-pagination>
     </b-container>
   </div>
@@ -138,5 +138,8 @@ export default defineComponent({
 .margin {
   margin: 10px 5px;
 }
+
+.home-enter-active, .home-leave-active { transition: opacity .5s; }
+.home-enter, .home-leave-active { opacity: 0; }
 
 </style>
