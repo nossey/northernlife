@@ -2,15 +2,16 @@
   <b-container class="mt-4">
     <b-row>
       <b-col cols="12" md="9">
-        <div v-if="fetchState.pending">Loading...</div>
-        <div v-else-if="fetchState.error">{{fetchState.error.message}}</div>
-        <Post v-else
-          :title="state.title"
-          :body="state.body"
-          :thumbnail="state.thumbnail"
-          :tags="state.tags"
-          :linkList="state.tagLinks"
-        ></Post>
+        <transition name="post">
+          <div v-if="fetchState.error">{{fetchState.error.message}}</div>
+          <Post v-else-if="!fetchState.pending"
+                :title="state.title"
+                :body="state.body"
+                :thumbnail="state.thumbnail"
+                :tags="state.tags"
+                :linkList="state.tagLinks"
+          ></Post>
+        </transition>
       </b-col>
       <b-col md="3" class="d-none d-md-block">Table of contents</b-col>
     </b-row>
@@ -78,6 +79,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.post-enter-active, .post-leave-active { transition: opacity .5s; }
+.post-enter, .post-leave-active { opacity: 0; }
 </style>
