@@ -24,12 +24,34 @@
 <script lang="ts">
 import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition-api"
 import { createMarkdown } from "safe-marked";
+const renderer = new marked.Renderer();
+const toc = Array<{level: Number, slug: string, title: string}>();
+renderer.heading = (text, level) => {
+  const slug = encodeURI(text.toLowerCase());
+  toc.push({
+    level: level as Number,
+    slug: slug,
+    title: text as string
+  })
+  return '<h'
+    + level
+    + ' id="'
+    + slug
+    + '">'
+    + text
+    + '</h'
+    + level
+    + '>\n'
+}
 const markdown = createMarkdown({
   marked:{
-    breaks:true
+    breaks:true,
+    renderer: renderer
   }
 });
+
 import Tag from "~/components/atoms/Tag.vue"
+import marked from "marked";
 
 type Props = {
   body: string,
@@ -78,7 +100,11 @@ export default defineComponent({
       title: computed(() => props.title),
       renderedBody: computed(() => markdown(props.body)),
       tags: computed(() => props.tags),
-      linkList: computed(() => props.linkList)
+      linkList: computed(() => props.linkList),
+      toc: computed(() => {
+        markdown(props.body);
+        return toc;
+      })
     });
 
     return {

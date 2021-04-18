@@ -13,17 +13,18 @@
           ></Post>
         </transition>
       </b-col>
-      <b-col md="3" class="d-none d-md-block">Table of contents</b-col>
+      <b-col md="3" class="d-none d-md-block">toc</b-col>
     </b-row>
   </b-container>
 </template>
 
-<script>
+<script lang="ts">
 import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent, reactive, computed, useFetch, useContext, useMeta } from "@nuxtjs/composition-api"
 import Post from "~/components/molecules/Post.vue"
 import Enumerable from "linq"
+const toc = Array<{level: Number, slug: string, title: string}>();
 
 export default defineComponent({
   components: {
@@ -38,7 +39,7 @@ export default defineComponent({
       plainBody: "",
       tags: [],
       tagLinks: computed(()=>{
-        const links = Enumerable.from(state.tags).select(function(t){return {name: t, link: `/?tag=${encodeURIComponent(t)}`}}).toArray()
+        const links = Enumerable.from(state.tags as string[]).select(function(t){return {name: t, link: `/?tag=${encodeURIComponent(t)}`}}).toArray()
         return {links: links}
       })
     });
@@ -68,8 +69,6 @@ export default defineComponent({
         },
       ]
     });
-
-    fetch()
 
     return {
       state,
