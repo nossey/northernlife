@@ -3,6 +3,11 @@
     <b-row>
       <b-col><h1>{{state.title}}</h1></b-col>
     </b-row>
+    <b-row>
+      <b-col v-if="state.postedAt">
+        {{state.postedAt}}
+      </b-col>
+    </b-row>
     <b-row v-if="state.tags.length > 0">
       <b-col class="pt-2 pb-2">
         <Tag v-for="link in state.linkList.links" :key="link.name" :to="link.link" class="tag">{{link.name}}</Tag>
@@ -55,10 +60,11 @@ import marked from "marked";
 
 type Props = {
   body: string,
-  title: string
+  title: string,
   thumbnail: string,
   tags: string[],
-  linkList: ITagLinkList
+  linkList: ITagLinkList,
+  postedAt: string
 }
 
 export interface ITagLink {
@@ -79,6 +85,10 @@ export default defineComponent({
     body: {
       type: String,
       required: true
+    },
+    postedAt: {
+     type: String,
+     required: false
     },
     thumbnail: {
       type: String,
@@ -104,7 +114,8 @@ export default defineComponent({
       toc: computed(() => {
         markdown(props.body);
         return toc;
-      })
+      }),
+      postedAt: computed(() => props.postedAt)
     });
 
     return {
@@ -116,7 +127,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "assets/colors.scss";
+@import "~assets/colors.scss";
 .post-container {
   background: $background-white;
 

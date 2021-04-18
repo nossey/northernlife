@@ -16,6 +16,7 @@
             :plainBody="post.plainBody"
             :thumbnail="post.thumbnail"
             :tag-link-list="toTagLinks(post.tags)"
+            :posted-at="post.createdAt"
           ></PostCard>
         </b-col>
       </b-row>

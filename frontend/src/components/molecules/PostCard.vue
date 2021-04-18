@@ -15,6 +15,7 @@
       </b-row>
       <b-row align-h="end">
         <b-col class="foot">
+          {{convertTime(postedAt)}}
           <Button :to="`/posts/${id}`">READ</Button>
         </b-col>
       </b-row>
@@ -27,6 +28,11 @@
 import {defineComponent, PropType} from "@nuxtjs/composition-api"
 import Button from '~/components/atoms/Button.vue'
 import Tag from "~/components/atoms/Tag.vue"
+import moment from 'moment';
+
+const convert = (time: string) => {
+  moment("time", "YYYY-MM-DD")
+}
 
 export interface ITagLink {
   name: string
@@ -55,10 +61,23 @@ export default defineComponent( {
       type: String,
       required: true
     },
+    postedAt: {
+      type: String,
+      require: false
+    },
     tagLinkList: {
       type: Object as PropType<ITagLinkList>,
       required: true
     }
+  },
+  setup(){
+   const convertTime = (time: string) => {
+     return moment(time).format("YYYY-MM-DD")
+   }
+
+   return {
+     convertTime
+   }
   },
   components: {
     Button,
@@ -68,7 +87,7 @@ export default defineComponent( {
 </script>
 
 <style lang="scss" scoped>
-@import "assets/colors";
+@import "~assets/colors";
 .card {
   transition: all .1s;
   filter: drop-shadow(2px 2px 3px $shadow-color);
