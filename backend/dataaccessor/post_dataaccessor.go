@@ -186,20 +186,30 @@ func (accessor *PostDataAccessor) GetPostList(tags []string, searchWord string, 
 where
 	pwt.published = true
 	and pwt.tags @> ?
-	and pwt.plain_body ilike ?`
+	and
+	(pwt.plain_body ilike ?
+		or
+	pwt.title ilike ?)
+	`
 		break
 	case domain.Draft:
 		filterSQL = `
 where
 	pwt.published = false 
 	and pwt.tags @> ?
-	and pwt.plain_body ilike ?`
+	(pwt.plain_body ilike ?
+		or
+	pwt.title ilike ?)
+	`
 		break
 	case domain.All:
 		filterSQL = `
 where
 	pwt.tags @> ?
-	and pwt.plain_body ilike ?`
+	(pwt.plain_body ilike ?
+		or
+	pwt.title ilike ?)
+	`
 		break
 	}
 
@@ -237,7 +247,7 @@ from
 	db := infrastructure.Db
 	tagsSpecified := pq.StringArray(tags)
 	search := "%" + searchWord + "%"
-	rows, err := db.Raw(getPostsSQL, tagsSpecified, search).Rows()
+	rows, err := db.Raw(getPostsSQL, tagsSpecified, search, search).Rows()
 	if err != nil {
 		return
 	}
