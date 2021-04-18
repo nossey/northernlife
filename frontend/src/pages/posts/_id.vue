@@ -2,7 +2,7 @@
   <b-container class="mt-4">
     <transition name="post">
       <b-row>
-        <b-col cols="12" md="9">
+        <b-col cols="12" md="9" class="post">
           <div v-if="fetchState.error">{{fetchState.error.message}}</div>
           <Post v-else-if="!fetchState.pending"
                 :title="state.title"
@@ -12,7 +12,7 @@
                 :linkList="state.tagLinks"
                 :posted-at="state.postedAt"
           ></Post>
-      </b-col>
+        </b-col>
         <b-col  md="3" class="d-none d-md-block">
           <div v-if="fetchState.error">{{fetchState.error.message}}</div>
           <div v-else-if="!fetchState.pending">
@@ -20,7 +20,7 @@
             <a class="toc" v-for="link in state.toc.links" :href="`#${link.slug}`">{{link.title}}</a>
           </div>
         </b-col>
-    </b-row>
+      </b-row>
     </transition>
   </b-container>
 </template>
@@ -116,7 +116,12 @@ export default defineComponent({
 .post-enter-active, .post-leave-active { transition: opacity .5s; }
 .post-enter, .post-leave-active { opacity: 0; }
 
-.toc {
-  display: block;
+.post {
+  padding: 0 0;
+
+  .toc {
+    display: block;
+  }
 }
+
 </style>
