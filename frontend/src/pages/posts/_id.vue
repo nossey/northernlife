@@ -16,8 +16,7 @@
           <div v-if="fetchState.error">{{fetchState.error.message}}</div>
           <div v-else-if="!fetchState.pending">
             Table of contents
-            <div v-for="link in state.toc.links">{{link.title}}</div>
-            {{state.toc.links.length}}
+            <a class="toc" v-for="link in state.toc.links" :href="`#${link.slug}`">{{link.title}}</a>
           </div>
         </b-col>
     </b-row>
@@ -112,4 +111,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .post-enter-active, .post-leave-active { transition: opacity .5s; }
 .post-enter, .post-leave-active { opacity: 0; }
+
+.toc {
+  display: block;
+}
 </style>
