@@ -1,8 +1,8 @@
 <template>
   <b-container class="mt-4">
-    <b-row>
-      <b-col cols="12" md="9">
-        <transition name="post">
+    <transition name="post">
+      <b-row>
+        <b-col cols="12" md="9">
           <div v-if="fetchState.error">{{fetchState.error.message}}</div>
           <Post v-else-if="!fetchState.pending"
                 :title="state.title"
@@ -11,10 +11,17 @@
                 :tags="state.tags"
                 :linkList="state.tagLinks"
           ></Post>
-        </transition>
       </b-col>
-      <b-col md="3" class="d-none d-md-block">toc</b-col>
+        <b-col  md="3" class="d-none d-md-block">
+          <div v-if="fetchState.error">{{fetchState.error.message}}</div>
+          <div v-else-if="!fetchState.pending">
+            Table of contents
+            <div v-for="link in state.toc.links">{{link.title}}</div>
+            {{state.toc.links.length}}
+          </div>
+        </b-col>
     </b-row>
+    </transition>
   </b-container>
 </template>
 
@@ -24,7 +31,7 @@ import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent, reactive, computed, useFetch, useContext, useMeta } from "@nuxtjs/composition-api"
 import Post from "~/components/molecules/Post.vue"
 import Enumerable from "linq"
-const toc = Array<{level: Number, slug: string, title: string}>();
+import marked from "marked";
 
 export default defineComponent({
   components: {
@@ -38,9 +45,33 @@ export default defineComponent({
       body: "",
       plainBody: "",
       tags: [],
-      tagLinks: computed(()=>{
+      tagLinks: computed(() => {
         const links = Enumerable.from(state.tags as string[]).select(function(t){return {name: t, link: `/?tag=${encodeURIComponent(t)}`}}).toArray()
         return {links: links}
+      }),
+      toc: computed(() => {
+        const renderer = new marked.Renderer();
+        const toc = Array<{level: Number, slug: string, title: string}>();
+        renderer.heading = (text, level) => {
+          const slug = encodeURI(text.toLowerCase());
+          toc.push({
+            level: level as Number,
+            slug: slug,
+            title: text as string
+          })
+          return '<h'
+            + level
+            + ' id="'
+            + slug
+            + '">'
+            + text
+            + '</h'
+            + level
+            + '>\n'
+        }
+        marked.setOptions({renderer: renderer})
+        marked(state.body);
+        return {links: toc}
       })
     });
 
