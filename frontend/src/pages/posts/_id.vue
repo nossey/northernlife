@@ -1,8 +1,8 @@
 <template>
   <b-container class="mt-4">
-    <b-row>
-      <b-col cols="12" md="9">
-        <transition name="post">
+    <transition name="post">
+      <b-row>
+        <b-col cols="12" md="9">
           <div v-if="fetchState.error">{{fetchState.error.message}}</div>
           <Post v-else-if="!fetchState.pending"
                 :title="state.title"
@@ -11,19 +11,26 @@
                 :tags="state.tags"
                 :linkList="state.tagLinks"
           ></Post>
-        </transition>
       </b-col>
-      <b-col md="3" class="d-none d-md-block">Table of contents</b-col>
+        <b-col  md="3" class="d-none d-md-block">
+          <div v-if="fetchState.error">{{fetchState.error.message}}</div>
+          <div v-else-if="!fetchState.pending">
+            Table of contents
+            <a class="toc" v-for="link in state.toc.links" :href="`#${link.slug}`">{{link.title}}</a>
+          </div>
+        </b-col>
     </b-row>
+    </transition>
   </b-container>
 </template>
 
-<script>
+<script lang="ts">
 import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent, reactive, computed, useFetch, useContext, useMeta } from "@nuxtjs/composition-api"
 import Post from "~/components/molecules/Post.vue"
 import Enumerable from "linq"
+import marked from "marked";
 
 export default defineComponent({
   components: {
@@ -37,9 +44,33 @@ export default defineComponent({
       body: "",
       plainBody: "",
       tags: [],
-      tagLinks: computed(()=>{
-        const links = Enumerable.from(state.tags).select(function(t){return {name: t, link: `/?tag=${encodeURIComponent(t)}`}}).toArray()
+      tagLinks: computed(() => {
+        const links = Enumerable.from(state.tags as string[]).select(function(t){return {name: t, link: `/?tag=${encodeURIComponent(t)}`}}).toArray()
         return {links: links}
+      }),
+      toc: computed(() => {
+        const renderer = new marked.Renderer();
+        const toc = Array<{level: Number, slug: string, title: string}>();
+        renderer.heading = (text, level) => {
+          const slug = encodeURI(text.toLowerCase());
+          toc.push({
+            level: level as Number,
+            slug: slug,
+            title: text as string
+          })
+          return '<h'
+            + level
+            + ' id="'
+            + slug
+            + '">'
+            + text
+            + '</h'
+            + level
+            + '>\n'
+        }
+        marked.setOptions({renderer: renderer})
+        marked(state.body);
+        return {links: toc}
       })
     });
 
@@ -69,8 +100,6 @@ export default defineComponent({
       ]
     });
 
-    fetch()
-
     return {
       state,
       fetchState
@@ -82,4 +111,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .post-enter-active, .post-leave-active { transition: opacity .5s; }
 .post-enter, .post-leave-active { opacity: 0; }
+
+.toc {
+  display: block;
+}
 </style>
