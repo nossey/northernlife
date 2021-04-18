@@ -10,6 +10,7 @@
                 :thumbnail="state.thumbnail"
                 :tags="state.tags"
                 :linkList="state.tagLinks"
+                :posted-at="state.postedAt"
           ></Post>
       </b-col>
         <b-col  md="3" class="d-none d-md-block">
@@ -31,6 +32,7 @@ import { defineComponent, reactive, computed, useFetch, useContext, useMeta } fr
 import Post from "~/components/molecules/Post.vue"
 import Enumerable from "linq"
 import marked from "marked";
+import moment from "moment";
 
 export default defineComponent({
   components: {
@@ -44,6 +46,7 @@ export default defineComponent({
       body: "",
       plainBody: "",
       tags: [],
+      postedAt: "",
       tagLinks: computed(() => {
         const links = Enumerable.from(state.tags as string[]).select(function(t){return {name: t, link: `/?tag=${encodeURIComponent(t)}`}}).toArray()
         return {links: links}
@@ -84,6 +87,7 @@ export default defineComponent({
       state.body = post.body;
       state.plainBody = post.plainBody;
       state.tags = (post.tags) ? post.tags : [];
+      state.postedAt = moment(post.createdAt).format("YYYY-MM-DD");
 
       title.value = state.title;
       meta.value = [
