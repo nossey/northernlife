@@ -1,5 +1,5 @@
 <template>
-  <div class="tag" @click="clickedEvent"><slot></slot></div>
+  <button class="tag" @click="clickedEvent"><slot></slot></button>
 </template>
 
 <script lang="ts">
@@ -30,7 +30,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "assets/colors";
+@import "~assets/colors";
 .tag {
   font-size: 12px;
   background: $background-white;
@@ -40,12 +40,16 @@ export default defineComponent({
   border-radius: 4px;
   padding: 3px 6px 3px 6px;
   transition: .5s;
+  outline: none;
 
-  &:hover{
+  &:hover {
     cursor: pointer;
     background-color: $main-theme;
     color: $font-color-white;
     transition: .5s;
+  }
+  &:active{
+    background-color: ToDarkenColor($main-theme);
   }
 }
 
