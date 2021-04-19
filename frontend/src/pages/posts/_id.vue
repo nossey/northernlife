@@ -1,7 +1,7 @@
 <template>
   <b-container class="mt-4">
     <transition name="post">
-      <b-row>
+      <b-row align-h="between">
         <b-col cols="12" md="9" class="post">
           <div v-if="fetchState.error">{{fetchState.error.message}}</div>
           <Post v-else-if="!fetchState.pending"
@@ -13,11 +13,12 @@
                 :posted-at="state.postedAt"
           ></Post>
         </b-col>
-        <b-col  md="3" class="d-none d-md-block">
-          <div v-if="fetchState.error">{{fetchState.error.message}}</div>
-          <div v-else-if="!fetchState.pending">
-            Table of contents
-            <a class="toc" v-for="link in state.toc.links" :href="`#${link.slug}`">{{link.title}}</a>
+        <b-col md="2" class="d-none d-md-block ">
+          <div class="toc-container">
+            <div v-if="fetchState.error">{{fetchState.error.message}}</div>
+            <div v-else-if="!fetchState.pending" class="pt-2">
+              <a class="toc ml-3" v-for="link in state.toc.links" :href="`#${link.slug}`">{{link.title}}</a>
+            </div>
           </div>
         </b-col>
       </b-row>
@@ -113,12 +114,20 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import "~assets/colors";
+
 .post-enter-active, .post-leave-active { transition: opacity .5s; }
 .post-enter, .post-leave-active { opacity: 0; }
 
 .post {
   padding: 0 0;
+}
 
+.toc-container{
+  background: $background-white;
+  border-radius: 2px;
+  filter: drop-shadow(2px 2px 3px $shadow-color);
+  min-height: 300px;
   .toc {
     display: block;
   }

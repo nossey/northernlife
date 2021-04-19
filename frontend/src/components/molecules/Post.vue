@@ -130,6 +130,7 @@ export default defineComponent({
 @import "~assets/colors.scss";
 .post-container {
   background: $background-white;
+  filter: drop-shadow(2px 2px 3px $shadow-color);
 
   .tag {
     margin-right: 5px;
