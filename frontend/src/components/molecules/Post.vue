@@ -19,8 +19,8 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col class="rendered-area">
-        <div v-html="state.renderedBody"></div>
+      <b-col>
+        <div v-html="state.renderedBody" class="rendered-area"></div>
       </b-col>
     </b-row>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/agate.min.css">
@@ -140,6 +140,12 @@ export default defineComponent({
 
   .posted-time-area {
     font-size: 12px;
+  }
+
+  .rendered-area {
+    * {
+      max-width: 100%;
+    }
   }
 
   .tag {

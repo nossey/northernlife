@@ -22,7 +22,7 @@
       <b-container>
         <b-row>Body</b-row>
         <b-row class="body">
-          <textarea v-model="state.body" @drop.prevent="dropFile"></textarea>
+          <textarea id="textarea" v-model="state.body" @drop.prevent="dropFile"></textarea>
         </b-row>
       </b-container>
     </b-row>
@@ -43,6 +43,7 @@
 import {defineComponent, reactive, watch} from "@nuxtjs/composition-api";
 import {ContentsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
+import {text} from "@fortawesome/fontawesome-svg-core";
 
 export default defineComponent( {
   props: {
@@ -80,12 +81,17 @@ export default defineComponent( {
     watch(() => state, () => {context.emit("updated", state)}, {deep: true})
 
     const dropFile = async (event) => {
+      const textArea = document.getElementById("textarea") as HTMLInputElement;
+      textArea.setAttribute("disabled", "");
       const file = event.dataTransfer.files[0];
       const reader = new FileReader();
       reader.onload = async () => {
         const uploader = new ContentsApi(buildConfiguration());
         const result = await uploader.contentsPost({image: reader.result as string});
-        console.log(result.data.url);
+        const markdownImage = `![${file.name.replace(/\.[^/.]+$/, "")}](${result.data.url})`;
+        const cursorPosition = textArea?.selectionStart as number;
+        state.body = [state.body.slice(0, cursorPosition), markdownImage, state.body.slice(cursorPosition)].join('');
+        textArea.removeAttribute("disabled");
       }
       reader.readAsDataURL(file);
     }
@@ -112,7 +118,7 @@ export default defineComponent( {
 
 <style lang="scss" scoped>
 
-@import "assets/colors.scss";
+@import "~assets/colors.scss";
 
 textarea {
   width: 100%;
