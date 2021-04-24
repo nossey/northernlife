@@ -18,7 +18,7 @@
         <b-img class="img-fluid" :src="state.thumbnail" />
       </b-col>
     </b-row>
-    <b-row class="pl-2 pr-2">
+    <b-row>
       <b-col class="rendered-area">
         <div v-html="state.renderedBody"></div>
       </b-col>
