@@ -1,10 +1,10 @@
 <template>
-  <b-container fluid class="post-container pt-2">
+  <b-container class="post-container pt-2">
     <b-row>
-      <b-col><h1>{{state.title}}</h1></b-col>
+      <b-col><h1 class="mb-0">{{state.title}}</h1></b-col>
     </b-row>
     <b-row>
-      <b-col v-if="state.postedAt">
+      <b-col v-if="state.postedAt" class="posted-time-area">
         {{state.postedAt}}
       </b-col>
     </b-row>
@@ -19,7 +19,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col>
+      <b-col class="rendered-area">
         <div v-html="state.renderedBody"></div>
       </b-col>
     </b-row>
@@ -137,6 +137,10 @@ export default defineComponent({
 .post-container {
   background: $background-white;
   filter: drop-shadow(2px 2px 3px $shadow-color);
+
+  .posted-time-area {
+    font-size: 12px;
+  }
 
   .tag {
     margin-right: 5px;
