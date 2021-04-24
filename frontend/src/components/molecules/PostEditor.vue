@@ -82,8 +82,7 @@ export default defineComponent( {
 
     const dropFile = async (event) => {
       const textArea = document.getElementById("textarea") as HTMLInputElement;
-      console.log(textArea?.selectionStart);
-
+      textArea.setAttribute("disabled", "");
       const file = event.dataTransfer.files[0];
       const reader = new FileReader();
       reader.onload = async () => {
@@ -92,8 +91,7 @@ export default defineComponent( {
         const markdownImage = `![${file.name.replace(/\.[^/.]+$/, "")}](${result.data.url})`;
         const cursorPosition = textArea?.selectionStart as number;
         state.body = [state.body.slice(0, cursorPosition), markdownImage, state.body.slice(cursorPosition)].join('');
-        console.log(result.data.url);
-        console.log(markdownImage);
+        textArea.removeAttribute("disabled");
       }
       reader.readAsDataURL(file);
     }
