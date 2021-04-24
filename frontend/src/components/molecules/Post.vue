@@ -138,10 +138,6 @@ export default defineComponent({
   background: $background-white;
   filter: drop-shadow(2px 2px 3px $shadow-color);
 
-  pre {
-    background: black;
-  }
-
   .tag {
     margin-right: 5px;
   }
