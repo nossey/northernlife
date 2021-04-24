@@ -43,12 +43,16 @@ import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
 import PostEditor from "~/components/molecules/PostEditor.vue"
 import { createMarkdown } from "safe-marked";
-import Enumerable from "linq";
+import hljs from "highlight.js"
 const markdown = createMarkdown({
   marked:{
-    breaks: true
+    breaks: true,
+    highlight(code: string, lang: string, callback?: (error: any, code?: string) => void): string | void {
+      return hljs.highlightAuto(code, [lang]).value
+    }
   }});
 const { htmlToText } = require('html-to-text');
+import Enumerable from "linq";
 
 type Props = {
   isPosting: boolean

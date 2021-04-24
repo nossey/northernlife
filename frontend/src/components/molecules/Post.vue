@@ -23,12 +23,14 @@
         <div v-html="state.renderedBody"></div>
       </b-col>
     </b-row>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/agate.min.css">
   </b-container>
 </template>
 
 <script lang="ts">
 import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition-api"
 import { createMarkdown } from "safe-marked";
+import hljs from 'highlight.js'
 const renderer = new marked.Renderer();
 const toc = Array<{level: Number, slug: string, title: string}>();
 renderer.heading = (text, level) => {
@@ -51,7 +53,11 @@ renderer.heading = (text, level) => {
 const markdown = createMarkdown({
   marked:{
     breaks:true,
-    renderer: renderer
+    renderer: renderer,
+    langPrefix: 'hljs ',
+    highlight(code: string, lang: string, callback?: (error: any, code?: string) => void): string | void {
+      return hljs.highlightAuto(code, [lang]).value
+    }
   }
 });
 
