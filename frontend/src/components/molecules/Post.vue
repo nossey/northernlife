@@ -1,7 +1,7 @@
 <template>
   <b-container class="post-container pt-2">
     <b-row>
-      <b-col><h3 class="mb-0">{{state.title}}</h3></b-col>
+      <b-col><h1 class="mb-0">{{state.title}}</h1></b-col>
     </b-row>
     <b-row>
       <b-col v-if="state.postedAt" class="posted-time-area">
