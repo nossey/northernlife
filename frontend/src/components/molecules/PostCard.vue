@@ -4,18 +4,18 @@
       <b-img :src="thumbnail" />
     </div>
     <b-container>
-      <b-row>
-        <b-col class="tag-area pt-2 pb-2"><Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag">{{tagLink.name}}</Tag></b-col>
-      </b-row>
       <b-row class="mt-1">
         <b-container>
-          <b-row><b-col><h2>{{title}}</h2></b-col></b-row>
+          <b-row class="title-area"><b-col><h3>{{title}}</h3></b-col></b-row>
+          <b-row><b-col class="posted-time-area">{{convertTime(postedAt)}}</b-col></b-row>
+          <b-row>
+            <b-col class="tag-area" v-if="tagLinkList.links.length > 0"><Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag">{{tagLink.name}}</Tag></b-col>
+          </b-row>
           <b-row><b-col><div class="plain-body-area">{{plainBody}}</div></b-col></b-row>
         </b-container>
       </b-row>
       <b-row align-h="end">
         <b-col class="foot">
-          {{convertTime(postedAt)}}
           <Button :to="`/posts/${id}`">READ</Button>
         </b-col>
       </b-row>
@@ -72,7 +72,7 @@ export default defineComponent( {
   },
   setup(){
    const convertTime = (time: string) => {
-     return moment(time).format("YYYY-MM-DD")
+     return moment(time).format("YYYY/MM/DD")
    }
 
    return {
@@ -113,6 +113,16 @@ export default defineComponent( {
       width: 100%;
       height: 100%;
     }
+  }
+
+  .title-area {
+    h3 {
+      margin-bottom: 0;
+    }
+  }
+
+  .posted-time-area {
+    font-size: 12px;
   }
 
   .plain-body-area {

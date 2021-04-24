@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-4">
+  <b-container>
     <transition name="post">
       <b-row align-h="between">
         <b-col cols="12" md="9" class="post">
