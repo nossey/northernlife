@@ -6,7 +6,7 @@
     <b-container v-if="tagName">
       タグ:{{tagName}}の検索結果
     </b-container>
-    <b-container>
+    <b-container class="pl-0 pr-0">
       <b-row>
         <b-col v-for="post in result.posts" :key="post.id" cols="12" lg="6">
           <PostCard
