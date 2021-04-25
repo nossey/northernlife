@@ -32,10 +32,17 @@ import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition
 
 let MarkdownIt = require('markdown-it');
 const sanitizer = require('markdown-it-sanitizer');
-const md = new MarkdownIt().use(sanitizer);
+import hljs from 'highlight.js'
+const md = new MarkdownIt({
+  html:true,
+  breaks:true,
+  langPrefix: 'hljs ',
+  highlight: function(code, lang){
+    return hljs.highlightAuto(code, [lang]).value
+  }
+}).use(sanitizer);
 
 import { createMarkdown } from "safe-marked";
-import hljs from 'highlight.js'
 const renderer = new marked.Renderer();
 const toc = Array<{level: Number, slug: string, title: string}>();
 renderer.heading = (text, level) => {
