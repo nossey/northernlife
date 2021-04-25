@@ -49,12 +49,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "assets/colors";
+@import "~assets/colors";
 
 form {
   display: inline-block;
   border-radius: 4px;
   background: $background-white;
+  filter: drop-shadow(1px 1px 1px $shadow-color);
   svg {
     color: $shadow-color;
     margin-left: 10px;
