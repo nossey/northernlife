@@ -131,6 +131,9 @@ export default defineComponent({
   .toc {
     display: block;
   }
+
+  position: sticky;
+  top: 10px;
 }
 
 </style>
