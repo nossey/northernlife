@@ -14,7 +14,7 @@
           ></Post>
         </b-col>
         <b-col md="2" class="d-none d-md-block ">
-          <div class="toc-container">
+          <div class="toc-container" v-if="!fetchState.error && !fetchState.pending && state.toc.links.length > 0">
             <div v-if="fetchState.error">{{fetchState.error.message}}</div>
             <div v-else-if="!fetchState.pending" class="pt-2">
               <a class="toc ml-3" v-for="link in state.toc.links" :href="`#${link.slug}`">{{link.title}}</a>
