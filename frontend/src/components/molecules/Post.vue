@@ -19,8 +19,11 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col>
-        <div v-html="state.renderedBody" class="rendered-area"></div>
+      <b-col class="rendered-area">
+        <div>
+          <img alt="edf32c079a01c30d613437b6659c29d9-png" src="https://northernlife-content.net/2ba250f0836541599a85eed25a3b0645.png" width="300px">
+        </div>
+        <div v-html="state.renderedBody"></div>
       </b-col>
     </b-row>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/agate.min.css">
@@ -143,8 +146,9 @@ export default defineComponent({
   }
 
   .rendered-area {
-    * {
+    ::v-deep img {
       max-width: 100%;
+      height: auto;
     }
   }
 
