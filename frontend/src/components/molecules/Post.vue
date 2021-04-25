@@ -29,6 +29,10 @@
 
 <script lang="ts">
 import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition-api"
+
+let MarkdownIt = require('markdown-it');
+const md = new MarkdownIt();
+
 import { createMarkdown } from "safe-marked";
 import hljs from 'highlight.js'
 const renderer = new marked.Renderer();
@@ -114,7 +118,9 @@ export default defineComponent({
     const state = reactive({
       thumbnail: computed(() => props.thumbnail),
       title: computed(() => props.title),
-      renderedBody: computed(() => markdown(props.body)),
+      renderedBody: computed(() =>{
+        return md.render(props.body)
+      }),
       tags: computed(() => props.tags),
       linkList: computed(() => props.linkList),
       toc: computed(() => {
