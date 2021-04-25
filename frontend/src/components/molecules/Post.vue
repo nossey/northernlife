@@ -31,7 +31,8 @@
 import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition-api"
 
 let MarkdownIt = require('markdown-it');
-const md = new MarkdownIt();
+const sanitizer = require('markdown-it-sanitizer');
+const md = new MarkdownIt().use(sanitizer);
 
 import { createMarkdown } from "safe-marked";
 import hljs from 'highlight.js'
