@@ -32,6 +32,7 @@ import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition
 
 let MarkdownIt = require('markdown-it');
 const sanitizer = require('markdown-it-sanitizer');
+const emoji = require('markdown-it-emoji');
 import hljs from 'highlight.js'
 const md = new MarkdownIt({
   html:true,
@@ -40,7 +41,9 @@ const md = new MarkdownIt({
   highlight: function(code, lang){
     return hljs.highlightAuto(code, [lang]).value
   }
-}).use(sanitizer);
+})
+.use(sanitizer)
+.use(emoji);
 
 import { createMarkdown } from "safe-marked";
 const renderer = new marked.Renderer();
