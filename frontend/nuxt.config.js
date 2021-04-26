@@ -107,6 +107,9 @@ module.exports = {
     extend(config, ctx) {
       // Added Line
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
+      config.node = {
+        fs: "empty"
+      };
 
       if (ctx.isDev && ctx.isClient) {
       }
@@ -121,5 +124,5 @@ module.exports = {
       '@': path.resolve(__dirname),
       '~': path.resolve(__dirname),
     },
-  }
+  },
 }

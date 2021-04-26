@@ -33,6 +33,7 @@ import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition
 let MarkdownIt = require('markdown-it');
 const sanitizer = require('markdown-it-sanitizer');
 const emoji = require('markdown-it-emoji');
+const imsize = require('markdown-it-imsize');
 import hljs from 'highlight.js'
 const md = new MarkdownIt({
   html:true,
@@ -43,7 +44,8 @@ const md = new MarkdownIt({
   }
 })
 .use(sanitizer)
-.use(emoji);
+.use(emoji)
+.use(imsize, { autofill: true });
 
 import { createMarkdown } from "safe-marked";
 const renderer = new marked.Renderer();
@@ -157,13 +159,6 @@ export default defineComponent({
 
   .posted-time-area {
     font-size: 12px;
-  }
-
-  .rendered-area {
-    ::v-deep img {
-      max-width: 100%;
-      height: auto;
-    }
   }
 
   .tag {
