@@ -45,7 +45,7 @@ const md = new MarkdownIt({
 })
 .use(sanitizer)
 .use(emoji)
-.use(imsize, { autofill: true });
+.use(imsize);
 
 import { createMarkdown } from "safe-marked";
 const renderer = new marked.Renderer();
@@ -159,6 +159,13 @@ export default defineComponent({
 
   .posted-time-area {
     font-size: 12px;
+  }
+
+  .rendered-area {
+    ::v-deep img {
+      max-width: 100%;
+      height: auto;
+    }
   }
 
   .tag {
