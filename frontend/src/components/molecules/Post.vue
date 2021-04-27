@@ -34,6 +34,8 @@ let MarkdownIt = require('markdown-it');
 const sanitizer = require('markdown-it-sanitizer');
 const emoji = require('markdown-it-emoji');
 const imsize = require('markdown-it-imsize');
+import markdownItAnchor from 'markdown-it-anchor'
+
 import hljs from 'highlight.js'
 const md = new MarkdownIt({
   html:true,
@@ -45,7 +47,8 @@ const md = new MarkdownIt({
 })
 .use(sanitizer)
 .use(emoji)
-.use(imsize);
+.use(imsize)
+.use(markdownItAnchor)
 
 import { createMarkdown } from "safe-marked";
 const renderer = new marked.Renderer();
