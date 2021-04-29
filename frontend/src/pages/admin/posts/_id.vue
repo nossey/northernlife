@@ -43,12 +43,8 @@
 import {defineComponent, useFetch, reactive, useContext, computed} from "@nuxtjs/composition-api";
 import {AdminPostsApi, AdminTagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
-import { createMarkdown } from "safe-marked";
-const markdown = createMarkdown({
-  marked:{
-    breaks: true
-  }});
 const { htmlToText } = require('html-to-text');
+import { markdown as renderMarkdown } from "~/application/posts/markdown";
 
 import PostEditor from "~/components/molecules/PostEditor.vue"
 import Post from "~/components/molecules/Post.vue"
@@ -65,7 +61,7 @@ export default defineComponent({
       selectedTags: new Array<string>(),
       tags: new Array<string>(),
       thumbnail: "",
-      renderedBody: computed(() => markdown(state.body)),
+      renderedBody: computed(() => renderMarkdown(state.body)[0]),
       plainBody: computed(() => htmlToText(state.renderedBody, {
         ignoreImage: true
       })),
