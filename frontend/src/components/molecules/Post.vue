@@ -29,43 +29,6 @@
 
 <script lang="ts">
 import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition-api"
-
-const MarkdownIt = require('markdown-it');
-const sanitizer = require('markdown-it-sanitizer');
-const emoji = require('markdown-it-emoji');
-const imsize = require('markdown-it-imsize');
-import markdownItAnchor from 'markdown-it-anchor'
-const markdownItTableOfContents = require('markdown-it-table-of-contents')
-
-import hljs from 'highlight.js'
-
-let tocs: Array<ITocItem> = new Array();
-let anchorId = 1;
-let tocId = 1;
-const md = new MarkdownIt({
-  html:true,
-  breaks:true,
-  langPrefix: 'hljs ',
-  highlight: function(code, lang){
-    return hljs.highlightAuto(code, [lang]).value
-  }
-})
-.use(sanitizer)
-.use(emoji)
-.use(imsize)
-.use(markdownItAnchor, {
-  slugify: function(s){
-    tocs.push({name: s, link: `#${anchorId.toString()}`})
-    return (anchorId++);
-  }
-})
-.use(markdownItTableOfContents, {
-  includeLevel: [1, 2, 3],
-  slugify: function(s){
-    return (tocId++)
-  }
-})
-
 import Tag from "~/components/atoms/Tag.vue"
 
 type Props = {
@@ -86,17 +49,7 @@ export interface ITagLinkList {
  links: Array<ITagLink>
 }
 
-export interface ITocItem {
-  name: string
-  link: string
-}
-
-export interface ITocLinkList {
-  tableOfContents: Array<ITocItem>
-}
-
 import {markdown as renderMarkdown} from "~/application/posts/markdown"
-
 export default defineComponent({
   props: {
     title: {
