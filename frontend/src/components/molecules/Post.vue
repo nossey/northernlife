@@ -30,13 +30,18 @@
 <script lang="ts">
 import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition-api"
 
-let MarkdownIt = require('markdown-it');
+const MarkdownIt = require('markdown-it');
 const sanitizer = require('markdown-it-sanitizer');
 const emoji = require('markdown-it-emoji');
 const imsize = require('markdown-it-imsize');
 import markdownItAnchor from 'markdown-it-anchor'
+const markdownItTableOfContents = require('markdown-it-table-of-contents')
 
 import hljs from 'highlight.js'
+
+let tocs: Array<ITocItem> = new Array();
+let anchorId = 1;
+let tocId = 1;
 const md = new MarkdownIt({
   html:true,
   breaks:true,
@@ -48,41 +53,20 @@ const md = new MarkdownIt({
 .use(sanitizer)
 .use(emoji)
 .use(imsize)
-.use(markdownItAnchor)
-
-import { createMarkdown } from "safe-marked";
-const renderer = new marked.Renderer();
-const toc = Array<{level: Number, slug: string, title: string}>();
-renderer.heading = (text, level) => {
-  const slug = encodeURI(text.toLowerCase());
-  toc.push({
-    level: level as Number,
-    slug: slug,
-    title: text as string
-  })
-  return '<h'
-    + level
-    + ' id="'
-    + slug
-    + '">'
-    + text
-    + '</h'
-    + level
-    + '>\n'
-}
-const markdown = createMarkdown({
-  marked:{
-    breaks:true,
-    renderer: renderer,
-    langPrefix: 'hljs ',
-    highlight(code: string, lang: string, callback?: (error: any, code?: string) => void): string | void {
-      return hljs.highlightAuto(code, [lang]).value
-    }
+.use(markdownItAnchor, {
+  slugify: function(s){
+    tocs.push({name: s, link: `#${anchorId.toString()}`})
+    return (anchorId++);
   }
-});
+})
+.use(markdownItTableOfContents, {
+  includeLevel: [1, 2, 3],
+  slugify: function(s){
+    return (tocId++)
+  }
+})
 
 import Tag from "~/components/atoms/Tag.vue"
-import marked from "marked";
 
 type Props = {
   body: string,
@@ -101,6 +85,17 @@ export interface ITagLink {
 export interface ITagLinkList {
  links: Array<ITagLink>
 }
+
+export interface ITocItem {
+  name: string
+  link: string
+}
+
+export interface ITocLinkList {
+  tableOfContents: Array<ITocItem>
+}
+
+import {markdown as renderMarkdown} from "~/application/posts/markdown"
 
 export default defineComponent({
   props: {
@@ -135,22 +130,17 @@ export default defineComponent({
       thumbnail: computed(() => props.thumbnail),
       title: computed(() => props.title),
       renderedBody: computed(() =>{
-        return md.render(props.body)
+        return renderMarkdown(props.body)[0];
       }),
       tags: computed(() => props.tags),
       linkList: computed(() => props.linkList),
-      toc: computed(() => {
-        markdown(props.body);
-        return toc;
-      }),
       postedAt: computed(() => props.postedAt)
     });
 
     return {
       state
     }
-  },
-  name: "Post"
+  }
 })
 </script>
 
