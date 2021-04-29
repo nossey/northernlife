@@ -29,40 +29,7 @@
 
 <script lang="ts">
 import {computed, defineComponent, reactive, PropType} from "@nuxtjs/composition-api"
-import { createMarkdown } from "safe-marked";
-import hljs from 'highlight.js'
-const renderer = new marked.Renderer();
-const toc = Array<{level: Number, slug: string, title: string}>();
-renderer.heading = (text, level) => {
-  const slug = encodeURI(text.toLowerCase());
-  toc.push({
-    level: level as Number,
-    slug: slug,
-    title: text as string
-  })
-  return '<h'
-    + level
-    + ' id="'
-    + slug
-    + '">'
-    + text
-    + '</h'
-    + level
-    + '>\n'
-}
-const markdown = createMarkdown({
-  marked:{
-    breaks:true,
-    renderer: renderer,
-    langPrefix: 'hljs ',
-    highlight(code: string, lang: string, callback?: (error: any, code?: string) => void): string | void {
-      return hljs.highlightAuto(code, [lang]).value
-    }
-  }
-});
-
 import Tag from "~/components/atoms/Tag.vue"
-import marked from "marked";
 
 type Props = {
   body: string,
@@ -82,6 +49,7 @@ export interface ITagLinkList {
  links: Array<ITagLink>
 }
 
+import {markdown as renderMarkdown} from "~/application/posts/markdown"
 export default defineComponent({
   props: {
     title: {
@@ -114,21 +82,18 @@ export default defineComponent({
     const state = reactive({
       thumbnail: computed(() => props.thumbnail),
       title: computed(() => props.title),
-      renderedBody: computed(() => markdown(props.body)),
+      renderedBody: computed(() =>{
+        return renderMarkdown(props.body)[0];
+      }),
       tags: computed(() => props.tags),
       linkList: computed(() => props.linkList),
-      toc: computed(() => {
-        markdown(props.body);
-        return toc;
-      }),
       postedAt: computed(() => props.postedAt)
     });
 
     return {
       state
     }
-  },
-  name: "Post"
+  }
 })
 </script>
 
