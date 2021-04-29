@@ -14,10 +14,10 @@
           ></Post>
         </b-col>
         <b-col md="2" class="d-none d-md-block ">
-          <div class="toc-container" v-if="!fetchState.error && !fetchState.pending && state.toc.links.length > 0">
+          <div class="toc-container" v-if="!fetchState.error && !fetchState.pending && state.toc.length > 0">
             <div v-if="fetchState.error">{{fetchState.error.message}}</div>
             <div v-else-if="!fetchState.pending" class="pt-2">
-              <a class="toc ml-3" v-for="link in state.toc.links" :href="`#${link.slug}`">{{link.title}}</a>
+              <a class="toc ml-3" v-for="content in state.toc" :href="`${content.link}`">{{content.name}}</a>
             </div>
           </div>
         </b-col>
@@ -32,6 +32,7 @@ import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent, reactive, computed, useFetch, useContext, useMeta } from "@nuxtjs/composition-api"
 import Post from "~/components/molecules/Post.vue"
 import Enumerable from "linq"
+import {markdown} from "~/application/posts/markdown";
 import marked from "marked";
 import moment from "moment";
 
@@ -53,28 +54,9 @@ export default defineComponent({
         return {links: links}
       }),
       toc: computed(() => {
-        const renderer = new marked.Renderer();
-        const toc = Array<{level: Number, slug: string, title: string}>();
-        renderer.heading = (text, level) => {
-          const slug = encodeURI(text.toLowerCase());
-          toc.push({
-            level: level as Number,
-            slug: slug,
-            title: text as string
-          })
-          return '<h'
-            + level
-            + ' id="'
-            + slug
-            + '">'
-            + text
-            + '</h'
-            + level
-            + '>\n'
-        }
-        marked.setOptions({renderer: renderer})
-        marked(state.body);
-        return {links: toc}
+        const a = markdown(state.body)[1]
+        console.log(a)
+        return a
       })
     });
 
