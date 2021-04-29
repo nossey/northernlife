@@ -31,11 +31,9 @@
     "markdown-it-imsize": "^2.0.1",
     "markdown-it-sanitizer": "^0.4.3",
     "markdown-it-table-of-contents": "^0.5.2",
-    "marked": "^2.0.0",
     "moment": "^2.29.1",
     "nuxt": "^2.14.5",
-    "nuxt-fontawesome": "^0.4.0",
-    "safe-marked": "^4.0.1"
+    "nuxt-fontawesome": "^0.4.0"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.0",
