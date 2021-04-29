@@ -32,9 +32,8 @@ import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent, reactive, computed, useFetch, useContext, useMeta } from "@nuxtjs/composition-api"
 import Post from "~/components/molecules/Post.vue"
 import Enumerable from "linq"
-import {markdown} from "~/application/posts/markdown";
-import marked from "marked";
 import moment from "moment";
+import {markdown} from "~/application/posts/markdown";
 
 export default defineComponent({
   components: {
@@ -54,9 +53,7 @@ export default defineComponent({
         return {links: links}
       }),
       toc: computed(() => {
-        const a = markdown(state.body)[1]
-        console.log(a)
-        return a
+        return markdown(state.body)[1]
       })
     });
 
