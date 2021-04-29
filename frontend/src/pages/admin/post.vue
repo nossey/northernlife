@@ -42,16 +42,8 @@ import {buildConfiguration} from "~/client/configurationFactory";
 import Button from "~/components/atoms/Button.vue"
 import Post from "~/components/molecules/Post.vue"
 import PostEditor from "~/components/molecules/PostEditor.vue"
-import { createMarkdown } from "safe-marked";
-import hljs from "highlight.js"
-const markdown = createMarkdown({
-  marked:{
-    breaks: true,
-    highlight(code: string, lang: string, callback?: (error: any, code?: string) => void): string | void {
-      return hljs.highlightAuto(code, [lang]).value
-    }
-  }});
 const { htmlToText } = require('html-to-text');
+import {markdown as renderMarkdown} from "~/application/posts/markdown"
 import Enumerable from "linq";
 
 type Props = {
@@ -71,7 +63,7 @@ export default defineComponent({
     const state = reactive({
       title: "Hello world",
       body: "# Hello World",
-      renderedBody: computed(() => markdown(state.body)),
+      renderedBody: computed(() => renderMarkdown(state.body)[0]),
       plainBody: computed(() => htmlToText(state.renderedBody, {
         ignoreImage: true
       })),

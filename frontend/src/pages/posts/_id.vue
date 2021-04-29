@@ -31,7 +31,6 @@ import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent, reactive, computed, useFetch, useContext, useMeta } from "@nuxtjs/composition-api"
 import Post from "~/components/molecules/Post.vue"
-//import ITocLinkList from "~/components/molecules/Post.vue"
 import Enumerable from "linq"
 import marked from "marked";
 import moment from "moment";
