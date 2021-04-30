@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/infrastructure"
 )
 
@@ -48,23 +49,23 @@ from
 }
 
 // GetAttachedTags get tags attached to posts
-func (accessor *TagDataAccessor) GetAttachedTags() (tags []string) {
+func (accessor *TagDataAccessor) GetAttachedTags() (result domain.GetTagsResult) {
 	db := infrastructure.Db
-	tags = []string{}
+	result = domain.GetTagsResult{}
 	sql := `
-with attached_tag_ids as (
-	select distinct 
-		tag_id
-	from
-		tags_posts_attachments tpa
-)
-select 
-	t.tag_name
+select
+	t.id as tag_id,
+	t.tag_name as tag_name, 
+	count(1) as count
 from
-	tags t
+	tags_posts_attachments tpa
 inner join
-	attached_tag_ids
-	on t.id = attached_tag_ids.tag_id;	
+	tags t
+	on tpa.tag_id = t.id
+group by
+	t.id, t.tag_name 
+order by
+	count desc
 `
 	rows, err := db.Raw(sql).Rows()
 	if err != nil {
@@ -72,9 +73,9 @@ inner join
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var tag string
-		rows.Scan(&tag)
-		tags = append(tags, tag)
+		var item domain.GetTagsItem
+		db.ScanRows(rows, &item)
+		result.Items = append(result.Items, item)
 	}
 	return
 }

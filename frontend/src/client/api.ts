@@ -514,6 +514,38 @@ export interface ModelPostUpdateResult {
 /**
  * 
  * @export
+ * @interface ModelTagsGetItem
+ */
+export interface ModelTagsGetItem {
+    /**
+     * 
+     * @type {number}
+     * @memberof ModelTagsGetItem
+     */
+    attachedCount?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelTagsGetItem
+     */
+    name?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ModelTagsGetResult
+ */
+export interface ModelTagsGetResult {
+    /**
+     * 
+     * @type {Array<ModelTagsGetItem>}
+     * @memberof ModelTagsGetResult
+     */
+    tags?: Array<ModelTagsGetItem>;
+}
+/**
+ * 
+ * @export
  * @interface ModelUnauthorizedMessage
  */
 export interface ModelUnauthorizedMessage {
@@ -1736,7 +1768,7 @@ export const TagsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async tagsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+        async tagsGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ModelTagsGetResult>> {
             const localVarAxiosArgs = await TagsApiAxiosParamCreator(configuration).tagsGet(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1758,7 +1790,7 @@ export const TagsApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        tagsGet(options?: any): AxiosPromise<Array<string>> {
+        tagsGet(options?: any): AxiosPromise<ModelTagsGetResult> {
             return TagsApiFp(configuration).tagsGet(options).then((request) => request(axios, basePath));
         },
     };

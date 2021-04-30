@@ -585,10 +585,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/model.TagsGetResult"
                         }
                     }
                 }
@@ -916,6 +913,28 @@ var doc = `{
             "properties": {
                 "postID": {
                     "type": "string"
+                }
+            }
+        },
+        "model.TagsGetItem": {
+            "type": "object",
+            "properties": {
+                "attachedCount": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TagsGetResult": {
+            "type": "object",
+            "properties": {
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.TagsGetItem"
+                    }
                 }
             }
         },

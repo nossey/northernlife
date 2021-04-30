@@ -213,6 +213,20 @@ definitions:
       postID:
         type: string
     type: object
+  model.TagsGetItem:
+    properties:
+      attachedCount:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.TagsGetResult:
+    properties:
+      tags:
+        items:
+          $ref: '#/definitions/model.TagsGetItem'
+        type: array
+    type: object
   model.UnauthorizedMessage:
     properties:
       code:
@@ -588,9 +602,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              type: string
-            type: array
+            $ref: '#/definitions/model.TagsGetResult'
       summary: Get tags
       tags:
       - Tags
