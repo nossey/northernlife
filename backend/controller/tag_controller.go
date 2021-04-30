@@ -25,7 +25,7 @@ func init() {
 // @Description Get all tags
 // @Accept json
 // @Produce json
-// @Success 200 {Object} model.TagsGetResult
+// @Success 200 {object} model.TagsGetResult
 // @Router /tags [get]
 // @Tags Tags
 func (c *TagController) GetTags(ctx *gin.Context) {
