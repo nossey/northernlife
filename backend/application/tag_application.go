@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/nossey/northernlife/dataaccessor"
+	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/infrastructure"
 )
 
@@ -32,7 +33,7 @@ func (app *TagApplication) GetTags() (tags []string) {
 }
 
 // GetAttachedTags get tags
-func (app *TagApplication) GetAttachedTags() (tags []string) {
+func (app *TagApplication) GetAttachedTags() (tags domain.GetTagsResult) {
 	tags = dataaccessor.TagAccessor.GetAttachedTags()
 	return
 }

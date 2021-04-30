@@ -6,6 +6,7 @@ import (
 	"github.com/ahmetb/go-linq"
 	"github.com/gin-gonic/gin"
 	"github.com/nossey/northernlife/application"
+	"github.com/nossey/northernlife/domain"
 	"github.com/nossey/northernlife/model"
 )
 
@@ -31,10 +32,10 @@ func init() {
 func (c *TagController) GetTags(ctx *gin.Context) {
 	tags := application.TagApp.GetAttachedTags()
 	result := model.TagsGetResult{}
-	linq.From(tags).SelectT(func(t string) model.TagsGetItem {
+	linq.From(tags.Items).SelectT(func(t domain.GetTagsItem) model.TagsGetItem {
 		item := model.TagsGetItem{}
-		item.AttachedCount = 0
-		item.Name = t
+		item.AttachedCount = t.Count
+		item.Name = t.TagName
 		return item
 	}).ToSlice(&result.Tags)
 	ctx.JSON(http.StatusOK, result)
