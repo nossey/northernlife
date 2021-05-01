@@ -13,7 +13,7 @@
                 :posted-at="state.postedAt"
           ></Post>
         </b-col>
-        <b-col md="2" class="d-none d-md-block ">
+        <b-col md="3" class="d-none d-md-block ">
           <div class="toc-container" v-if="!fetchState.error && !fetchState.pending && state.toc.length > 0">
             <div v-if="fetchState.error">{{fetchState.error.message}}</div>
             <div v-else-if="!fetchState.pending" class="pt-2">
@@ -109,6 +109,7 @@ export default defineComponent({
   min-height: 300px;
   .toc {
     display: block;
+    word-break: break-all;
   }
 
   position: sticky;
