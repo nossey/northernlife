@@ -1,10 +1,16 @@
 <template>
   <div>
-    <b-container v-if="searchWord">
+    <b-container class="pl-0" v-if="attachedTags.tags.length > 0">
+      <Tag class="mr-2" :to="`/?tag=${encodeURIComponent(tag.name)}`" v-for="tag in attachedTags.tags" :key="tag.name">{{tag.name}}:{{tag.attachedCount}}</Tag>
+    </b-container>
+    <b-container class="pl-0 mt-1" v-if="searchWord">
       検索ワード:{{searchWord}}の検索結果
     </b-container>
-    <b-container v-if="tagName">
+    <b-container class="pl-0 mt-1" v-if="tagName">
       タグ:{{tagName}}の検索結果
+    </b-container>
+    <b-container class="pl-0 mt-1">
+      全{{result.totalCount}}件
     </b-container>
     <b-container class="pl-0 pr-0">
       <b-row>
@@ -32,7 +38,7 @@
 
 <script lang="ts">
 import { Context } from "@nuxt/types";
-import { PostsApi } from "~/client";
+import { PostsApi, TagsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 import Enumerable from "linq";
 import { defineComponent } from "@nuxtjs/composition-api"
@@ -43,6 +49,7 @@ import PostCard from "~/components/molecules/PostCard.vue"
 export default defineComponent({
   async asyncData(ctx: Context): Promise<Object> {
     const post = new PostsApi(buildConfiguration());
+    const tag = new TagsApi(buildConfiguration());
     const pageQuery = ctx.query["page"];
     let search = "";
     if (ctx.query["search"])
@@ -59,9 +66,11 @@ export default defineComponent({
     if (pageQuery)
       page = Number(pageQuery)
     const response = await post.postsGet(page, tags, search);
+    const tagResponse = await tag.tagsGet();
 
     return {
       result: response.data,
+      attachedTags: tagResponse.data,
       page: page,
       searchWord: search,
       tagName: tagName
