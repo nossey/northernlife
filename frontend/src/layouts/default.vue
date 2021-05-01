@@ -6,12 +6,12 @@
         <b-col>
           <b-container>
             <b-row>
-              <b-col>
+              <b-col class="no-padding-sm">
                 <SearchPostForm class="mt-4 mb-4"></SearchPostForm>
               </b-col>
             </b-row>
             <b-row>
-             <b-col>
+             <b-col class="no-padding-sm">
                <nuxt />
              </b-col>
             </b-row>
@@ -57,4 +57,11 @@ html {
   background: $background-color;
 }
 
+
+@media only screen and (max-device-width : 640px) {
+  .no-padding-sm {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 </style>
