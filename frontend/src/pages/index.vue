@@ -9,6 +9,9 @@
     <b-container class="pl-0 mt-1" v-if="tagName">
       タグ:{{tagName}}の検索結果
     </b-container>
+    <b-container class="pl-0 mt-1">
+      全{{result.totalCount}}件
+    </b-container>
     <b-container class="pl-0 pr-0">
       <b-row>
         <b-col v-for="post in result.posts" :key="post.id" cols="12" lg="6">
