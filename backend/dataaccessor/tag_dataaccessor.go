@@ -52,6 +52,7 @@ from
 func (accessor *TagDataAccessor) GetAttachedTags() (result domain.GetTagsResult) {
 	db := infrastructure.Db
 	result = domain.GetTagsResult{}
+	result.Items = []domain.GetTagsItem{}
 	sql := `
 select
 	t.id as tag_id,
