@@ -52,7 +52,6 @@ export default defineComponent({
 @import "~assets/colors";
 
 form {
-  display: inline-block;
   border-radius: 4px;
   background: $background-white;
   filter: drop-shadow(1px 1px 1px $shadow-color);

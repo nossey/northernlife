@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "1.0.0",
   "description": "My first-rate Nuxt.js project",
-  "author": "Sho Kitami",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -13,6 +12,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "@nuxt/typescript-runtime": "^0.4.0",
