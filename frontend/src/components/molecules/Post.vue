@@ -1,7 +1,7 @@
 <template>
   <b-container class="post-container pt-2">
     <b-row>
-      <b-col><h1 class="mb-0">{{state.title}}</h1></b-col>
+      <b-col class="title-area"><h1 class="mb-0">{{state.title}}</h1></b-col>
     </b-row>
     <b-row>
       <b-col v-if="state.postedAt" class="posted-time-area">
@@ -103,6 +103,15 @@ export default defineComponent({
   background: $background-white;
   filter: drop-shadow(2px 2px 3px $shadow-color);
 
+  .title-area{
+    h1 {
+      background: $background-color;
+      border-left: solid 8px $main-theme;
+      border-bottom: solid 3px $shadow-color;
+      padding-left: 5px;
+    }
+  }
+
   .posted-time-area {
     font-size: 12px;
   }
@@ -118,6 +127,12 @@ export default defineComponent({
     ::v-deep img {
       max-width: 100%;
       height: auto;
+    }
+    ::v-deep h1, ::v-deep h2, ::v-deep h3, ::v-deep h4 {
+      color: $font-color-white;
+      background-color: $main-theme;
+      margin-top: 0.25em;
+      padding-left: 0.4em;
     }
   }
 
