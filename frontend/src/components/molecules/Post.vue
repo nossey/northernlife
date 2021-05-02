@@ -14,8 +14,8 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col>
-        <b-img class="img-fluid" :src="state.thumbnail" />
+      <b-col class="thumbnail-area">
+        <img :src="state.thumbnail">
       </b-col>
     </b-row>
     <b-row>
@@ -105,6 +105,13 @@ export default defineComponent({
 
   .posted-time-area {
     font-size: 12px;
+  }
+
+  .thumbnail-area{
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 
   .rendered-area {
