@@ -117,7 +117,7 @@ export default defineComponent( {
   .title-area {
     margin-bottom: 0;
     font-weight: 500;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 
   .posted-time-area {
