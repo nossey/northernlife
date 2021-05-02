@@ -128,6 +128,12 @@ export default defineComponent({
       max-width: 100%;
       height: auto;
     }
+    ::v-deep h1, ::v-deep h2, ::v-deep h3, ::v-deep h4 {
+      color: $font-color-white;
+      background-color: $main-theme;
+      margin-top: 0.25em;
+      padding-left: 0.4em;
+    }
   }
 
   .tag {
