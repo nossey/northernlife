@@ -36,7 +36,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "assets/colors";
+@import "~assets/colors";
 
 button {
   cursor: pointer;
