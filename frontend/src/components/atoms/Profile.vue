@@ -18,7 +18,7 @@
       <b-row class="pb-3">
         <b-col>
           <a href="https://github.com/nossey"><fa :icon="faGithub" class="github"></fa></a>
-          <a href="https://github.com/nossey"><fa :icon="faEnvelope" class="github"></fa></a>
+          <a href="mailto:northernlife.inquiry@gmail.com"><fa :icon="faEnvelope" class="github"></fa></a>
         </b-col>
       </b-row>
     </b-container>
