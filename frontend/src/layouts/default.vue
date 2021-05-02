@@ -6,8 +6,9 @@
         <b-col>
           <b-container>
             <b-row>
-              <b-col class="no-padding-sm">
-                <SearchPostForm class="mt-4 mb-4"></SearchPostForm>
+              <b-col class="no-padding-sm head-area mt-4 mb-4">
+                <SearchPostForm class="searchForm"></SearchPostForm>
+                <a href="https://github.com/nossey" target="_blank" rel="noopener noreferrer" ><fa :icon="faGithub" class="github"></fa></a>
               </b-col>
             </b-row>
             <b-row>
@@ -25,9 +26,15 @@
 <script lang="ts">
 import Header from "~/components/molecules/Header.vue";
 import SearchPostForm from "~/components/organism/SearchPostForm.vue";
+import {faGithub} from "@fortawesome/free-brands-svg-icons";
 
 export default {
   components: {Header, SearchPostForm},
+  setup(){
+    return {
+      faGithub
+    }
+  }
 }
 
 </script>
@@ -57,6 +64,23 @@ html {
   background: $background-color;
 }
 
+.head-area {
+  position: relative;
+  .searchForm {
+    display: inline-block;
+  }
+  a {
+    color: $shadow-color;
+    .github {
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      width: 28px;
+      height: 28px;
+    }
+    text-decoration: none;
+  }
+}
 
 @media only screen and (max-device-width : 640px) {
   .no-padding-sm {
