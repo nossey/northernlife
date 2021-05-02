@@ -13,12 +13,13 @@
                 :posted-at="state.postedAt"
           ></Post>
         </b-col>
-        <b-col md="3" class="d-none d-md-block ">
-          <div class="toc-container" v-if="!fetchState.error && !fetchState.pending && state.toc.length > 0">
+        <b-col md="3" class="d-none d-md-block">
+          <div class="side-area" v-if="!fetchState.error && !fetchState.pending && state.toc.length > 0">
             <div v-if="fetchState.error">{{fetchState.error.message}}</div>
-            <div v-else-if="!fetchState.pending" class="pt-2">
-              <a class="toc ml-3" v-for="content in state.toc" :href="`${content.link}`">{{content.name}}</a>
+            <div v-else-if="!fetchState.pending" class="toc">
+              <a class="pl-2" v-for="content in state.toc" :href="`${content.link}`">{{content.name}}</a>
             </div>
+            <Profile class="mt-2"></Profile>
           </div>
         </b-col>
       </b-row>
@@ -31,13 +32,14 @@ import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
 import { defineComponent, reactive, computed, useFetch, useContext, useMeta } from "@nuxtjs/composition-api"
 import Post from "~/components/molecules/Post.vue"
+import Profile from "~/components/atoms/Profile.vue"
 import Enumerable from "linq"
 import moment from "moment";
 import {markdown} from "~/application/posts/markdown";
 
 export default defineComponent({
   components: {
-   Post
+   Post, Profile
   },
   head: {},
   setup(){
@@ -102,18 +104,19 @@ export default defineComponent({
   padding: 0 0;
 }
 
-.toc-container{
-  background: $background-white;
-  border-radius: 2px;
-  filter: drop-shadow(2px 2px 3px $shadow-color);
-  min-height: 300px;
-  .toc {
-    display: block;
-    word-break: break-all;
-  }
-
+.side-area {
   position: sticky;
   top: 10px;
+  .toc {
+    border-radius: 2px;
+    filter: drop-shadow(2px 2px 3px $shadow-color);
+    background: $background-white;
+    min-height: 300px;
+    a {
+      display: block;
+      word-break: break-all;
+    }
+  }
 }
 
 </style>

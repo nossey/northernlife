@@ -8,7 +8,7 @@
             <b-row>
               <b-col class="no-padding-sm head-area mt-4 mb-4">
                 <SearchPostForm class="searchForm"></SearchPostForm>
-                <a href="https://github.com/nossey" target="_blank" rel="noopener noreferrer" ><fa :icon="faGithub" class="github"></fa></a>
+                <a href="https://github.com/nossey"><fa :icon="faGithub" class="github"></fa></a>
               </b-col>
             </b-row>
             <b-row>

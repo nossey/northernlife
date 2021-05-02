@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <SearchForm :on-submit="submit"></SearchForm>
-  </div>
+  <SearchForm :on-submit="submit"></SearchForm>
 </template>
 
 <script lang="ts">
