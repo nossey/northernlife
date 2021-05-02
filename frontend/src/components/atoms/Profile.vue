@@ -16,7 +16,10 @@
         <b-col>Webエンジニアやってます.<br/>嗜む言語はGo, C#, python, Javascript, Typescript, C++. <br/>特にGoとNuxt.js大好きマン</b-col>
       </b-row>
       <b-row class="pb-3">
-        <b-col class="github"><a href="https://github.com/nossey"><fa :icon="faGithub" class="github"></fa></a></b-col>
+        <b-col>
+          <a href="https://github.com/nossey"><fa :icon="faGithub" class="github"></fa></a>
+          <a href="https://github.com/nossey"><fa :icon="faEnvelope" class="github"></fa></a>
+        </b-col>
       </b-row>
     </b-container>
   </div>
@@ -25,10 +28,12 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api';
 import {faGithub} from "@fortawesome/free-brands-svg-icons";
+import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 export default defineComponent({
   setup(){
     return {
-      faGithub
+      faGithub,
+      faEnvelope
     }
   }
 })
@@ -62,7 +67,7 @@ export default defineComponent({
     text-align: center;
   }
 
-  .github {
+  svg {
     width: 28px;
     height: 28px;
     color: $shadow-color;
