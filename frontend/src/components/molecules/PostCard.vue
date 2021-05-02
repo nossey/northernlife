@@ -6,7 +6,7 @@
     <b-container>
       <b-row class="mt-1">
         <b-container>
-          <b-row class="title-area"><b-col><h1>{{title}}</h1></b-col></b-row>
+          <b-row class="title-area"><b-col>{{title}}</b-col></b-row>
           <b-row><b-col class="posted-time-area">{{convertTime(postedAt)}}</b-col></b-row>
           <b-row>
             <b-col class="tag-area" v-if="tagLinkList.links.length > 0"><Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag">{{tagLink.name}}</Tag></b-col>
@@ -115,9 +115,9 @@ export default defineComponent( {
   }
 
   .title-area {
-    h1 {
-      margin-bottom: 0;
-    }
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 1.25rem;
   }
 
   .posted-time-area {
@@ -128,7 +128,9 @@ export default defineComponent( {
     text-overflow: ellipsis;
     overflow: hidden;
     width: 100%;
-    height: 50px;
+    height: 45px;
+    font-size: .875rem;
+    font-weight: 400;
   }
 
   .tag-area{
