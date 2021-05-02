@@ -101,7 +101,6 @@ export default defineComponent( {
   .img-area {
     width: 100%;
     padding-top: 56.25%;
-
     position: relative;
 
     img {

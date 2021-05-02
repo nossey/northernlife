@@ -3,13 +3,13 @@
     <b-container class="pl-0" v-if="(attachedTags.tags) && attachedTags.tags.length > 0">
       <Tag class="mr-2" :to="`/?tag=${encodeURIComponent(tag.name)}`" v-for="tag in attachedTags.tags" :key="tag.name">{{tag.name}}:{{tag.attachedCount}}</Tag>
     </b-container>
-    <b-container class="pl-0 mt-1" v-if="searchWord">
+    <b-container class="mt-1 mb-1" v-if="searchWord">
       検索ワード:{{searchWord}}の検索結果
     </b-container>
-    <b-container class="pl-0 mt-1" v-if="tagName">
+    <b-container class="mt-1" v-if="tagName">
       タグ:{{tagName}}の検索結果
     </b-container>
-    <b-container class="pl-0 mt-1">
+    <b-container class="mt-1">
       全{{result.totalCount}}件
     </b-container>
     <b-container class="pl-0 pr-0">
@@ -21,7 +21,7 @@
                 <b-row>
                   <b-col v-for="post in result.posts" :key="post.id" cols="12" lg="6">
                     <PostCard
-                      class="margin"
+                      class="mb-2"
                       :id="post.id"
                       :title="post.title"
                       :plainBody="post.plainBody"
@@ -159,10 +159,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
-.margin {
-  margin: 10px 5px;
-}
 
 .home-enter-active, .home-leave-active { transition: opacity .5s; }
 .home-enter, .home-leave-active { opacity: 0; }
