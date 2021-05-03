@@ -34,7 +34,7 @@
               </b-container>
             </b-col>
             <b-col md="3" class="d-none d-md-block">
-              <Profile></Profile>
+              <Profile class="profile"></Profile>
             </b-col>
           </b-row>
         </b-container>
@@ -162,5 +162,10 @@ export default defineComponent({
 
 .home-enter-active, .home-leave-active { transition: opacity .5s; }
 .home-enter, .home-leave-active { opacity: 0; }
+
+.profile {
+  position: sticky;
+  top: 10px;
+}
 
 </style>
