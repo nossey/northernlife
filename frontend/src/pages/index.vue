@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container class="pl-0" v-if="(attachedTags.tags) && attachedTags.tags.length > 0">
+    <b-container v-if="(attachedTags.tags) && attachedTags.tags.length > 0">
       <Tag class="mr-2" :to="`/?tag=${encodeURIComponent(tag.name)}`" v-for="tag in attachedTags.tags" :key="tag.name">{{tag.name}}:{{tag.attachedCount}}</Tag>
     </b-container>
     <b-container class="mt-1 mb-1" v-if="searchWord">

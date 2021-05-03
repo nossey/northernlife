@@ -9,7 +9,9 @@
           <b-row class="title-area"><b-col>{{title}}</b-col></b-row>
           <b-row><b-col class="posted-time-area">{{convertTime(postedAt)}}</b-col></b-row>
           <b-row>
-            <b-col class="tag-area" v-if="tagLinkList.links.length > 0"><Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag">{{tagLink.name}}</Tag></b-col>
+            <b-col class="tag-area" v-if="tagLinkList.links.length > 0">
+              <Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag mt-1">{{tagLink.name}}</Tag>
+            </b-col>
           </b-row>
           <b-row><b-col><div class="plain-body-area">{{plainBody}}</div></b-col></b-row>
         </b-container>
@@ -139,7 +141,8 @@ export default defineComponent( {
     .tag {
       margin-right: 5px;
     }
-    height: 30px;
+    min-height: 30px;
+    height: auto;
   }
 
   .foot {
