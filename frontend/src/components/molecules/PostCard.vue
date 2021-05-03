@@ -16,7 +16,7 @@
       </b-row>
       <b-row align-h="end">
         <b-col class="foot">
-          <Button :to="`/posts/${id}`">READ</Button>
+          <ButtonLink :to="`/posts/${id}`">READ</ButtonLink>
         </b-col>
       </b-row>
     </b-container>
@@ -27,6 +27,7 @@
 
 import {defineComponent, PropType} from "@nuxtjs/composition-api"
 import Button from '~/components/atoms/Button.vue'
+import ButtonLink from '~/components/atoms/ButtonLink.vue'
 import Tag from "~/components/atoms/Tag.vue"
 import moment from 'moment';
 
@@ -81,6 +82,7 @@ export default defineComponent( {
   },
   components: {
     Button,
+    ButtonLink,
     Tag
   }
 })
