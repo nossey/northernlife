@@ -108,7 +108,7 @@ export default defineComponent({
       background: $background-color;
       border-left: solid 8px $main-theme;
       border-bottom: solid 3px $shadow-color;
-      padding-left: 5px;
+      padding: 0.2em 0 0.2em 0.3em;
     }
   }
 
@@ -124,6 +124,10 @@ export default defineComponent({
   }
 
   .rendered-area {
+    ::v-deep {
+      letter-spacing: .05rem;
+      font-size: 1.1rem;
+    }
     ::v-deep img {
       max-width: 100%;
       height: auto;
@@ -132,7 +136,7 @@ export default defineComponent({
       color: $font-color-white;
       background-color: $main-theme;
       margin-top: 0.25em;
-      padding-left: 0.4em;
+      padding: 0.2em 0 0.2em 0.4em;
     }
   }
 
