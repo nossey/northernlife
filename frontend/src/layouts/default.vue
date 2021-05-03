@@ -6,7 +6,7 @@
         <b-col class="pl-0 pr-0">
           <b-container>
             <b-row>
-              <b-col class="no-padding-sm head-area mt-4 mb-4">
+              <b-col class="head-area mt-4 mb-4">
                 <SearchPostForm class="searchForm"></SearchPostForm>
               </b-col>
             </b-row>
