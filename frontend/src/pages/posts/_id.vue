@@ -17,7 +17,8 @@
           <div class="side-area" v-if="!fetchState.error && !fetchState.pending && state.toc.length > 0">
             <div v-if="fetchState.error">{{fetchState.error.message}}</div>
             <div v-else-if="!fetchState.pending" class="toc">
-              <a class="pl-2" v-for="content in state.toc" :href="`${content.link}`">{{content.name}}</a>
+              <div class="title">Table of contents</div>
+              <a v-for="content in state.toc" :href="`${content.link}`" class="pl-3">{{content.name}}</a>
             </div>
             <Profile class="mt-2"></Profile>
           </div>
@@ -108,6 +109,10 @@ export default defineComponent({
   position: sticky;
   top: 10px;
   .toc {
+    .title {
+      text-align: center;
+      font-weight: bold;
+    }
     border-radius: 2px;
     filter: drop-shadow(2px 2px 3px $shadow-color);
     background: $background-white;
