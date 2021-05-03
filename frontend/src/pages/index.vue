@@ -39,12 +39,16 @@
           </b-row>
         </b-container>
       </b-row>
-      <b-pagination
-        :total-rows="result.totalCount"
-        :per-page="result.perPageCount"
-        v-model="page"
-        @input="pageClicked"
-      ></b-pagination>
+      <b-row>
+        <b-col class="ml-2">
+          <b-pagination
+            :total-rows="result.totalCount"
+            :per-page="result.perPageCount"
+            v-model="page"
+            @input="pageClicked"
+          ></b-pagination>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
