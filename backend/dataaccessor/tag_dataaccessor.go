@@ -99,8 +99,8 @@ values
 	current_timestamp,
 	current_timestamp,
 	uuid_generate_v4(),
-	$1,
-	$2
+	?,
+	?	
 )
 `
 	err = db.Exec(createSQL, create.TagName, create.UserID).Error
