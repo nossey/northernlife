@@ -20,7 +20,7 @@
     </b-row>
     <b-row class="mt-2">
       <b-container>
-        <b-row>Body</b-row>
+        <b-row>Body({{state.postLength}}文字)</b-row>
         <b-row class="body">
           <textarea id="textarea" v-model="state.body" @drop.prevent="dropFile"></textarea>
         </b-row>
@@ -40,10 +40,11 @@
 
 <script lang="ts">
 
-import {defineComponent, reactive, watch} from "@nuxtjs/composition-api";
+import {computed, defineComponent, reactive, watch} from "@nuxtjs/composition-api";
 import {ContentsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
-import {text} from "@fortawesome/fontawesome-svg-core";
+const {htmlToText} = require('html-to-text');
+import {markdown} from "~/application/posts/markdown"
 
 export default defineComponent( {
   props: {
@@ -76,6 +77,7 @@ export default defineComponent( {
       tags: props.tags,
       thumbnail: props.thumbnail,
       selectedTags: props.selectedTags,
+      postLength: computed(() => htmlToText(markdown(state.body)[0], {ignoreImage: true}).length)
     });
 
     watch(() => state, () => {context.emit("updated", state)}, {deep: true})

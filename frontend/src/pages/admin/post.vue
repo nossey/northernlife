@@ -21,7 +21,6 @@
           </b-container>
         </b-col>
         <b-col class="col">
-          ブログの文字数{{state.postLength}}
           <Post
             v-bind:thumbnail="state.thumbnail"
             v-bind:title="state.title"
@@ -66,7 +65,6 @@ export default defineComponent({
       body: "# Hello World",
       renderedBody: computed(() => renderMarkdown(state.body)[0]),
       plainBody: computed(() => htmlToText(state.renderedBody, {ignoreImage: true})),
-      postLength: computed(() => state.plainBody.length),
       thumbnail: "https://northernlife-content.net/lunch.jpg",
       tags: new Array<string>(),
       selectedTags: new Array<string>(),
