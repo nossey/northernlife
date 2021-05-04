@@ -18,7 +18,8 @@
         </div>
         <Button @click="putPost(true)">Save</Button>
         <Button @click="putPost(false)">Save as draft</Button>
-        <Button @click="deletePost">Delete</Button>
+        <b-button v-b-modal="'deletePostModal'">Delete</b-button>
+        <b-modal id="deletePostModal" @ok="deletePost()">このポストを消しますか?</b-modal>
       </b-col>
       <b-col>
         <div v-if="fetchState.pending">
@@ -103,7 +104,8 @@ export default defineComponent({
         published: publish})
       .then(res => {
         // TODO:トーストとか色々出してあげる
-        context.root.$router.push(`/posts/${res.data.postID}`)
+        if (publish)
+          context.root.$router.push(`/posts/${res.data.postID}`)
       }).catch(err => {
         // TODO:トーストとか色々出してあげる
         console.log(err)
