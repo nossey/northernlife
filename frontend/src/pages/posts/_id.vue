@@ -3,23 +3,21 @@
     <transition name="post">
       <b-row align-h="between">
         <b-col cols="12" md="9" class="post">
-          <div v-if="fetchState.error">{{fetchState.error.message}}</div>
-          <Post v-else-if="!fetchState.pending"
-                :title="state.title"
-                :body="state.body"
-                :thumbnail="state.thumbnail"
-                :tags="state.tags"
-                :linkList="state.tagLinks"
-                :posted-at="state.postedAt"
-          ></Post>
+          <Post
+            :title="postResult.title"
+            :body="postResult.body"
+            :postedAt="postedAt"
+            :thumbnail="postResult.thumbnail"
+            :tags="postResult.tags"
+            :linkList="links">
+          </Post>
         </b-col>
         <b-col md="3" class="d-none d-md-block">
-          <div class="side-area" v-if="!fetchState.error && !fetchState.pending && state.toc.length > 0">
-            <div v-if="fetchState.error">{{fetchState.error.message}}</div>
-            <div v-else-if="!fetchState.pending" class="toc">
-              <div class="title">Table of contents</div>
-              <a v-for="content in state.toc" :href="`${content.link}`" class="pl-3">{{content.name}}</a>
-            </div>
+          <div class="side-area" v-if="toc.length > 0">
+          <div class="toc">
+            <div class="title">Table of contents</div>
+            <a v-for="content in toc" :href="`${content.link}`" class="pl-3">{{content.name}}</a>
+          </div>
             <Profile class="mt-2"></Profile>
           </div>
         </b-col>
@@ -28,69 +26,45 @@
   </b-container>
 </template>
 
-<script lang="ts">
+<script>
 import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
-import { defineComponent, reactive, computed, useFetch, useContext, useMeta } from "@nuxtjs/composition-api"
 import Post from "~/components/molecules/Post.vue"
 import Profile from "~/components/atoms/Profile.vue"
 import Enumerable from "linq"
 import moment from "moment";
 import {markdown} from "~/application/posts/markdown";
 
-export default defineComponent({
+export default ({
   components: {
    Post, Profile
   },
-  head: {},
-  setup(){
-    const state = reactive({
-      thumbnail: "",
-      title: "",
-      body: "",
-      plainBody: "",
-      tags: [],
-      postedAt: "",
-      tagLinks: computed(() => {
-        const links = Enumerable.from(state.tags as string[]).select(function(t){return {name: t, link: `/?tag=${encodeURIComponent(t)}`}}).toArray()
-        return {links: links}
-      }),
-      toc: computed(() => {
-        return markdown(state.body)[1]
-      })
-    });
-
-    const { title, meta } = useMeta();
-    const {fetch, fetchState} = useFetch(async() => {
-      const api = new PostsApi(buildConfiguration());
-      const id = useContext().params.value["id"];
-      const post = (await api.postsIdGet(id)).data;
-      state.thumbnail = post.thumbnail;
-      state.title = post.title;
-      state.body = post.body;
-      state.plainBody = post.plainBody;
-      state.tags = (post.tags) ? post.tags : [];
-      state.postedAt = moment(post.createdAt).format("YYYY-MM-DD");
-
-      title.value = state.title;
-      meta.value = [
-        {
-          hid: 'og:description',
-          property: 'og:description',
-          content: state.plainBody,
-        },
-        {
-          hid: 'og:image',
-          property: 'og:image',
-          content: state.thumbnail,
-        },
-      ]
-    });
-
+  head() {
     return {
-      state,
-      fetchState
+      title: this.postResult.title,
+      meta: [
+        { hid: 'og:description', name: 'og:description', content: this.postResult.plainBody},
+        { hid: 'og:image', name: 'og:image', content: this.postResult.thumbnail},
+      ]
     }
+  },
+  async asyncData(ctx){
+    const api = new PostsApi(buildConfiguration());
+    const postResult = (await api.postsIdGet(ctx.params["id"])).data;
+    return {
+      postResult,
+    }
+  },
+  computed: {
+    links: function(){
+      return {links: Enumerable.from(this.postResult.tags).select(function(t){return {name: t, link: `/?tag=${encodeURIComponent(t)}`}}).toArray()};
+    },
+    toc: function(){
+      return markdown(this.postResult.body)[1]
+    },
+    postedAt: function(){
+     return moment(this.postResult.createdAt).format("YYYY/MM/DD");
+    },
   }
 })
 </script>
