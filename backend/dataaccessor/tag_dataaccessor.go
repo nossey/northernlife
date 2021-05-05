@@ -59,10 +59,15 @@ select
 	t.tag_name as tag_name, 
 	count(1) as count
 from
-	tags_posts_attachments tpa
-inner join
 	tags t
+inner join
+	tags_posts_attachments tpa
 	on tpa.tag_id = t.id
+inner join 
+	posts p 
+	on tpa.post_id = p.id 
+where 
+	p.published = true
 group by
 	t.id, t.tag_name 
 order by
