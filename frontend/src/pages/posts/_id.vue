@@ -6,21 +6,20 @@
           <Post
             :title="postResult.title"
             :body="postResult.body"
-            :postedAt="postResult.createdAt"
+            :postedAt="postedAt"
             :thumbnail="postResult.thumbnail"
             :tags="postResult.tags"
             :linkList="links">
           </Post>
-          {{toc}}
         </b-col>
         <b-col md="3" class="d-none d-md-block">
-          <!--<div class="side-area" v-if="state.toc.length > 0">
+          <div class="side-area" v-if="toc.length > 0">
           <div class="toc">
             <div class="title">Table of contents</div>
-            <a v-for="content in state.toc" :href="`${content.link}`" class="pl-3">{{content.name}}</a>
+            <a v-for="content in toc" :href="`${content.link}`" class="pl-3">{{content.name}}</a>
           </div>
             <Profile class="mt-2"></Profile>
-          </div>-->
+          </div>
         </b-col>
       </b-row>
     </transition>
@@ -55,6 +54,9 @@ export default ({
     },
     toc: function(){
       return markdown(this.postResult.body)[1]
+    },
+    postedAt: function(){
+     return moment(this.postResult.createdAt).format("YYYY/MM/DD");
     }
   }
   //setup(){
