@@ -29,7 +29,6 @@
 <script>
 import { PostsApi } from "~/client";
 import { buildConfiguration } from "~/client/configurationFactory"
-import { defineComponent, reactive, computed, useFetch, useAsync, useContext, useMeta } from "@nuxtjs/composition-api"
 import Post from "~/components/molecules/Post.vue"
 import Profile from "~/components/atoms/Profile.vue"
 import Enumerable from "linq"
@@ -40,7 +39,15 @@ export default ({
   components: {
    Post, Profile
   },
-  head: {},
+  head() {
+    return {
+      title: this.postResult.title,
+      meta: [
+        { hid: 'og:description', name: 'og:description', content: this.postResult.plainBody},
+        { hid: 'og:image', name: 'og:image', content: this.postResult.thumbnail},
+      ]
+    }
+  },
   async asyncData(ctx){
     const api = new PostsApi(buildConfiguration());
     const postResult = (await api.postsIdGet(ctx.params["id"])).data;
@@ -57,7 +64,7 @@ export default ({
     },
     postedAt: function(){
      return moment(this.postResult.createdAt).format("YYYY/MM/DD");
-    }
+    },
   }
   //setup(){
   //  const state = reactive({
