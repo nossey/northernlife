@@ -66,50 +66,6 @@ export default ({
      return moment(this.postResult.createdAt).format("YYYY/MM/DD");
     },
   }
-  //setup(){
-  //  const state = reactive({
-  //    thumbnail: "",
-  //    title: "Title",
-  //    body: "",
-  //    plainBody: "",
-  //    tags: [],
-  //    postedAt: "",
-  //    tagLinks: computed(() => {
-  //      const links = Enumerable.from(state.tags as string[]).select(function(t){return {name: t, link: `/?tag=${encodeURIComponent(t)}`}}).toArray()
-  //      return {links: links}
-  //    }),
-  //    toc: computed(() => {
-  //      return markdown(state.body)[1]
-  //    })
-  //  });
-
-  //  const { title, meta } = useMeta();
-  //  const postResult = useAsync(async() => {
-  //    const api = new PostsApi(buildConfiguration());
-  //    const id = useContext().params.value["id"];
-  //    return (await api.postsIdGet(id)).data;
-  //  });
-  //  title.value = postResult.value?.title as string;
-  //  meta.value = [
-  //    {
-  //      hid: 'og:description',
-  //      property: 'og:description',
-  //      content: postResult.value?.plainBody as string,
-  //    },
-  //    {
-  //      hid: 'og:image',
-  //      property: 'og:image',
-  //      content: postResult.value?.thumbnail as string,
-  //    },
-  //  ]
-  //  console.log(process.server)
-  //  console.log(postResult.value)
-
-  //  return {
-  //    state,
-  //    postResult: postResult.value
-  //  }
-  //}
 })
 </script>
 
