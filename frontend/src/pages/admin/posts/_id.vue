@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, useFetch, reactive, useContext, computed} from "@nuxtjs/composition-api";
+import {defineComponent, useFetch,  useContext, reactive, computed} from "@nuxtjs/composition-api";
 import {AdminPostsApi, AdminTagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 const { htmlToText } = require('html-to-text');
@@ -103,13 +103,11 @@ export default defineComponent({
         thumbnail: state.thumbnail,
         published: publish})
       .then(res => {
-        // TODO:トーストとか色々出してあげる
+        (context.root as any).$bvToast.toast('Draft Saved', {title: "Success", variant: "primary"})
         if (publish)
           context.root.$router.push(`/posts/${res.data.postID}`)
       }).catch(err => {
-        // TODO:トーストとか色々出してあげる
-        console.log(err)
-        console.log(err.response.data)
+        (context.root as any).$bvToast.toast(`Failed to save draft:${err.response.data}`, {title: "Failed", variant: "danger"})
       });
     }
 
