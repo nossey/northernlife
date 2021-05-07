@@ -17,7 +17,7 @@
           ></PostEditor>
         </div>
         <Button @click="putPost(true)">Save</Button>
-        <Button @click="putPost(false);$bvToast.show('saved');">Save as draft</Button>
+        <Button @click="putPost(false)">Save as draft</Button>
         <b-toast id="saved">Draft Saved</b-toast>
         <b-button v-b-modal="'deletePostModal'">Delete</b-button>
         <b-modal id="deletePostModal" @ok="deletePost()">このポストを消しますか?</b-modal>
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, useFetch, reactive, useContext, computed} from "@nuxtjs/composition-api";
+import {defineComponent, useFetch,  useContext, reactive, computed} from "@nuxtjs/composition-api";
 import {AdminPostsApi, AdminTagsApi} from "~/client";
 import {buildConfiguration} from "~/client/configurationFactory";
 const { htmlToText } = require('html-to-text');
@@ -94,7 +94,7 @@ export default defineComponent({
       state.selectedTags = event.selectedTags
     };
 
-    const putPost = async function(publish: boolean){
+    const putPost = async (publish: boolean) => {
       const api = new AdminPostsApi(buildConfiguration());
       await api.adminPostsIdPut(id, {
         title: state.title,
@@ -104,12 +104,11 @@ export default defineComponent({
         thumbnail: state.thumbnail,
         published: publish})
       .then(res => {
+        (context.root as any).$bvToast.toast('Draft Saved', {title: "Success", variant: "primary"})
         if (publish)
           context.root.$router.push(`/posts/${res.data.postID}`)
       }).catch(err => {
-        // TODO:トーストとか色々出してあげる
-        console.log(err)
-        console.log(err.response.data)
+        (context.root as any).$bvToast.toast(`Failed to save draft:${err.response.data}`, {title: "Failed", variant: "danger"})
       });
     }
 
