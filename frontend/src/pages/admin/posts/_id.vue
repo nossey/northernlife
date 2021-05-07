@@ -17,7 +17,8 @@
           ></PostEditor>
         </div>
         <Button @click="putPost(true)">Save</Button>
-        <Button @click="putPost(false)">Save as draft</Button>
+        <Button @click="putPost(false);$bvToast.show('saved');">Save as draft</Button>
+        <b-toast id="saved">Draft Saved</b-toast>
         <b-button v-b-modal="'deletePostModal'">Delete</b-button>
         <b-modal id="deletePostModal" @ok="deletePost()">このポストを消しますか?</b-modal>
       </b-col>
@@ -93,7 +94,7 @@ export default defineComponent({
       state.selectedTags = event.selectedTags
     };
 
-    const putPost = async (publish: boolean) => {
+    const putPost = async function(publish: boolean){
       const api = new AdminPostsApi(buildConfiguration());
       await api.adminPostsIdPut(id, {
         title: state.title,
@@ -103,7 +104,6 @@ export default defineComponent({
         thumbnail: state.thumbnail,
         published: publish})
       .then(res => {
-        // TODO:トーストとか色々出してあげる
         if (publish)
           context.root.$router.push(`/posts/${res.data.postID}`)
       }).catch(err => {
