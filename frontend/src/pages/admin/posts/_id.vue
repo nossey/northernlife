@@ -59,15 +59,18 @@ export default defineComponent({
     const state = reactive({
       title: "",
       body: "",
-      selectedTags: new Array<string>(),
-      tags: new Array<string>(),
+      selectedTags: [],
+      tags: [],
       thumbnail: "",
       renderedBody: computed(() => renderMarkdown(state.body)[0]),
       plainBody: computed(() => htmlToText(state.renderedBody, {
         ignoreImage: true
       })),
       linklist: computed(() => {
-       const links = Enumerable.from(state.selectedTags).select(function(t) {return {name: t, link: `/tags/${t}`}}).toArray();
+       const links = Enumerable.from(state.selectedTags).select(function(t) {
+         const ta = t as any;
+         return {name: ta, link: `/?tag=${encodeURIComponent(ta)}`}}
+       ).toArray();
        return {links: links}
       })
     });

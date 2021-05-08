@@ -69,7 +69,10 @@ export default defineComponent({
       tags: new Array<string>(),
       selectedTags: new Array<string>(),
       linkList: computed(() => {
-        const links = Enumerable.from(state.selectedTags).select(function(t) {return {name: t, link: `/?tag=${encodeURIComponent(t.value)}`}}).toArray();
+        const links = Enumerable.from(state.selectedTags).select(function(t) {
+          const ta = t as any;
+          return {name: ta, link: `/?tag=${encodeURIComponent(ta)}`}
+        }).toArray();
         return {links: links}
       })
     });
