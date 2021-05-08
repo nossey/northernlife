@@ -39,7 +39,7 @@
           </b-row>
         </b-container>
       </b-row>
-      <b-row>
+      <b-row v-if="result.totalCount > 0">
         <b-col class="ml-2">
           <b-pagination
             :total-rows="result.totalCount"
