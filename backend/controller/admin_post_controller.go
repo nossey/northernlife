@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -33,6 +34,7 @@ func toPostSingleItem(post domain.SinglePostItem) (viewmodel model.PostSingleIte
 }
 
 func toPostListItem(post domain.PostListItem) (viewmodel model.AdminPostListItem) {
+	trimLength := (int)(math.Min(200, (float64(len(post.PlainBody)))))
 	viewmodel = model.AdminPostListItem{
 		CreatedAt: post.CreatedAt,
 		UpdatedAt: post.UpdatedAt,
@@ -40,7 +42,7 @@ func toPostListItem(post domain.PostListItem) (viewmodel model.AdminPostListItem
 		UserID:    post.UserID,
 		Title:     post.Title,
 		Body:      post.Body,
-		PlainBody: post.PlainBody,
+		PlainBody: post.PlainBody[:trimLength],
 		Published: post.Published,
 		Thumbnail: post.Thumbnail,
 		Tags:      post.Tags,
