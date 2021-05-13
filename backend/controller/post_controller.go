@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -27,6 +28,7 @@ func init() {
 
 // ToPostListItem converts application post to viewmodel post
 func ToPostListItem(post domain.PostListItem) (viewmodel model.PostListItem) {
+	trimLength := (int)(math.Min(200, (float64(len(post.PlainBody)))))
 	viewmodel = model.PostListItem{
 		CreatedAt: post.CreatedAt,
 		UpdatedAt: post.UpdatedAt,
@@ -34,7 +36,7 @@ func ToPostListItem(post domain.PostListItem) (viewmodel model.PostListItem) {
 		UserID:    post.UserID,
 		Title:     post.Title,
 		Body:      post.Body,
-		PlainBody: post.PlainBody,
+		PlainBody: post.PlainBody[:trimLength],
 		Published: post.Published,
 		Thumbnail: post.Thumbnail,
 		Tags:      post.Tags,
@@ -44,6 +46,7 @@ func ToPostListItem(post domain.PostListItem) (viewmodel model.PostListItem) {
 
 // ToPostSingleItem converts application post to viewmodel post
 func ToPostSingleItem(post domain.SinglePostItem) (viewmodel model.PostSingleItem) {
+	trimLength := (int)(math.Min(200, (float64(len(post.PlainBody)))))
 	viewmodel = model.PostSingleItem{
 		CreatedAt: post.CreatedAt,
 		UpdatedAt: post.UpdatedAt,
@@ -51,7 +54,7 @@ func ToPostSingleItem(post domain.SinglePostItem) (viewmodel model.PostSingleIte
 		UserID:    post.UserID,
 		Title:     post.Title,
 		Body:      post.Body,
-		PlainBody: post.PlainBody,
+		PlainBody: post.PlainBody[:trimLength],
 		Published: post.Published,
 		Thumbnail: post.Thumbnail,
 		Tags:      post.Tags,
