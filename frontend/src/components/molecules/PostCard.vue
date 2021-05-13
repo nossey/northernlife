@@ -132,7 +132,8 @@ export default defineComponent( {
     text-overflow: ellipsis;
     overflow: hidden;
     width: 100%;
-    height: 45px;
+    line-height: 1rem;
+    height: 2rem;
     font-size: .875rem;
     font-weight: 400;
   }
