@@ -131,6 +131,7 @@ export default defineComponent( {
   .plain-body-area {
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
     width: 100%;
     line-height: 1rem;
     height: 2rem;
