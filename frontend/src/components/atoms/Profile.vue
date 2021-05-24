@@ -6,7 +6,7 @@
       </b-row>
       <b-row>
         <b-col>
-          <b-img fluid src="~/static/vanilla.png"></b-img>
+          <b-img fluid src="~/static/icon.png"></b-img>
         </b-col>
       </b-row>
       <b-row>
