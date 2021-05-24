@@ -10,7 +10,7 @@
           <b-row><b-col class="posted-time-area">{{convertTime(postedAt)}}</b-col></b-row>
           <b-row>
             <b-col class="tag-area" v-if="tagLinkList.links.length > 0">
-              <Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag mt-1">{{tagLink.name}}</Tag>
+              <Tag v-for="tagLink in tagLinkList.links" :key="tagLink.name" :to="tagLink.link" class="tag mt-1 mb-1">{{tagLink.name}}</Tag>
             </b-col>
           </b-row>
           <b-row><b-col><div class="plain-body-area">{{plainBody}}</div></b-col></b-row>
@@ -131,6 +131,7 @@ export default defineComponent( {
   .plain-body-area {
     text-overflow: ellipsis;
     overflow: hidden;
+    white-space: nowrap;
     width: 100%;
     line-height: 1rem;
     height: 2rem;
