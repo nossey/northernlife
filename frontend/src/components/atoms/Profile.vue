@@ -6,14 +6,14 @@
       </b-row>
       <b-row>
         <b-col>
-          <b-img fluid src="~/static/vanilla.png"></b-img>
+          <b-img fluid src="~/static/icon.png"></b-img>
         </b-col>
       </b-row>
       <b-row>
         <b-col class="profile-name">Sho Kitami</b-col>
       </b-row>
       <b-row class="mt-2 pb-2">
-        <b-col>Webエンジニアやってます.<br/>嗜む言語はGo, C#, python, Javascript, Typescript, C++. <br/>特にGoとNuxt.js大好きマン</b-col>
+        <b-col>Webエンジニアやってます.<br/>嗜む言語はGo, C#, python, Javascript, Typescript, C++. <br/>特にGoとNuxt.jsが好き</b-col>
       </b-row>
       <b-row class="pb-3">
         <b-col>
