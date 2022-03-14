@@ -10,7 +10,7 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col class="profile-name">Sho Kitami</b-col>
+        <b-col class="profile-name">Sho Yonezawa</b-col>
       </b-row>
       <b-row class="mt-2 pb-2">
         <b-col>Webエンジニアやってます.<br/>嗜む言語はGo, C#, python, Javascript, Typescript, C++. <br/>特にGoとNuxt.jsが好き</b-col>
@@ -18,7 +18,7 @@
       <b-row class="pb-3">
         <b-col>
           <a href="https://github.com/nossey"><fa :icon="faGithub" class="github"></fa></a>
-          <a href="mailto:northernlife.inquiry@gmail.com"><fa :icon="faEnvelope" class="github"></fa></a>
+          <a href="mailto:shokitami@gmail.com"><fa :icon="faEnvelope" class="github"></fa></a>
         </b-col>
       </b-row>
     </b-container>
